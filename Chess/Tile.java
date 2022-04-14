@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class Policka extends Actor
+public class Tile extends Actor
 {
     public void act() 
     {
