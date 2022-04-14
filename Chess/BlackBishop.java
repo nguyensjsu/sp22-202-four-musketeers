@@ -9,17 +9,17 @@ public class BlackBishop extends Black
 {
     public void act() 
     {
-        Chessboard sachovnica = (Chessboard)getWorld();
-        if (sachovnica.tahy % 2 == 0)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (chessboard.move % 2 == 0)
         {
-            vyber();
-            pohyb();
-            zmenaStavu();
-            vybytie();
+            select();
+            move();
+            changeStatus();
+            capture();
         }
     }
     
-    private void pohyb()
+    private void move()
     {
         if (ready)
         {
@@ -28,72 +28,72 @@ public class BlackBishop extends Black
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                int vzdX = Math.abs(x - this.getX());
-                int vzdY = Math.abs(y - this.getY());
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
-                boolean prazdne = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
                 
-                if (prazdne)
+                if (empty)
                 {
-                    if (vzdX == vzdY)
+                    if (absDiffX == absDiffY)
                     {
-                        int rozdielX = x - this.getX();
-                        int rozdielY = y - this.getY();
-                        int rozdiel = Math.abs(rozdielX);
+                        int differenceX = x - this.getX();
+                        int differenceY = y - this.getY();
+                        int difference = Math.abs(differenceX);
                         
-                        if (rozdielX < 0 && rozdielY < 0)
+                        if (differenceX < 0 && differenceY < 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,Figurky.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX < 0 && rozdielY > 0)
+                        else if (differenceX < 0 && differenceY > 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,Figurky.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX > 0 && rozdielY < 0)
+                        else if (differenceX > 0 && differenceY < 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,Figurky.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX > 0 && rozdielY > 0)
+                        else if (differenceX > 0 && differenceY > 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,Figurky.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        if (!obsadene)
+                        if (!occupied)
                         {
-                            presun(x,y);
+                            move(x,y);
                         }
                     }
                 }
                 
                 ready = false;
-                obsadene = false;
+                occupied = false;
             }
         }
     }

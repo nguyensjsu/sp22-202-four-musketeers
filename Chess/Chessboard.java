@@ -10,18 +10,18 @@ public class Chessboard extends World
     public Chessboard()
     {    
         super(8,8,100);
-        priprava();
+        startup();
     }
     
     int move = 1;
-    int tahy_kont = 1;
+    int turn = 1;
     
     public void act()
     {
-        zmena();
+        change();
     }
     
-    private void priprava()
+    private void startup()
     {
         int x;
         int y;
@@ -31,36 +31,36 @@ public class Chessboard extends World
         {
             for (y = 0;y < 8;y += 2)
             {
-                Siva siva = new Siva();
-                addObject(siva,x,y);
+                Gray gray = new Gray();
+                addObject(gray,x,y);
             }
         }
         for (x = 0;x < 8;x += 2)
         {
             for (y = 1;y < 8;y += 2)
             {
-                Siva siva = new Siva();
-                addObject(siva,x,y);
+                Gray gray = new Gray();
+                addObject(gray,x,y);
             }
         }
         for (x = 0;x < 8;x += 2)
         {
             for (y = 0;y < 8;y += 2)
             {
-                Bezova bezova = new Bezova();
-                addObject(bezova,x,y);
+                Beige beige = new Beige();
+                addObject(beige,x,y);
             }
         }
         for (x = 1;x < 8;x += 2)
         {
             for (y = 1;y < 8;y += 2)
             {
-                Bezova bezova = new Bezova();
-                addObject(bezova,x,y);
+                Beige beige = new Beige();
+                addObject(beige,x,y);
             }
         }
         
-        setPaintOrder(Figurky.class,Policka.class);
+        setPaintOrder(ChessPiece.class,Tile.class);
         
         //pociatocna pozicia
         start();
@@ -69,153 +69,153 @@ public class Chessboard extends World
     private void start()
     {
         //figury
-        BielyKral bk = new BielyKral();
-        BielaDama bd = new BielaDama();
-        BielyStrelec bs1 = new BielyStrelec();
-        BielyStrelec bs2 = new BielyStrelec();
-        BielyJazdec bj1 = new BielyJazdec();
-        BielyJazdec bj2 = new BielyJazdec();
-        BielaVeza bv1 = new BielaVeza();
-        BielaVeza bv2 = new BielaVeza();
-        BlackKing ck = new BlackKing();
-        CiernaDama cd = new CiernaDama();
-        BlackBishop cs1 = new BlackBishop();
-        BlackBishop cs2 = new BlackBishop();
-        CiernyJazdec cj1 = new CiernyJazdec();
-        CiernyJazdec cj2 = new CiernyJazdec();
-        CiernaVeza cv1 = new CiernaVeza();
-        CiernaVeza cv2 = new CiernaVeza();
+        WhiteKing wk = new WhiteKing();
+        WhiteQueen wq = new WhiteQueen();
+        WhiteBishop wb1 = new WhiteBishop();
+        WhiteBishop wb2 = new WhiteBishop();
+        WhiteKnight wk1 = new WhiteKnight();
+        WhiteKnight wk2 = new WhiteKnight();
+        WhiteRook wr1 = new WhiteRook();
+        WhiteRook wr2 = new WhiteRook();
+        BlackKing bk = new BlackKing();
+        BlackQueen bq = new BlackQueen();
+        BlackBishop bb1 = new BlackBishop();
+        BlackBishop bb2 = new BlackBishop();
+        BlackKnight bk1 = new BlackKnight();
+        BlackKnight bk2 = new BlackKnight();
+        BlackRook br1 = new BlackRook();
+        BlackRook br2 = new BlackRook();
         
         //krali
-        addObject(bk,4,7);
-        addObject(ck,4,0);
+        addObject(wk,4,7);
+        addObject(bk,4,0);
         
         //damy
-        addObject(bd,3,7);
-        addObject(cd,3,0);
+        addObject(wq,3,7);
+        addObject(bq,3,0);
         
         //strelci
-        addObject(bs1,2,7);
-        addObject(bs2,5,7);
-        addObject(cs1,5,0);
-        addObject(cs2,2,0);
+        addObject(wb1,2,7);
+        addObject(wb2,5,7);
+        addObject(bb1,5,0);
+        addObject(bb2,2,0);
         
         //jazdci
-        addObject(bj1,1,7);
-        addObject(bj2,6,7);
-        addObject(cj1,6,0);
-        addObject(cj2,1,0);
+        addObject(wk1,1,7);
+        addObject(wk2,6,7);
+        addObject(bk1,6,0);
+        addObject(bk2,1,0);
         
         //veze
-        addObject(bv1,0,7);
-        addObject(bv2,7,7);
-        addObject(cv1,7,0);
-        addObject(cv2,0,0);
+        addObject(wr1,0,7);
+        addObject(wr2,7,7);
+        addObject(br1,7,0);
+        addObject(br2,0,0);
         
         //pesiaci
         for (int i = 0;i < 8;i++)
         {
-            BielyPesiak bp = new BielyPesiak();
-            addObject(bp,i,6);
+            WhitePawn wp = new WhitePawn();
+            addObject(wp,i,6);
         }
         for (int i = 7;i >= 0;i--)
         {
-            BlackPawn cp = new BlackPawn();
-            addObject(cp,i,1);
+            BlackPawn bp = new BlackPawn();
+            addObject(bp,i,1);
         }
     }
     
-    private void zmena()
+    private void change()
     {
-        if (tahy != tahy_kont)
+        if (move != turn)
         {
             Greenfoot.delay(30);
             
-            int bKrali = getObjects(BielyKral.class).size();
-            for (int i = 0;i < bKrali;i++)
+            int bKingi = getObjects(WhiteKing.class).size();
+            for (int i = 0;i < bKingi;i++)
             {
-                BielyKral obj = getObjects(BielyKral.class).get(i);
+                WhiteKing obj = getObjects(WhiteKing.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int bDamy = getObjects(BielaDama.class).size();
-            for (int i = 0;i < bDamy;i++)
+            int wQueeni = getObjects(WhiteQueen.class).size();
+            for (int i = 0;i < wQueeni;i++)
             {
-                BielaDama obj = getObjects(BielaDama.class).get(i);
+                WhiteQueen obj = getObjects(WhiteQueen.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int bStrelci = getObjects(BielyStrelec.class).size();
-            for (int i = 0;i < bStrelci;i++)
+            int wBishopi = getObjects(WhiteBishop.class).size();
+            for (int i = 0;i < wBishopi;i++)
             {
-                BielyStrelec obj = getObjects(BielyStrelec.class).get(i);
+                WhiteBishop obj = getObjects(WhiteBishop.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int bJazdci = getObjects(BielyJazdec.class).size();
-            for (int i = 0;i < bJazdci;i++)
+            int wKnighti = getObjects(WhiteKnight.class).size();
+            for (int i = 0;i < wKnighti;i++)
             {
-                BielyJazdec obj = getObjects(BielyJazdec.class).get(i);
+                WhiteKnight obj = getObjects(WhiteKnight.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int bVeze = getObjects(BielaVeza.class).size();
-            for (int i = 0;i < bVeze;i++)
+            int wRooki = getObjects(WhiteRook.class).size();
+            for (int i = 0;i < wRooki;i++)
             {
-                BielaVeza obj = getObjects(BielaVeza.class).get(i);
+                WhiteRook obj = getObjects(WhiteRook.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
 
-            int bPesiaci = getObjects(BielyPesiak.class).size();
-            for (int i = 0;i < bPesiaci;i++)
+            int wPawni = getObjects(WhitePawn.class).size();
+            for (int i = 0;i < wPawni;i++)
             {
-                BielyPesiak obj = getObjects(BielyPesiak.class).get(i);
+                WhitePawn obj = getObjects(WhitePawn.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cKrali = getObjects(BlackKing.class).size();
-            for (int i = 0;i < cKrali;i++)
+            int bKingi = getObjects(BlackKing.class).size();
+            for (int i = 0;i < bKingi;i++)
             {
                 BlackKing obj = getObjects(BlackKing.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cDamy = getObjects(CiernaDama.class).size();
-            for (int i = 0;i < cDamy;i++)
+            int bQueeni = getObjects(BlackQueen.class).size();
+            for (int i = 0;i < bQueeni;i++)
             {
-                CiernaDama obj = getObjects(CiernaDama.class).get(i);
+                BlackQueen obj = getObjects(BlackQueen.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cStrelci = getObjects(BlackBishop.class).size();
-            for (int i = 0;i < cStrelci;i++)
+            int bBishopi = getObjects(BlackBishop.class).size();
+            for (int i = 0;i < bBishopi;i++)
             {
                 BlackBishop obj = getObjects(BlackBishop.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cJazdci = getObjects(CiernyJazdec.class).size();
-            for (int i = 0;i < cJazdci;i++)
+            int bKnighti = getObjects(BlackKnight.class).size();
+            for (int i = 0;i < bKnighti;i++)
             {
-                CiernyJazdec obj = getObjects(CiernyJazdec.class).get(i);
+                BlackKnight obj = getObjects(BlackKnight.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cVeze = getObjects(CiernaVeza.class).size();
-            for (int i = 0;i < cVeze;i++)
+            int bRooki = getObjects(BlackRook.class).size();
+            for (int i = 0;i < bRooki;i++)
             {
-                CiernaVeza obj = getObjects(CiernaVeza.class).get(i);
+                BlackRook obj = getObjects(BlackRook.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cPesiaci = getObjects(BlackPawn.class).size();
-            for (int i = 0;i < cPesiaci;i++)
+            int bPawni = getObjects(BlackPawn.class).size();
+            for (int i = 0;i < bPawni;i++)
             {
                 BlackPawn obj = getObjects(BlackPawn.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            tahy_kont = tahy;
+            turn = move;
         }
     }
 }

@@ -7,21 +7,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class BlackKing extends Black
 {
-    int pocetPohybov = 0;
+    int moveCount = 0;
     
     public void act() 
     {
-        Chessboard sachovnica = (Chessboard)getWorld();
-        if (sachovnica.tahy % 2 == 0)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (chessboard.move % 2 == 0)
         {
-            vyber();
-            pohyb();
-            zmenaStavu();
-            vybytie();
+            select();
+            move();
+            changeStatus();
+            capture();
         }
     }
     
-    private void pohyb()
+    private void move()
     {
         if (ready)
         {
@@ -30,44 +30,44 @@ public class BlackKing extends Black
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                int vzdX = Math.abs(x - this.getX());
-                int vzdY = Math.abs(y - this.getY());
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
-                boolean prazdne = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
                 
-                if (prazdne)
+                if (empty)
                 {
-                    if (vzdX <= 1 && vzdY <= 1)
+                    if (absDiffX <= 1 && absDiffY <= 1)
                     {
-                        presun(x,y);
-                        pocetPohybov++;
+                        move(x,y);
+                        moveCount++;
                     }
-                    else if (pocetPohybov == 0)   //rosada
+                    else if (moveCount == 0)   //rosada
                     {
-                        Chessboard sachovnica = (Chessboard)getWorld();
+                        Chessboard chessboard = (Chessboard)getWorld();
                         if (x == 1 && y == 7)
                         {
-                            if (sachovnica.getObjectsAt(1,7,Figurky.class).isEmpty() && sachovnica.getObjectsAt(2,7,Figurky.class).isEmpty())
+                            if (chessboard.getObjectsAt(1,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(2,7,ChessPiece.class).isEmpty())
                             {
-                                CiernaVeza cv = sachovnica.getObjects(CiernaVeza.class).get(0);
-                                if (cv.pocetPohybov == 0)
+                                BlackRook br = chessboard.getObjects(BlackRook.class).get(0);
+                                if (br.moveCount == 0)
                                 {
-                                    presun(x,y);
-                                    cv.setLocation(2,7);
+                                    move(x,y);
+                                    br.setLocation(2,7);
                                 }
                             }
                         }
                         else if (x == 5 && y == 7)
                         {
-                            if (sachovnica.getObjectsAt(4,7,Figurky.class).isEmpty() && sachovnica.getObjectsAt(5,7,Figurky.class).isEmpty() && sachovnica.getObjectsAt(6,7,Figurky.class).isEmpty())
+                            if (chessboard.getObjectsAt(4,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(5,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(6,7,ChessPiece.class).isEmpty())
                             {
-                                CiernaVeza cv = sachovnica.getObjects(CiernaVeza.class).get(1);
-                                if (cv.pocetPohybov == 0)
+                                BlackRook br = chessboard.getObjects(BlackRook.class).get(1);
+                                if (br.moveCount == 0)
                                 {
-                                    presun(x,y);
-                                    pocetPohybov++;
-                                    cv.setLocation(4,7);
-                                    cv.pocetPohybov++;
+                                    move(x,y);
+                                    moveCount++;
+                                    br.setLocation(4,7);
+                                    br.moveCount++;
                                 }
                             }
                         }
