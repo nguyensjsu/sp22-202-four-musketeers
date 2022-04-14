@@ -5,23 +5,23 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class BielyPesiak extends Biely
+public class WhitePawn extends White
 {
-    int krok_dva;
+    int stepTwo;
     
     public void act() 
     {
-        Sachovnica sachovnica = (Sachovnica)getWorld();
-        if (sachovnica.tahy % 2 == 1)
+        ChessBoard chessBoard = (ChessBoard)getWorld();
+        if (chessBoard.move % 2 == 1)
         {
-            vyber();
-            pohyb();
-            zmenaStavu();
-            vybytie();
+            select();
+            move();
+            changeStatus();
+            acquire();
         }
     }
     
-    private void pohyb()
+    private void move()
     {
         if (ready)
         {
@@ -30,47 +30,47 @@ public class BielyPesiak extends Biely
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                boolean prazdneF = getWorld().getObjectsAt(x,y,Figurky.class).isEmpty();
-                boolean prazdneB = getWorld().getObjectsAt(x,y,Biely.class).isEmpty();
+                boolean emptyF = getWorld().getObjectsAt(x,y,Piece.class).isEmpty();
+                boolean emptyB = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
-                if (prazdneF)
+                if (emptyF)
                 {
                     if (this.getY() == 6)
                     {
                         if (x == this.getX() && y == this.getY() - 1)
                         {
-                            presun(x,y);
+                            move(x,y);
                         }
                         else if (x == this.getX() && y == this.getY() - 2)
                         {
-                            Sachovnica sachovnica = (Sachovnica)getWorld();
-                            krok_dva = sachovnica.tahy;
-                            presun(x,y);
+                            ChessBoard chessBoard = (ChessBoard)getWorld();
+                            stepTwo = chessBoard.move;
+                            move(x,y);
                         }
                     }
                     else if (x == this.getX() && y == this.getY() - 1)
                     {
-                        presun(x,y);
+                        move(x,y);
                     }
                     else if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
                     {
-                        Sachovnica sachovnica = (Sachovnica)getWorld();
-                        if (sachovnica.getObjectsAt(x,y + 1,CiernyPesiak.class).size() != 0)
+                        ChessBoard chessBoard = (ChessBoard)getWorld();
+                        if (chessBoard.getObjectsAt(x,y + 1,BlackPawn.class).size() != 0)
                         {
-                            CiernyPesiak cPesiak = sachovnica.getObjectsAt(x,y + 1,CiernyPesiak.class).get(0);
-                            if (cPesiak.krok_dva == sachovnica.tahy - 1)
+                            BlackPawn blackPawn = chessBoard.getObjectsAt(x,y + 1,BlackPawn.class).get(0);
+                            if (blackPawn.stepTwo == chessBoard.move - 1)
                             {
-                                presun(x,y);
-                                sachovnica.removeObject(cPesiak);
+                                move(x,y);
+                                chessBoard.removeObject(blackPawn);
                             }
                         }
                     }
                 }
-                else if (prazdneB)
+                else if (emptyB)
                 {
                     if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
                     {
-                        presun(x,y);
+                        move(x,y);
                     }
                 }
                 
