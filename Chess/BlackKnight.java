@@ -9,7 +9,7 @@ public class BlackKnight extends Black
 {
     public void act() 
     {
-        ChessBoard chessboard = (ChessBoard)getWorld();
+        Chessboard chessboard = (Chessboard)getWorld();
         if (chessboard.move % 2 == 0)
         {
             select();

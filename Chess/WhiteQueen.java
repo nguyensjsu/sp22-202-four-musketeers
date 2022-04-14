@@ -5,17 +5,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class BielaDama extends Biely
+public class WhiteQueen extends White
 {
     public void act() 
     {
-        Sachovnica sachovnica = (Sachovnica)getWorld();
-        if (sachovnica.tahy % 2 == 1)
+        ChessBoard chessBoard = (ChessBoard)getWorld();
+        if (chessBoard.move % 2 == 1)
         {
-            vyber();
+            select();
             pohyb();
-            zmenaStavu();
-            vybytie();
+            changeStatus();
+            capture();
         }
     }
 
@@ -28,138 +28,138 @@ public class BielaDama extends Biely
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
 
-                int vzdX = Math.abs(x - this.getX());
-                int vzdY = Math.abs(y - this.getY());
+                int absX = Math.abs(x - this.getX());
+                int absY = Math.abs(y - this.getY());
 
-                boolean prazdne = getWorld().getObjectsAt(x,y,Biely.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
 
-                if (prazdne)
+                if (empty)
                 {
                     if (x == this.getX())
                     {
-                        int rozdiel = y - this.getY();
+                        int diff = y - this.getY();
 
-                        if (rozdiel < 0)
+                        if (diff < 0)
                         {
-                            rozdiel = Math.abs(rozdiel);
-                            for (int i = 1;i < rozdiel;i++)
+                            diff = Math.abs(diff);
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(x,this.getY() - i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
                         else
                         {
-                            rozdiel = Math.abs(rozdiel);
-                            for (int i = 1;i < rozdiel;i++)
+                            diff = Math.abs(diff);
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(x,this.getY() + i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        if (!obsadene)
+                        if (!occupied)
                         {
-                            presun(x,y);
+                            move(x,y);
                         }
                     }
                     else if (y == this.getY())
                     {
-                        int rozdiel = x - this.getX();
+                        int diff = x - this.getX();
 
-                        if (rozdiel < 0)
+                        if (diff < 0)
                         {
-                            rozdiel = Math.abs(rozdiel);
-                            for (int i = 1;i < rozdiel;i++)
+                            diff = Math.abs(diff);
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,y,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
                         else
                         {
-                            rozdiel = Math.abs(rozdiel);
-                            for (int i = 1;i < rozdiel;i++)
+                            diff = Math.abs(diff);
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,y,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        if (!obsadene)
+                        if (!occupied)
                         {
-                            presun(x,y);
+                            move(x,y);
                         }
                     }
-                    else if (vzdX == vzdY)
+                    else if (absX == absY)
                     {
-                        int rozdielX = x - this.getX();
-                        int rozdielY = y - this.getY();
-                        int rozdiel = Math.abs(rozdielX);
+                        int diffX = x - this.getX();
+                        int diffY = y - this.getY();
+                        int diff = Math.abs(diffX);
 
-                        if (rozdielX < 0 && rozdielY < 0)
+                        if (diffX < 0 && diffY < 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX < 0 && rozdielY > 0)
+                        else if (diffX < 0 && diffY > 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX > 0 && rozdielY < 0)
+                        else if (diffX > 0 && diffY < 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        else if (rozdielX > 0 && rozdielY > 0)
+                        else if (diffX > 0 && diffY > 0)
                         {
-                            for (int i = 1;i < rozdiel;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,Figurky.class).isEmpty())
                                 {
-                                    obsadene = true;
+                                    occupied = true;
                                     break;
                                 }
                             }
                         }
-                        if (!obsadene)
+                        if (!occupied)
                         {
-                            presun(x,y);
+                            move(x,y);
                         }
                     }
                 }
 
                 ready = false;
-                obsadene = false;
+                occupied = false;
             }
         }
     }

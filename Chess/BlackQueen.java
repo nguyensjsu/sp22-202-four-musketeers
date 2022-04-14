@@ -9,8 +9,8 @@ public class BlackQueen extends Black
 {
     public void act() 
     {
-        ChessBoard chessBoard = (ChessBoard)getWorld();
-        if (chessboard.move % 2 == 0)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (Chessboard.move % 2 == 0)
         {
             select();
             move();

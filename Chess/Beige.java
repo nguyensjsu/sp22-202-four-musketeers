@@ -2,13 +2,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
  * @author Pavol Biacko
- * @version date: 12.5.2020
+ * @version date: 10.5.2020
  */
 
-public class Vyber extends Policka
+public class Beige extends ChessPiece
 {
     public void act() 
     {
         
-    }
+    }    
 }

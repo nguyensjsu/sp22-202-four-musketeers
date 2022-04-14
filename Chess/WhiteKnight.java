@@ -5,17 +5,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class BielyJazdec extends Biely
+public class WhiteKnight extends White
 {
     public void act() 
     {
-        Sachovnica sachovnica = (Sachovnica)getWorld();
-        if (sachovnica.tahy % 2 == 1)
+        ChessBoard chessBoard = (ChessBoard)getWorld();
+        if (chessBoard.move % 2 == 1)
         {
-            vyber();
+            select();
             pohyb();
-            zmenaStavu();
-            vybytie();
+            changeStatus();
+            capture();
         }
     }
     
@@ -37,9 +37,9 @@ public class BielyJazdec extends Biely
                 boolean policko7 = (x == this.getX() + 2 && y == this.getY() - 1);
                 boolean policko8 = (x == this.getX() + 2 && y == this.getY() + 1);
                 
-                boolean prazdne = getWorld().getObjectsAt(x,y,Biely.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
-                if (prazdne)
+                if (empty)
                 {
                     if (policko1 || policko2 || policko3 || policko4 || policko5 || policko6 || policko7 || policko8)
                     {

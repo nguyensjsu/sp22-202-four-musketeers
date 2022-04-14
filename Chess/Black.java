@@ -5,14 +5,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class Black extends Figurky
+public class Black extends ChessPiece
 {
-    protected void vybytie()
+    protected void capture()
     {
-        if (this.isTouching(Biely.class))
+        if (this.isTouching(White.class))
         {
-            Biely biely = getWorld().getObjectsAt(this.getX(),this.getY(),Biely.class).get(0);
-            getWorld().removeObject(biely);
+            White white = getWorld().getObjectsAt(this.getX(),this.getY(),White.class).get(0);
+            getWorld().removeObject(white);
         }
     }
 }

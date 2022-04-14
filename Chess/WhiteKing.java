@@ -17,7 +17,7 @@ public class WhiteKing extends White
             select();
             move();
             changeStatus();
-            acquire();
+            capture();
         }
     }
     
