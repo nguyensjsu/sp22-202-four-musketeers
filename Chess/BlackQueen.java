@@ -9,8 +9,8 @@ public class BlackQueen extends Black
 {
     public void act() 
     {
-        Chessboard chessboard = (Chessboard)getWorld();
-        if (Chessboard.move % 2 == 0)
+        Chessboard chessBoard = (Chessboard)getWorld();
+        if (chessBoard.move % 2 == 0)
         {
             select();
             move();
@@ -28,8 +28,8 @@ public class BlackQueen extends Black
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                int absDifferenceX = Math.abs(x - this.getX());
-                int absDifferenceY = Math.abs(y - this.getY());
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
                 boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
                 
@@ -101,7 +101,7 @@ public class BlackQueen extends Black
                             move(x,y);
                         }
                     }
-                    else if (absDifferenceX == absDifferenceY)
+                    else if (absDiffX == absDiffY)
                     {
                         int differenceX = x - this.getX();
                         int differenceY = y - this.getY();
