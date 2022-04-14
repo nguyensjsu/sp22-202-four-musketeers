@@ -37,13 +37,13 @@ public class WhiteBishop extends White
                 {
                     if (absDiffX == absDiffY)
                     {
-                        int differenceX = x - this.getX();
-                        int differenceY = y - this.getY();
-                        int difference = Math.abs(differenceX);
+                        int diffX = x - this.getX();
+                        int diffY = y - this.getY();
+                        int diff = Math.abs(diffX);
                         
-                        if (differenceX < 0 && differenceY < 0)
+                        if (diffX < 0 && diffY < 0)
                         {
-                            for (int i = 1;i < difference;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
@@ -52,9 +52,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (differenceX < 0 && differenceY > 0)
+                        else if (diffX < 0 && diffY > 0)
                         {
-                            for (int i = 1;i < difference;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
@@ -63,9 +63,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (differenceX > 0 && differenceY < 0)
+                        else if (diffX > 0 && diffY < 0)
                         {
-                            for (int i = 1;i < difference;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
@@ -74,9 +74,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (differenceX > 0 && differenceY > 0)
+                        else if (diffX > 0 && diffY > 0)
                         {
-                            for (int i = 1;i < difference;i++)
+                            for (int i = 1;i < diff;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {

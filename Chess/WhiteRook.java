@@ -36,12 +36,12 @@ public class WhiteRook extends White
                 {
                     if (x == this.getX())
                     {
-                        int difference = y - this.getY();
+                        int diffY = y - this.getY();
                         
-                        if (difference < 0)
+                        if (diffY < 0)
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            diffY = Math.abs(diffY);
+                            for (int i = 1;i < diffY;i++)
                             {
                                 if (!getWorld().getObjectsAt(x,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
@@ -52,8 +52,8 @@ public class WhiteRook extends White
                         }
                         else
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            diffY = Math.abs(diffY);
+                            for (int i = 1;i < diffY;i++)
                             {
                                 if (!getWorld().getObjectsAt(x,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
@@ -70,12 +70,12 @@ public class WhiteRook extends White
                     }
                     else if (y == this.getY())
                     {
-                        int difference = x - this.getX();
+                        int diffY = x - this.getX();
                         
-                        if (difference < 0)
+                        if (diffY < 0)
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            diffY = Math.abs(diffY);
+                            for (int i = 1;i < diffY;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,y,ChessPiece.class).isEmpty())
                                 {
@@ -86,8 +86,8 @@ public class WhiteRook extends White
                         }
                         else
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            diffY = Math.abs(diffY);
+                            for (int i = 1;i < diffY;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,y,ChessPiece.class).isEmpty())
                                 {
