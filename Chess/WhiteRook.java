@@ -12,12 +12,12 @@ public class WhiteRook extends White
     public void act() 
     {
         ChessBoard chessBoard = (ChessBoard)getWorld();
-        if (chessBoard.tahy % 2 == 1)
+        if (chessBoard.move % 2 == 1)
         {
             select();
             move();
             changeStatus();
-            acquire();
+            capture();
         }
     }
     

@@ -9,13 +9,13 @@ public class WhiteBishop extends White
 {
     public void act() 
     {
-        ChessBoard chessBoard = (ChessBoard)getWorld();
+        Chessboard chessBoard = (Chessboard)getWorld();
         if (chessBoard.move % 2 == 1)
         {
             select();
             move();
             changeStatus();
-            acquire();
+            capture();
         }
     }
     

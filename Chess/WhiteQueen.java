@@ -13,13 +13,13 @@ public class WhiteQueen extends White
         if (chessBoard.move % 2 == 1)
         {
             select();
-            pohyb();
+            move();
             changeStatus();
             capture();
         }
     }
 
-    private void pohyb()
+    private void move()
     {
         if (ready)
         {

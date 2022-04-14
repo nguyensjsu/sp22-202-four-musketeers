@@ -13,7 +13,7 @@ public class Chessboard extends World
         priprava();
     }
     
-    int tahy = 1;
+    int move = 1;
     int tahy_kont = 1;
     
     public void act()

@@ -19,7 +19,7 @@ public class WhiteKnight extends White
         }
     }
     
-    private void pohyb()
+    private void move()
     {
         if (ready)
         {
