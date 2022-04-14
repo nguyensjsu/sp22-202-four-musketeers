@@ -28,20 +28,20 @@ public class BlackKnight extends Black
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                boolean square1 = (x == this.getX() - 2 && y == this.getY() - 1);
-                boolean square2 = (x == this.getX() - 2 && y == this.getY() + 1);
-                boolean square3 = (x == this.getX() - 1 && y == this.getY() - 2);
-                boolean square4 = (x == this.getX() - 1 && y == this.getY() + 2);
-                boolean square5 = (x == this.getX() + 1 && y == this.getY() - 2);
-                boolean square6 = (x == this.getX() + 1 && y == this.getY() + 2);
-                boolean square7 = (x == this.getX() + 2 && y == this.getY() - 1);
-                boolean square8 = (x == this.getX() + 2 && y == this.getY() + 1);
+                boolean tile1 = (x == this.getX() - 2 && y == this.getY() - 1);
+                boolean tile2 = (x == this.getX() - 2 && y == this.getY() + 1);
+                boolean tile3 = (x == this.getX() - 1 && y == this.getY() - 2);
+                boolean tile4 = (x == this.getX() - 1 && y == this.getY() + 2);
+                boolean tile5 = (x == this.getX() + 1 && y == this.getY() - 2);
+                boolean tile6 = (x == this.getX() + 1 && y == this.getY() + 2);
+                boolean tile7 = (x == this.getX() + 2 && y == this.getY() - 1);
+                boolean tile8 = (x == this.getX() + 2 && y == this.getY() + 1);
                 
                 boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
                 
                 if (empty)
                 {
-                    if (square1 || square2 || square3 || square4 || square5 || square6 || square7 || square8)
+                    if (tile1 || tile2 || tile3 || tile4 || tile5 || tile6 || tile7 || tile8)
                     {
                         move(x,y);
                     }

@@ -28,14 +28,14 @@ public class WhiteBishop extends White
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                int absDifferenceX = Math.abs(x - this.getX());
-                int absDifferenceY = Math.abs(y - this.getY());
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
                 boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
                 if (empty)
                 {
-                    if (absDifferenceX == absDifferenceY)
+                    if (absDiffX == absDiffY)
                     {
                         int differenceX = x - this.getX();
                         int differenceY = y - this.getY();
@@ -45,7 +45,7 @@ public class WhiteBishop extends White
                         {
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -56,7 +56,7 @@ public class WhiteBishop extends White
                         {
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -67,7 +67,7 @@ public class WhiteBishop extends White
                         {
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -78,7 +78,7 @@ public class WhiteBishop extends White
                         {
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;

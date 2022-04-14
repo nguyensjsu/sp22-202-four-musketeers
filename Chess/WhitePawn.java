@@ -17,7 +17,7 @@ public class WhitePawn extends White
             select();
             move();
             changeStatus();
-            acquire();
+            capture();
         }
     }
     
@@ -30,7 +30,7 @@ public class WhitePawn extends White
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                boolean emptyF = getWorld().getObjectsAt(x,y,Piece.class).isEmpty();
+                boolean emptyF = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
                 boolean emptyB = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
                 if (emptyF)

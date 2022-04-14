@@ -11,8 +11,8 @@ public class WhiteRook extends White
     
     public void act() 
     {
-        ChessBoard chessBoard = (ChessBoard)getWorld();
-        if (chessBoard.move % 2 == 1)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (chessboard.move % 2 == 1)
         {
             select();
             move();
@@ -43,7 +43,7 @@ public class WhiteRook extends White
                             difference = Math.abs(difference);
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(x,this.getY() - i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(x,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -55,7 +55,7 @@ public class WhiteRook extends White
                             difference = Math.abs(difference);
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(x,this.getY() + i,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(x,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -77,7 +77,7 @@ public class WhiteRook extends White
                             difference = Math.abs(difference);
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,y,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() - i,y,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;
@@ -89,7 +89,7 @@ public class WhiteRook extends White
                             difference = Math.abs(difference);
                             for (int i = 1;i < difference;i++)
                             {
-                                if (!getWorld().getObjectsAt(this.getX() + i,y,Piece.class).isEmpty())
+                                if (!getWorld().getObjectsAt(this.getX() + i,y,ChessPiece.class).isEmpty())
                                 {
                                     occupied = true;
                                     break;

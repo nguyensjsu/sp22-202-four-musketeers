@@ -13,7 +13,7 @@ public class WhiteKnight extends White
         if (chessBoard.move % 2 == 1)
         {
             select();
-            pohyb();
+            move();
             changeStatus();
             capture();
         }
@@ -28,22 +28,22 @@ public class WhiteKnight extends White
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                boolean policko1 = (x == this.getX() - 2 && y == this.getY() - 1);
-                boolean policko2 = (x == this.getX() - 2 && y == this.getY() + 1);
-                boolean policko3 = (x == this.getX() - 1 && y == this.getY() - 2);
-                boolean policko4 = (x == this.getX() - 1 && y == this.getY() + 2);
-                boolean policko5 = (x == this.getX() + 1 && y == this.getY() - 2);
-                boolean policko6 = (x == this.getX() + 1 && y == this.getY() + 2);
-                boolean policko7 = (x == this.getX() + 2 && y == this.getY() - 1);
-                boolean policko8 = (x == this.getX() + 2 && y == this.getY() + 1);
+                boolean tile1 = (x == this.getX() - 2 && y == this.getY() - 1);
+                boolean tile2 = (x == this.getX() - 2 && y == this.getY() + 1);
+                boolean tile3 = (x == this.getX() - 1 && y == this.getY() - 2);
+                boolean tile4 = (x == this.getX() - 1 && y == this.getY() + 2);
+                boolean tile5 = (x == this.getX() + 1 && y == this.getY() - 2);
+                boolean tile6 = (x == this.getX() + 1 && y == this.getY() + 2);
+                boolean tile7 = (x == this.getX() + 2 && y == this.getY() - 1);
+                boolean tile8 = (x == this.getX() + 2 && y == this.getY() + 1);
                 
                 boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
                 if (empty)
                 {
-                    if (policko1 || policko2 || policko3 || policko4 || policko5 || policko6 || policko7 || policko8)
+                    if (tile1 || tile2 || tile3 || tile4 || tile5 || tile6 || tile7 || tile8)
                     {
-                        presun(x,y);
+                        move(x,y);
                     }
                 }
                 

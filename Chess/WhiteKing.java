@@ -11,8 +11,8 @@ public class WhiteKing extends White
     
     public void act() 
     {
-        ChessBoard chessBoard = (ChessBoard)getWorld();
-        if (chessBoard.move % 2 == 1)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (chessboard.move % 2 == 1)
         {
             select();
             move();
@@ -30,26 +30,26 @@ public class WhiteKing extends White
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                int absDifferenceX = Math.abs(x - this.getX());
-                int absDifferenceY = Math.abs(y - this.getY());
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
-                boolean emtpy = getWorld().getObjectsAt(x,y,White.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
                 
-                if (emtpy)
+                if (empty)
                 {
-                    if (absDifferenceX <= 1 && absDifferenceY <= 1)
+                    if (absDiffX <= 1 && absDiffY <= 1)
                     {
                         move(x,y);
                         moveCount++;
                     }
                     else if (moveCount == 0)   //castling
                     {
-                        ChessBoard chessBoard = (ChessBoard)getWorld();
+                        Chessboard chessboard = (Chessboard)getWorld();
                         if (x == 2 && y == 7)
                         {
-                            if (chessBoard.getObjectsAt(1,7,Piece.class).isEmpty() && chessBoard.getObjectsAt(2,7,Piece.class).isEmpty() && chessBoard.getObjectsAt(3,7,Piece.class).isEmpty())
+                            if (chessboard.getObjectsAt(1,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(2,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(3,7,ChessPiece.class).isEmpty())
                             {
-                                WhiteRook whiteRook = chessBoard.getObjects(WhiteRook.class).get(0);
+                                WhiteRook whiteRook = chessboard.getObjects(WhiteRook.class).get(0);
                                 if (whiteRook.moveCount == 0)
                                 {
                                     move(x,y);
@@ -59,9 +59,9 @@ public class WhiteKing extends White
                         }
                         else if (x == 6 && y == 7)
                         {
-                            if (chessBoard.getObjectsAt(5,7,Piece.class).isEmpty() && chessBoard.getObjectsAt(6,7,Piece.class).isEmpty())
+                            if (chessboard.getObjectsAt(5,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(6,7,ChessPiece.class).isEmpty())
                             {
-                                WhiteRook whiteRook = chessBoard.getObjects(WhiteRook.class).get(1);
+                                WhiteRook whiteRook = chessboard.getObjects(WhiteRook.class).get(1);
                                 if (whiteRook.moveCount == 0)
                                 {
                                     move(x,y);
