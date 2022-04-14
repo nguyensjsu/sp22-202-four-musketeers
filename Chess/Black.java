@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class Cierny extends Figurky
+public class Black extends Figurky
 {
     protected void vybytie()
     {

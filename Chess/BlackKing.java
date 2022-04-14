@@ -5,13 +5,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class CiernyKral extends Cierny
+public class BlackKing extends Black
 {
     int pocetPohybov = 0;
     
     public void act() 
     {
-        Sachovnica sachovnica = (Sachovnica)getWorld();
+        Chessboard sachovnica = (Chessboard)getWorld();
         if (sachovnica.tahy % 2 == 0)
         {
             vyber();
@@ -33,7 +33,7 @@ public class CiernyKral extends Cierny
                 int vzdX = Math.abs(x - this.getX());
                 int vzdY = Math.abs(y - this.getY());
                 
-                boolean prazdne = getWorld().getObjectsAt(x,y,Cierny.class).isEmpty();
+                boolean prazdne = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
                 
                 if (prazdne)
                 {
@@ -44,7 +44,7 @@ public class CiernyKral extends Cierny
                     }
                     else if (pocetPohybov == 0)   //rosada
                     {
-                        Sachovnica sachovnica = (Sachovnica)getWorld();
+                        Chessboard sachovnica = (Chessboard)getWorld();
                         if (x == 1 && y == 7)
                         {
                             if (sachovnica.getObjectsAt(1,7,Figurky.class).isEmpty() && sachovnica.getObjectsAt(2,7,Figurky.class).isEmpty())

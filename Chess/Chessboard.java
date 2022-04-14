@@ -5,9 +5,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-public class Sachovnica extends World
+public class Chessboard extends World
 {
-    public Sachovnica()
+    public Chessboard()
     {    
         super(8,8,100);
         priprava();
@@ -77,10 +77,10 @@ public class Sachovnica extends World
         BielyJazdec bj2 = new BielyJazdec();
         BielaVeza bv1 = new BielaVeza();
         BielaVeza bv2 = new BielaVeza();
-        CiernyKral ck = new CiernyKral();
+        BlackKing ck = new BlackKing();
         CiernaDama cd = new CiernaDama();
-        CiernyStrelec cs1 = new CiernyStrelec();
-        CiernyStrelec cs2 = new CiernyStrelec();
+        BlackBishop cs1 = new BlackBishop();
+        BlackBishop cs2 = new BlackBishop();
         CiernyJazdec cj1 = new CiernyJazdec();
         CiernyJazdec cj2 = new CiernyJazdec();
         CiernaVeza cv1 = new CiernaVeza();
@@ -120,7 +120,7 @@ public class Sachovnica extends World
         }
         for (int i = 7;i >= 0;i--)
         {
-            CiernyPesiak cp = new CiernyPesiak();
+            BlackPawn cp = new BlackPawn();
             addObject(cp,i,1);
         }
     }
@@ -173,10 +173,10 @@ public class Sachovnica extends World
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cKrali = getObjects(CiernyKral.class).size();
+            int cKrali = getObjects(BlackKing.class).size();
             for (int i = 0;i < cKrali;i++)
             {
-                CiernyKral obj = getObjects(CiernyKral.class).get(i);
+                BlackKing obj = getObjects(BlackKing.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
@@ -187,10 +187,10 @@ public class Sachovnica extends World
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cStrelci = getObjects(CiernyStrelec.class).size();
+            int cStrelci = getObjects(BlackBishop.class).size();
             for (int i = 0;i < cStrelci;i++)
             {
-                CiernyStrelec obj = getObjects(CiernyStrelec.class).get(i);
+                BlackBishop obj = getObjects(BlackBishop.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
@@ -208,10 +208,10 @@ public class Sachovnica extends World
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
-            int cPesiaci = getObjects(CiernyPesiak.class).size();
+            int cPesiaci = getObjects(BlackPawn.class).size();
             for (int i = 0;i < cPesiaci;i++)
             {
-                CiernyPesiak obj = getObjects(CiernyPesiak.class).get(i);
+                BlackPawn obj = getObjects(BlackPawn.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
             }
             
