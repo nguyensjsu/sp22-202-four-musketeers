@@ -11,7 +11,7 @@ public class BlackRook extends Black
     
     public void act() 
     {
-        ChessBoard chessBoard = (ChessBoard)getWorld();
+        Chessboard chessBoard = (Chessboard)getWorld();
         if (chessBoard.move % 2 == 0)
         {
             select();

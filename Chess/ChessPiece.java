@@ -18,11 +18,11 @@ public class ChessPiece extends Actor
 
         if (Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1)
         {
-            if (getWorld().getObjects(select.class).size() == 0)
+            if (getWorld().getObjects(Select.class).size() == 0)
             {
                 addSelection(x,y);
             }
-            else if (getWorld().getObjectsAt(x,y,select.class).size() == 1)
+            else if (getWorld().getObjectsAt(x,y,Select.class).size() == 1)
             {
                 deleteSelection();
             }
@@ -54,7 +54,7 @@ public class ChessPiece extends Actor
 
     private void deleteSelection()
     {
-        Select select = getWorld().getObjects(select.class).get(0);
+        Select select = getWorld().getObjects(Select.class).get(0);
         getWorld().removeObject(select);
         selected = false;
     }
@@ -62,7 +62,7 @@ public class ChessPiece extends Actor
     protected void move(int x,int y)
     {
         this.setLocation(x,y);
-        ChessBoard chessBoard = (ChessBoard)getWorld();
+        Chessboard chessBoard = (Chessboard)getWorld();
         chessBoard.move++;
     }
 }

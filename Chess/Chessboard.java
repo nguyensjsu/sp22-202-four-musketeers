@@ -131,8 +131,8 @@ public class Chessboard extends World
         {
             Greenfoot.delay(30);
             
-            int bKingi = getObjects(WhiteKing.class).size();
-            for (int i = 0;i < bKingi;i++)
+            int wKingi = getObjects(WhiteKing.class).size();
+            for (int i = 0;i < wKingi;i++)
             {
                 WhiteKing obj = getObjects(WhiteKing.class).get(i);
                 obj.setLocation(7 - obj.getX(),7 - obj.getY());
