@@ -19,6 +19,8 @@ public class WhiteQueen extends White
         }
     }
 
+    // Queen could only move to occupied rows/diagonals (?)
+    // Cannot capture at long distances
     private void move()
     {
         if (ready)
@@ -37,68 +39,31 @@ public class WhiteQueen extends White
                 {
                     if (x == this.getX())
                     {
-                        int difference = y - this.getY();
-
-                        if (difference < 0)
+                        
+                        int mult = (absDiffY < 0) ? -1 : 1;
+                        
+                        for (int i = 1; i < absDiffY;i++)
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            if (!getWorld().getObjectsAt(x,this.getY() + (mult * i),ChessPiece.class).isEmpty())
                             {
-                                if (!getWorld().getObjectsAt(x,this.getY() - i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
+                                occupied = true;
+                                break;
                             }
                         }
-                        else
-                        {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(x,this.getY() + i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!occupied)
-                        {
-                            move(x,y);
-                        }
+                        
                     }
                     else if (y == this.getY())
                     {
-                        int difference = x - this.getX();
-
-                        if (difference < 0)
+                         
+                        int mult = (absDiffX < 0) ? -1 : 1;
+                        
+                        for (int i = 1; i < absDiffX;i++)
                         {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
+                            if (!getWorld().getObjectsAt(x,this.getY() + (mult * i),ChessPiece.class).isEmpty())
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,y,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
+                                occupied = true;
+                                break;
                             }
-                        }
-                        else
-                        {
-                            difference = Math.abs(difference);
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() + i,y,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!occupied)
-                        {
-                            move(x,y);
                         }
                     }
                     else if (absDiffX == absDiffY)
@@ -106,58 +71,31 @@ public class WhiteQueen extends White
                         int differenceX = x - this.getX();
                         int differenceY = y - this.getY();
                         int difference = Math.abs(differenceX);
-
-                        if (differenceX < 0 && differenceY < 0)
+                        
+                        int mult = 1;
+                        
+                        if ((differenceX < 0 && differenceY < 0) ||
+                            (differenceX < 0 && differenceY > 0)) 
                         {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
+                            mult = -1;
                         }
-                        else if (differenceX < 0 && differenceY > 0)
+                        // ((differenceX > 0 && differenceY < 0) ||
+                        // (differenceX > 0 && differenceY > 0))
+                            
+                        for (int i = 1; i < difference;i++)
                         {
-                            for (int i = 1;i < difference;i++)
+                            if (!getWorld().getObjectsAt(this.getX() + (mult * i),this.getY() - i,ChessPiece.class).isEmpty())
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
+                                occupied = true;
+                                break;
                             }
-                        }
-                        else if (differenceX > 0 && differenceY < 0)
-                        {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (differenceX > 0 && differenceY > 0)
-                        {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!occupied)
-                        {
-                            move(x,y);
                         }
                     }
                 }
 
+                        
+                if (!occupied) move(x,y);
+                
                 ready = false;
                 occupied = false;
             }

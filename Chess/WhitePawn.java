@@ -23,6 +23,7 @@ public class WhitePawn extends White
     
     private void move()
     {
+        Chessboard chessBoard = (Chessboard)getWorld();
         if (ready)
         {
             if (Greenfoot.mouseClicked(null))
@@ -43,7 +44,6 @@ public class WhitePawn extends White
                         }
                         else if (x == this.getX() && y == this.getY() - 2)
                         {
-                            Chessboard chessBoard = (Chessboard)getWorld();
                             stepTwo = chessBoard.move;
                             move(x,y);
                         }
@@ -54,7 +54,6 @@ public class WhitePawn extends White
                     }
                     else if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
                     {
-                        Chessboard chessBoard = (Chessboard)getWorld();
                         if (chessBoard.getObjectsAt(x,y + 1,BlackPawn.class).size() != 0)
                         {
                             BlackPawn blackPawn = chessBoard.getObjectsAt(x,y + 1,BlackPawn.class).get(0);
