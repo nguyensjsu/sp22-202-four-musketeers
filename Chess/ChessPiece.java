@@ -11,6 +11,12 @@ public class ChessPiece extends Actor
     boolean ready = false;
     boolean occupied = false;
 
+    protected boolean color; // false for black, true for white 
+
+    public ChessPiece(Boolean color) {this.color = color;}
+    
+    public ChessPiece() {}
+
     protected void select()
     {
         int x = this.getX();
@@ -63,6 +69,17 @@ public class ChessPiece extends Actor
     {
         this.setLocation(x,y);
         Chessboard chessBoard = (Chessboard)getWorld();
+        chessBoard.turn = !chessBoard.turn;
         chessBoard.move++;
     }
+
+    protected void capture()
+    {
+        ChessPiece touchPiece = (ChessPiece) getOneIntersectingObject(ChessPiece.class);
+        if (touchPiece != null && touchPiece.color != this.color)
+        {
+            //ChessPiece capturedPiece = getWorld().getObjectsAt(this.getX(),this.getY(),ChessPiece.class).get(0);
+            getWorld().removeObject(touchPiece);
+        }
+    } 
 }

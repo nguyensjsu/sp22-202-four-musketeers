@@ -1,16 +1,17 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
+public class Bishop extends ChessPiece {
 
-public class WhiteBishop extends White
-{
+    public Bishop(Boolean color) {
+        super(color);
+        if(this.color == false) setImage("black_bishop.png");
+        else setImage("white_bishop.png");
+    }
+
     public void act() 
     {
-        Chessboard chessBoard = (Chessboard)getWorld();
-        if (chessBoard.move % 2 == 1)
+        Chessboard chessboard = (Chessboard)getWorld();
+        if (this.color == chessboard.turn)
         {
             select();
             move();
@@ -18,7 +19,7 @@ public class WhiteBishop extends White
             capture();
         }
     }
-    
+
     private void move()
     {
         if (ready)
@@ -31,19 +32,20 @@ public class WhiteBishop extends White
                 int absDiffX = Math.abs(x - this.getX());
                 int absDiffY = Math.abs(y - this.getY());
                 
-                boolean empty = getWorld().getObjectsAt(x,y,White.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
+                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
                 
-                if (empty)
+                if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //if tile is empty or other color
                 {
                     if (absDiffX == absDiffY)
                     {
-                        int diffX = x - this.getX();
-                        int diffY = y - this.getY();
-                        int diff = Math.abs(diffX);
+                        int differenceX = x - this.getX();
+                        int differenceY = y - this.getY();
+                        int difference = Math.abs(differenceX);
                         
-                        if (diffX < 0 && diffY < 0)
+                        if (differenceX < 0 && differenceY < 0)
                         {
-                            for (int i = 1;i < diff;i++)
+                            for (int i = 1;i < difference;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
@@ -52,9 +54,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (diffX < 0 && diffY > 0)
+                        else if (differenceX < 0 && differenceY > 0)
                         {
-                            for (int i = 1;i < diff;i++)
+                            for (int i = 1;i < difference;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
@@ -63,9 +65,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (diffX > 0 && diffY < 0)
+                        else if (differenceX > 0 && differenceY < 0)
                         {
-                            for (int i = 1;i < diff;i++)
+                            for (int i = 1;i < difference;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
                                 {
@@ -74,9 +76,9 @@ public class WhiteBishop extends White
                                 }
                             }
                         }
-                        else if (diffX > 0 && diffY > 0)
+                        else if (differenceX > 0 && differenceY > 0)
                         {
-                            for (int i = 1;i < diff;i++)
+                            for (int i = 1;i < difference;i++)
                             {
                                 if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
                                 {
