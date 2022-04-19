@@ -1,24 +1,24 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
+public class Queen extends ChessPiece {
 
-public class BlackRook extends Black
-{
-    int moveCount = 0;
-    
+    public Queen(Boolean color){
+        super(color);
+        if(this.color == false) setImage("black_queen.png");
+        else setImage("white_queen.png");
+    }
+
     public void act() 
     {
         Chessboard chessBoard = (Chessboard)getWorld();
-        if (chessBoard.move % 2 == 0)
+        if (this.color == chessBoard.turn)
         {
             select();
             move();
             changeStatus();
             capture();
         }
+        
     }
     
     private void move()
@@ -30,9 +30,13 @@ public class BlackRook extends Black
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
-                boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
+                int absDiffX = Math.abs(x - this.getX());
+                int absDiffY = Math.abs(y - this.getY());
                 
-                if (empty)
+                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
+                
+                
+                if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color)
                 {
                     if (x == this.getX())
                     {
@@ -65,7 +69,6 @@ public class BlackRook extends Black
                         if (!occupied)
                         {
                             move(x,y);
-                            moveCount++;
                         }
                     }
                     else if (y == this.getY())
@@ -99,7 +102,61 @@ public class BlackRook extends Black
                         if (!occupied)
                         {
                             move(x,y);
-                            moveCount++;
+                        }
+                    }
+                    else if (absDiffX == absDiffY)
+                    {
+                        int differenceX = x - this.getX();
+                        int differenceY = y - this.getY();
+                        int difference = Math.abs(differenceX);
+                        
+                        if (differenceX < 0 && differenceY < 0)
+                        {
+                            for (int i = 1;i < difference;i++)
+                            {
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
+                                {
+                                    occupied = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (differenceX < 0 && differenceY > 0)
+                        {
+                            for (int i = 1;i < difference;i++)
+                            {
+                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
+                                {
+                                    occupied = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (differenceX > 0 && differenceY < 0)
+                        {
+                            for (int i = 1;i < difference;i++)
+                            {
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
+                                {
+                                    occupied = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (differenceX > 0 && differenceY > 0)
+                        {
+                            for (int i = 1;i < difference;i++)
+                            {
+                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
+                                {
+                                    occupied = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!occupied)
+                        {
+                            move(x,y);
                         }
                     }
                 }
@@ -108,5 +165,5 @@ public class BlackRook extends Black
                 occupied = false;
             }
         }
-    } 
+    }
 }

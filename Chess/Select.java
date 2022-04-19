@@ -5,7 +5,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 12.5.2020
  */
 
-public class Select extends ChessPiece
+public class Select extends Tile
 {
     public void act() 
     {

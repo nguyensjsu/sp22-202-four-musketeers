@@ -13,8 +13,9 @@ public class Chessboard extends World
         startup();
     }
     
-    int move = 1;
-    int turn = 1;
+    int move = 1; 
+    boolean turn = true; //white turn first (true==white,false==black)
+    boolean swapTurn = turn; 
     
     public void act()
     {
@@ -68,23 +69,28 @@ public class Chessboard extends World
     
     private void start()
     {
-        //figury
-        WhiteKing wk = new WhiteKing();
-        WhiteQueen wq = new WhiteQueen();
-        WhiteBishop wb1 = new WhiteBishop();
-        WhiteBishop wb2 = new WhiteBishop();
-        WhiteKnight wk1 = new WhiteKnight();
-        WhiteKnight wk2 = new WhiteKnight();
-        WhiteRook wr1 = new WhiteRook();
-        WhiteRook wr2 = new WhiteRook();
-        BlackKing bk = new BlackKing();
-        BlackQueen bq = new BlackQueen();
-        BlackBishop bb1 = new BlackBishop();
-        BlackBishop bb2 = new BlackBishop();
-        BlackKnight bk1 = new BlackKnight();
-        BlackKnight bk2 = new BlackKnight();
-        BlackRook br1 = new BlackRook();
-        BlackRook br2 = new BlackRook();
+        // true == white,false == black
+        
+        King wk = new King(true);
+        Queen wq = new Queen(true);
+        Bishop wb1 = new Bishop(true);
+        Bishop wb2 = new Bishop(true);
+        Knight wk1 = new Knight(true);
+        Knight wk2 = new Knight(true);
+        Rook wr1 = new Rook(true);
+        Rook wr2 = new Rook(true);
+        King bk = new King(false);
+        Queen bq = new Queen(false);
+        Bishop bb1 = new Bishop(false);
+        Bishop bb2 = new Bishop(false);
+        Knight bk1 = new Knight(false);
+        Knight bk2 = new Knight(false);
+        Rook br1 = new Rook(false);
+        Rook br2 = new Rook(false);
+        
+       
+
+        
         
         //krali
         addObject(wk,4,7);
@@ -115,107 +121,49 @@ public class Chessboard extends World
         //pesiaci
         for (int i = 0;i < 8;i++)
         {
-            WhitePawn wp = new WhitePawn();
+            Pawn wp = new Pawn(true);
             addObject(wp,i,6);
         }
         for (int i = 7;i >= 0;i--)
         {
-            BlackPawn bp = new BlackPawn();
+            Pawn bp = new Pawn(false);
             addObject(bp,i,1);
         }
     }
     
     private void change()
     {
-        if (move != turn)
+        
+        if (swapTurn != turn)
         {
             Greenfoot.delay(30);
             
-            int wKingi = getObjects(WhiteKing.class).size();
-            for (int i = 0;i < wKingi;i++)
-            {
-                WhiteKing obj = getObjects(WhiteKing.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            
+            for(King king:getObjects(King.class)) {
+                king.setLocation(7 - king.getX(),7 - king.getY());
             }
             
-            int wQueeni = getObjects(WhiteQueen.class).size();
-            for (int i = 0;i < wQueeni;i++)
-            {
-                WhiteQueen obj = getObjects(WhiteQueen.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            for(Queen p:getObjects(Queen.class)) {
+                p.setLocation(7-p.getX(),7-p.getY());
             }
             
-            int wBishopi = getObjects(WhiteBishop.class).size();
-            for (int i = 0;i < wBishopi;i++)
-            {
-                WhiteBishop obj = getObjects(WhiteBishop.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            for(Rook p:getObjects(Rook.class)) {
+                p.setLocation(7-p.getX(),7-p.getY());
             }
             
-            int wKnighti = getObjects(WhiteKnight.class).size();
-            for (int i = 0;i < wKnighti;i++)
-            {
-                WhiteKnight obj = getObjects(WhiteKnight.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            for(Pawn p:getObjects(Pawn.class)) {
+                p.setLocation(7-p.getX(),7-p.getY());
             }
             
-            int wRooki = getObjects(WhiteRook.class).size();
-            for (int i = 0;i < wRooki;i++)
-            {
-                WhiteRook obj = getObjects(WhiteRook.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-
-            int wPawni = getObjects(WhitePawn.class).size();
-            for (int i = 0;i < wPawni;i++)
-            {
-                WhitePawn obj = getObjects(WhitePawn.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            for(Bishop p:getObjects(Bishop.class)) {
+                p.setLocation(7-p.getX(),7-p.getY());
             }
             
-            int bKingi = getObjects(BlackKing.class).size();
-            for (int i = 0;i < bKingi;i++)
-            {
-                BlackKing obj = getObjects(BlackKing.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
+            for(Knight p:getObjects(Knight.class)) {
+                p.setLocation(7-p.getX(),7-p.getY());
             }
             
-            int bQueeni = getObjects(BlackQueen.class).size();
-            for (int i = 0;i < bQueeni;i++)
-            {
-                BlackQueen obj = getObjects(BlackQueen.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-            
-            int bBishopi = getObjects(BlackBishop.class).size();
-            for (int i = 0;i < bBishopi;i++)
-            {
-                BlackBishop obj = getObjects(BlackBishop.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-            
-            int bKnighti = getObjects(BlackKnight.class).size();
-            for (int i = 0;i < bKnighti;i++)
-            {
-                BlackKnight obj = getObjects(BlackKnight.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-            
-            int bRooki = getObjects(BlackRook.class).size();
-            for (int i = 0;i < bRooki;i++)
-            {
-                BlackRook obj = getObjects(BlackRook.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-            
-            int bPawni = getObjects(BlackPawn.class).size();
-            for (int i = 0;i < bPawni;i++)
-            {
-                BlackPawn obj = getObjects(BlackPawn.class).get(i);
-                obj.setLocation(7 - obj.getX(),7 - obj.getY());
-            }
-            
-            turn = move;
+            swapTurn = turn;
         }
     }
 }

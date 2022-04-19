@@ -1,22 +1,24 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
+public class Knight extends ChessPiece {
 
-public class BlackKnight extends Black
-{
+    public Knight(Boolean color){
+        super(color);
+        if(this.color == false) setImage("black_knight.png");
+        else setImage("white_knight.png");
+    }
+
     public void act() 
     {
         Chessboard chessBoard = (Chessboard)getWorld();
-        if (chessBoard.move % 2 == 0)
+        if (this.color == chessBoard.turn)
         {
             select();
             move();
             changeStatus();
             capture();
         }
+        
     }
     
     private void move()
@@ -37,9 +39,11 @@ public class BlackKnight extends Black
                 boolean tile7 = (x == this.getX() + 2 && y == this.getY() - 1);
                 boolean tile8 = (x == this.getX() + 2 && y == this.getY() + 1);
                 
-                boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
+                //boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
+                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
+                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
                 
-                if (empty)
+                if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //if tile is empty or other color
                 {
                     if (tile1 || tile2 || tile3 || tile4 || tile5 || tile6 || tile7 || tile8)
                     {
