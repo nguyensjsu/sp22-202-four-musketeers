@@ -91,28 +91,28 @@ public class Chessboard extends World
         Rook br2 = new Rook(false);
         
         //King
-        addObject(wk,4,8);
+        addObject(wk,4,DIM_Y - 1);
         addObject(bk,4,1);
         
         //Queen
-        addObject(wq,3,8);
+        addObject(wq,3,DIM_Y - 1);
         addObject(bq,3,1);
         
         //Bishop
-        addObject(wb1,2,8);
-        addObject(wb2,5,8);
+        addObject(wb1,2,DIM_Y - 1);
+        addObject(wb2,5,DIM_Y - 1);
         addObject(bb1,5,1);
         addObject(bb2,2,1);
         
         //Knight
-        addObject(wk1,1,8);
-        addObject(wk2,6,8);
+        addObject(wk1,1,DIM_Y - 1);
+        addObject(wk2,6,DIM_Y - 1);
         addObject(bk1,6,1);
         addObject(bk2,1,1);
         
         //Rook
-        addObject(wr1,0,8);
-        addObject(wr2,7,8);
+        addObject(wr1,0,DIM_Y - 1);
+        addObject(wr2,7,DIM_Y - 1);
         addObject(br1,7,1);
         addObject(br2,0,1);
         
@@ -120,7 +120,7 @@ public class Chessboard extends World
         for (int i = 0;i < DIM_Y - 1;i++)
         {
             Pawn wp = new Pawn(true);
-            addObject(wp,i,DIM_Y - 2);
+            addObject(wp,i,DIM_Y-2);
         }
         for (int i = DIM_Y - 2;i >= 0;i--)
         {
@@ -136,30 +136,31 @@ public class Chessboard extends World
         {
             Greenfoot.delay(30);
             
-            int edge = DIM_Y - 1;
+            int edgeX = DIM_Y - 2;
+            int edgeY = DIM_Y;
             
             for(King king:getObjects(King.class)) {
-                king.setLocation(edge-king.getX()-1,edge-king.getY()+1);
+                king.setLocation(edgeX-king.getX(),edgeY-king.getY());
             }
             
             for(Queen q:getObjects(Queen.class)) {
-                q.setLocation(edge-q.getX()-1,edge-q.getY()+1);
+                q.setLocation(edgeX-q.getX(),edgeY-q.getY());
             }
             
             for(Rook r:getObjects(Rook.class)) {
-                r.setLocation(edge-r.getX()-1,edge-r.getY()+1);
+                r.setLocation(edgeX-r.getX(),edgeY-r.getY());
             }
             
             for(Pawn p:getObjects(Pawn.class)) {
-                p.setLocation(edge-p.getX()-1,edge-p.getY()+1);
+                p.setLocation(edgeX-p.getX(),edgeY-p.getY());
             }
             
             for(Bishop b:getObjects(Bishop.class)) {
-                b.setLocation(edge-b.getX()-1,edge-b.getY()+1);
+                b.setLocation(edgeX-b.getX(),edgeY-b.getY());
             }
             
             for(Knight k:getObjects(Knight.class)) {
-                k.setLocation(edge-k.getX()-1,edge-k.getY()+1);
+                k.setLocation(edgeX-k.getX(),edgeY-k.getY());
             }
             
             swapTurn = turn;
