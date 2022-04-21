@@ -52,8 +52,8 @@ public class King extends ChessPiece {
 
                         int intColor = this.color ? 1 : 0;
                         switch(intColor) {
-                            case 0: blackKing(chessboard, x, y);break;
-                            case 1: whiteKing(chessboard,x,y);break;
+                            case 0: blackKing(chessboard,x,y); break;
+                            case 1: whiteKing(chessboard,x,y); break;
                         }
                     }
                 }
@@ -64,9 +64,11 @@ public class King extends ChessPiece {
     }
 
     void blackKing(Chessboard chessboard,int x,int y) {
-        if (x == 1 && y == 7)
+        int dimY = chessboard.DIM_Y;
+        if (x == 1 && y == dimY - 1)
         {
-            if (chessboard.getObjectsAt(1,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(2,7,ChessPiece.class).isEmpty())
+            if (chessboard.getObjectsAt(1,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(2,dimY - 1,ChessPiece.class).isEmpty())
             {
                 //Rook blackRook = chessboard.getObjects(Rook.class).get(2); // 2 is 3rd rook which is black
                 Rook blackRook = null;
@@ -79,13 +81,15 @@ public class King extends ChessPiece {
                 if (blackRook.moveCount == 0)
                 {
                     move(x,y);
-                    blackRook.setLocation(2,7);
+                    blackRook.setLocation(2,dimY - 1);
                 }
             }
         }
-        else if (x == 5 && y == 7)
+        else if (x == 5 && y == dimY - 1)
         {
-            if (chessboard.getObjectsAt(4,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(5,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(6,7,ChessPiece.class).isEmpty())
+            if (chessboard.getObjectsAt(4,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(5,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(6,dimY - 1,ChessPiece.class).isEmpty())
             {
                 //Rook blackRook = chessboard.getObjects(Rook.class).get(3); // 3 is 4rd rook which is black
                 Rook blackRook = null;
@@ -101,7 +105,7 @@ public class King extends ChessPiece {
                 {
                     move(x,y);
                     moveCount++;
-                    blackRook.setLocation(4,7);
+                    blackRook.setLocation(4,dimY - 1);
                     blackRook.moveCount++;
                 }
             }
@@ -109,9 +113,12 @@ public class King extends ChessPiece {
     }
 
     void whiteKing(Chessboard chessboard,int x,int y) {
-        if (x == 2 && y == 7)
+        int dimY = chessboard.DIM_Y;
+        if (x == 2 && y == dimY - 1)
         {
-            if (chessboard.getObjectsAt(1,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(2,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(3,7,ChessPiece.class).isEmpty())
+            if (chessboard.getObjectsAt(1,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(2,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(3,dimY - 1,ChessPiece.class).isEmpty())
             {
                 Rook whiteRook = null;
                 for(Rook rook:chessboard.getObjects(Rook.class)) {
@@ -125,13 +132,14 @@ public class King extends ChessPiece {
                 if (whiteRook.moveCount == 0)
                 {
                     move(x,y);
-                    whiteRook.setLocation(3,7);
+                    whiteRook.setLocation(3,dimY - 1);
                 }
             }
         }
-        else if (x == 6 && y == 7)
+        else if (x == 6 && y == dimY - 1)
         {
-            if (chessboard.getObjectsAt(5,7,ChessPiece.class).isEmpty() && chessboard.getObjectsAt(6,7,ChessPiece.class).isEmpty())
+            if (chessboard.getObjectsAt(5,dimY - 1,ChessPiece.class).isEmpty() && 
+                chessboard.getObjectsAt(6,dimY - 1,ChessPiece.class).isEmpty())
             {
                 //Rook whiteRook = chessboard.getObjects(Rook.class).get(1); // 1 is 2nd rook which is white
                 Rook whiteRook = null;
@@ -147,7 +155,7 @@ public class King extends ChessPiece {
                 {
                     move(x,y);
                     moveCount++;
-                    whiteRook.setLocation(5,7);
+                    whiteRook.setLocation(5,dimY - 1);
                     whiteRook.moveCount++;
                 }
             }
