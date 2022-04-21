@@ -34,11 +34,7 @@ public class Pawn extends ChessPiece {
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
 
-                //boolean emptyF = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //boolean emptyC = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
-
                 boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
                 
                 if (empty) //if tile is empty or other color
                 {

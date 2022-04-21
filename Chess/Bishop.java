@@ -29,68 +29,34 @@ public class Bishop extends ChessPiece {
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
                 
+                int diffX = x - this.getX();
+                int diffY = y - this.getY();
+                
                 int absDiffX = Math.abs(x - this.getX());
                 int absDiffY = Math.abs(y - this.getY());
                 
                 boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
                 
                 if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //if tile is empty or other color
                 {
                     if (absDiffX == absDiffY)
                     {
-                        int differenceX = x - this.getX();
-                        int differenceY = y - this.getY();
-                        int difference = Math.abs(differenceX);
+                        int multX = 1;
+                        int multY = 1;
                         
-                        if (differenceX < 0 && differenceY < 0)
+                        if (diffX < 0) multX = -1;
+                        if (diffY < 0) multY = -1;
+                            
+                        for (int i = 1; i < absDiffX;i++)
                         {
-                            for (int i = 1;i < difference;i++)
+                            if (!getWorld().getObjectsAt(this.getX() + (multX * i),this.getY() + (multY * i),ChessPiece.class).isEmpty())
                             {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() - i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
+                                occupied = true;
+                                break;
                             }
                         }
-                        else if (differenceX < 0 && differenceY > 0)
-                        {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() - i,this.getY() + i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (differenceX > 0 && differenceY < 0)
-                        {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() - i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (differenceX > 0 && differenceY > 0)
-                        {
-                            for (int i = 1;i < difference;i++)
-                            {
-                                if (!getWorld().getObjectsAt(this.getX() + i,this.getY() + i,ChessPiece.class).isEmpty())
-                                {
-                                    occupied = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!occupied)
-                        {
-                            move(x,y);
-                        }
+                        
+                        if (!occupied) move(x,y);
                     }
                 }
                 
