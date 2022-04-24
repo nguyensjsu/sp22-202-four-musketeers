@@ -29,18 +29,16 @@ public class Pawn extends ChessPiece {
         {
             if (Greenfoot.mouseClicked(null))
             {
+                Chessboard chessboard = (Chessboard)getWorld();
+                
                 int x = Greenfoot.getMouseInfo().getX();
                 int y = Greenfoot.getMouseInfo().getY();
 
-                //boolean emptyF = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //boolean emptyC = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
-
                 boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
                 
                 if (empty) //if tile is empty or other color
                 {
-                    if (this.getY() == 6)
+                    if (this.getY() == chessboard.DIM_Y - 2)
                     {
                         if (x == this.getX() && y == this.getY() - 1)
                         {
@@ -48,7 +46,6 @@ public class Pawn extends ChessPiece {
                         }
                         else if (x == this.getX() && y == this.getY() - 2)
                         {
-                            Chessboard chessboard = (Chessboard)getWorld();
                             stepTwo = chessboard.move;
                             move(x,y);
                         }
@@ -59,7 +56,6 @@ public class Pawn extends ChessPiece {
                     }
                     else if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
                     {
-                        Chessboard chessboard = (Chessboard)getWorld();
                         if (chessboard.getObjectsAt(x,y + 1,Pawn.class).size() != 0)
                         {
                             Pawn oppPawn = chessboard.getObjectsAt(x,y + 1,Pawn.class).get(0);
