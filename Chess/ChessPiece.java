@@ -71,6 +71,8 @@ public class ChessPiece extends Actor
         Chessboard chessBoard = (Chessboard)getWorld();
         chessBoard.turn = !chessBoard.turn;
         chessBoard.move++;
+        
+        chessBoard.timerActor.startTimer();
     }
 
     protected void capture()
