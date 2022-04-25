@@ -5,12 +5,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version date: 10.5.2020
  */
 
-// Chessboard singleton?
-
 public class Chessboard extends World
 {
     
-    public TimerActor timerActor;
+    TimerActor timerActor;
     
     public int DIM_X = 10, DIM_Y = 9;
     
@@ -29,14 +27,10 @@ public class Chessboard extends World
     
     public void act()
     {
-        int seconds = timerActor.checkTimer() / 1000;
-        String secondsPadding = "";
+        // update timer display
+        showText(timerActor.displayTimer(turnTime),1,0);
         
-        if(seconds < 10) secondsPadding = "0";
-        
-        String timerString = "Timer: 00:" + secondsPadding + Integer.toString(seconds);
-        
-        showText(timerString,1,0);
+        // flip board
         change();
     }
     

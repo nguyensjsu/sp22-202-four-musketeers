@@ -6,8 +6,6 @@ public class TimerActor extends Actor
     private SimpleTimer timer;
     private static TimerActor timerActor;
     
-    // Greenfoot image class —— display with drawString
-    
     private TimerActor() {
         timer = new SimpleTimer();
         startTimer();
@@ -29,10 +27,26 @@ public class TimerActor extends Actor
     }
     
     public int checkTimer() {
-        return timer.millisElapsed();
+        return timer.millisElapsed() / 1000;
+    }
+    
+    public String displayTimer(int turnTime) {
+        int rawSeconds = turnTime - checkTimer();
+        int seconds = (rawSeconds) % 60;
+        int minutes = rawSeconds / 60;
+        
+        String minutesPadding = "0";
+        String secondsPadding = "";
+        
+        if(seconds < 10) secondsPadding = "0";
+        
+        String minutesString = minutesPadding + Integer.toString(minutes);
+        String secondsString = secondsPadding + Integer.toString(seconds);
+        
+        String remainingTime = "Timer: " + minutesString + ":" + secondsString;
+        
+        return remainingTime;
     }
         
-    public void act() {
-        
-    }
+    public void act() {}
 }
