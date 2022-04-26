@@ -1,11 +1,12 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * @author Pavol Biacko
  * @version date: 10.5.2020
  */
 
-public class ChessPiece extends Actor
+public class ChessPiece extends Actor 
 {
     boolean selected = false;
     boolean ready = false;
@@ -13,9 +14,12 @@ public class ChessPiece extends Actor
 
     protected boolean color; // false for black, true for white 
 
-    public ChessPiece(Boolean color) {this.color = color;}
+    public ChessPiece(Boolean color) {
+        this.color = color;
+    }
     
-    public ChessPiece() {}
+    public ChessPiece() {
+    }
 
     protected void select()
     {
@@ -65,11 +69,18 @@ public class ChessPiece extends Actor
         selected = false;
     }
 
-    protected void move(int x,int y)
+    protected void move(int x,int y) //movehistory should prob go here
     {
         this.setLocation(x,y);
         Chessboard chessBoard = (Chessboard)getWorld();
         chessBoard.turn = !chessBoard.turn;
+        
+        String pieceType = this.getClass().getSimpleName().substring(0,1);
+        if(pieceType.equals("K")) 
+            pieceType = this.getClass().getSimpleName().substring(0,2);
+        //+1 to not start from 0,8 to have distance measured from bottom as opposed to top
+        
+        chessBoard.processMove(x + 1,8 - y,pieceType);
         chessBoard.move++;
     }
 
@@ -81,4 +92,5 @@ public class ChessPiece extends Actor
             getWorld().removeObject(touchPiece);
         }
     } 
+    
 }

@@ -1,23 +1,27 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * @author Pavol Biacko
  * @version date: 10.5.2020
  */
 
-public class Chessboard extends World
+public class Chessboard extends World implements IChessMoveSubject
 {
     public int DIM_X = 10, DIM_Y = 9;
+    private ArrayList<IChessMoveObserver> observers;
     
     public Chessboard()
     {    
-        super(10,9,100);
+        super(11,9,100);
         startup();
     }
     
     int move = 1; 
     boolean turn = true; //white turn first (true==white,false==black)
     boolean swapTurn = turn; 
+    
+    
     
     public void act()
     {
@@ -62,9 +66,10 @@ public class Chessboard extends World
                 addObject(beige,x,y);
             }
         }
+        observers = new ArrayList<>();
         
         setPaintOrder(ChessPiece.class,Tile.class);
-        
+        setPaintOrder(Label.class,MoveHistory.class);
         
         start();
     }
@@ -72,7 +77,6 @@ public class Chessboard extends World
     private void start()
     {
         // true == white,false == black
-        
         King wk = new King(true);
         Queen wq = new Queen(true);
         Bishop wb1 = new Bishop(true);
@@ -127,6 +131,12 @@ public class Chessboard extends World
             Pawn bp = new Pawn(false);
             addObject(bp,i,2);
         }
+        
+        //adding observers to this board
+        MoveHistory mh = new MoveHistory();
+        addObserver(mh);
+        addObject(mh,getWidth() - 2, getHeight() / 2); //position of movehistory block
+        
     }
     
     private void change()
@@ -165,5 +175,29 @@ public class Chessboard extends World
             
             swapTurn = turn;
         }
+    }
+
+    @Override
+    public void notifyObservers(int turn, String movement) {
+        for(IChessMoveObserver obs:observers) 
+            obs.update(turn, movement);
+    }
+    
+    @Override
+    public void addObserver(IChessMoveObserver obs) {
+        observers.add(obs);
+    }
+    
+    @Override
+    public void deleteObserver(IChessMoveObserver obs) {
+        observers.remove(obs);
+    }
+    
+    // used to turn x and y coords into a string that labels can display 
+    @Override
+    public void processMove(int x,int y,String pieceType) {
+        String out =  pieceType + "[" + String.valueOf(x) + "," 
+        + String.valueOf(y) + "]";
+        notifyObservers(move,out);
     }
 }
