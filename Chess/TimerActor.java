@@ -30,15 +30,22 @@ public class TimerActor extends Actor
         return timer.millisElapsed() / 1000;
     }
     
-    public String displayTimer(int turnTime) {
-        int rawSeconds = turnTime - checkTimer();
+    public String displayTimer(int rawSeconds) {
         int seconds = (rawSeconds) % 60;
         int minutes = rawSeconds / 60;
         
-        String minutesPadding = "0";
+        String minutesPadding = "";
         String secondsPadding = "";
         
         if(seconds < 10) secondsPadding = "0";
+        
+        if(seconds > 600) {
+            minutesPadding = Integer.toString(seconds/10);
+            minutes = minutes % 10;
+        }
+        else {
+            minutesPadding = "0";
+        }
         
         String minutesString = minutesPadding + Integer.toString(minutes);
         String secondsString = secondsPadding + Integer.toString(seconds);
