@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.function.*;
 
 public class TimerActor extends Actor
 {
@@ -30,30 +31,12 @@ public class TimerActor extends Actor
         return timer.millisElapsed() / 1000;
     }
     
-    public String displayTimer(int rawSeconds) {
-        int seconds = (rawSeconds) % 60;
-        int minutes = rawSeconds / 60;
-        
-        String minutesPadding = "";
-        String secondsPadding = "";
-        
-        if(seconds < 10) secondsPadding = "0";
-        
-        if(seconds > 600) {
-            minutesPadding = Integer.toString(seconds/10);
-            minutes = minutes % 10;
-        }
-        else {
-            minutesPadding = "0";
-        }
-        
-        String minutesString = minutesPadding + Integer.toString(minutes);
-        String secondsString = secondsPadding + Integer.toString(seconds);
-        
-        String remainingTime = "Timer: " + minutesString + ":" + secondsString;
-        
-        return remainingTime;
+    public String displayTimer(int rawSeconds, 
+        Function<Integer, String> minutesDec, 
+        Function<Integer, String> secondsDec) {
+            
+        return minutesDec.apply(rawSeconds) + secondsDec.apply(rawSeconds);
     }
-        
+
     public void act() {}
 }

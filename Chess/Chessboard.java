@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.function.*;
 
 /**
  * @author Pavol Biacko
@@ -7,6 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Chessboard extends World
 {
+    
+    private Function<Integer, String> minDec;
+    private Function<Integer, String> secDec;
 
     TimerActor timerActor;
 
@@ -16,14 +20,13 @@ public class Chessboard extends World
     {    
         super(10,9,100);
         startup();
-        timerActor = TimerActor.getNewInstance();
     }
 
     int move = 1; 
     boolean turn = true; //white turn first (true==white,false==black)
     boolean swapTurn = turn; 
 
-    int turnTime = 5;
+    int turnTime = 30;
 
     public void act()
     {
@@ -36,7 +39,7 @@ public class Chessboard extends World
         }
 
         // update timer display
-        showText(timerActor.displayTimer(rawSeconds),1,0);
+        showText(timerActor.displayTimer(rawSeconds,minDec,secDec),1,0);
 
         // flip board
         change();
@@ -84,6 +87,36 @@ public class Chessboard extends World
         setPaintOrder(ChessPiece.class,Tile.class);
 
         start();
+        
+        //initialize timer and lambda functions for decorators
+        timerActor = TimerActor.getNewInstance();
+        
+        minDec = (Integer rawSeconds) -> {
+            
+            int minutes = rawSeconds / 60;
+            String minutesPadding = "";
+            if(rawSeconds > 600) {
+                minutesPadding = Integer.toString(rawSeconds/10);
+                minutes = minutes % 10;
+            }
+            else {
+                minutesPadding = "0";
+            }
+            String minutesString = "Timer: " + minutesPadding + Integer.toString(minutes) + ":";
+            return minutesString;
+        };
+        
+        secDec = (Integer rawSeconds) -> {   
+            int seconds = (rawSeconds) % 60;
+            
+            String secondsPadding = "";
+            
+            if(seconds < 10) secondsPadding = "0";
+            String secondsString = secondsPadding + Integer.toString(seconds);        
+            return secondsString;
+        };
+        
+        
     }
 
     private void start()
