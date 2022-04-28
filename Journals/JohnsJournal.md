@@ -32,3 +32,20 @@ Obstacles:
 
 XP Core Values: Communication 
 - Throughout the past week, I was very transparent on what changes I made as well as what issues or questions I had. During the meeting, I made sure everyone was on the same page and got a chance to talk.
+
+---
+## Four Musketeers: Weekly Scrum Report 4/27
+Team Member Name: John Lu
+
+### 04/27/2022
+Progress since the last weekly scrum: 
+- Eric implemented move recording, but it doesn't scroll up above the most recent eight moves. Richard fixed en passant for the pawns. Ryan has not done work and plans to work on it tonight, since work for him has been busy. I implemented move timer that swaps sides when time runs out.
+
+What we did:
+- We reviewed Eric's and my pull requests and watched our respective demos of functionality. After that, we discussed future bug fixes and dragged out a few items out of the backlog to implement. Eric is implementing valid moves, Ryan is ironing out bug fixes for King, Richard is working on pawn promotion, and I'm fixing bugs for timer as well as adding difficulty levels and disabling timer.
+
+Obstacles:
+- I faced minor obstacles in figuring out how to work with the Simple Timer built in class in Greenfoot. However, I resolved those through thoroughly reading documentation and iterating. Eric suggested to me today to add timer disabling, which is an issue I had to move to this upcoming week to implement. 
+
+XP Core Values: Communication 
+- Throughout the past week, I was very transparent on what changes I made as well as what issues or questions I had. During the meeting, I made sure everyone was on the same page and got a chance to talk. I also made sure to ask about everyone's other responsibilities and about how much time they could dedicate to this project.
