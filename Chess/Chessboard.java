@@ -33,7 +33,7 @@ public class Chessboard extends World
         int rawSeconds = turnTime - timerActor.checkTimer();
         
         // swap turns if time is up
-        if(rawSeconds < 1) {
+        if(rawSeconds == 0) {
             turn = !turn;
             timerActor.startTimer();
         }
