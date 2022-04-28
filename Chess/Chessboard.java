@@ -1,18 +1,11 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 import java.util.ArrayList;
 import java.util.function.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
-
-public class Chessboard extends World implements IChessMoveSubject
-{
-
+public class Chessboard extends World implements IChessMoveSubject {
     private ArrayList<IChessMoveObserver> observers;
-   
+
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
 
@@ -20,113 +13,100 @@ public class Chessboard extends World implements IChessMoveSubject
 
     public int DIM_X = 10, DIM_Y = 9;
 
-    public Chessboard()
-    {    
-        super(11,9,100);
+    public Chessboard() {
+        super(11, 9, 100);
         startup();
     }
 
-    int move = 1; 
+    int move = 1;
     boolean turn = true; //white turn first (true==white,false==black)
-    boolean swapTurn = turn; 
+    boolean swapTurn = turn;
 
     int turnTime = 30;
 
-    public void act()
-    {
+    public void act() {
         int rawSeconds = turnTime - timerActor.checkTimer();
-        
+
         // swap turns if time is up
-        if(rawSeconds == 0) {
+        if (rawSeconds == 0) {
             turn = !turn;
             timerActor.startTimer();
         }
 
         // update timer display
-        showText(timerActor.displayTimer(rawSeconds,minDec,secDec),1,0);
+        showText(timerActor.displayTimer(rawSeconds, minDec, secDec), 1, 0);
 
         // flip board
         change();
     }
 
-    private void startup()
-    {
+    private void startup() {
         int x;
         int y;
 
         //tile placement
-        for (x = 1; x < DIM_X - 2; x += 2)
-        {
-            for (y = 2; y < 10; y += 2)
-            {
+        for (x = 1; x < DIM_X - 2; x += 2) {
+            for (y = 2; y < 10; y += 2) {
                 Gray gray = new Gray();
-                addObject(gray,x,y);
+                addObject(gray, x, y);
             }
         }
-        for (x = 0; x < DIM_X - 2; x += 2)
-        {
-            for (y = 1; y < 8; y += 2)
-            {
+        for (x = 0; x < DIM_X - 2; x += 2) {
+            for (y = 1; y < 8; y += 2) {
                 Gray gray = new Gray();
-                addObject(gray,x,y);
+                addObject(gray, x, y);
             }
         }
-        for (x = 0; x < DIM_X - 2; x += 2)
-        {
-            for (y = 2; y < 10; y += 2)
-            {
+        for (x = 0; x < DIM_X - 2; x += 2) {
+            for (y = 2; y < 10; y += 2) {
                 Beige beige = new Beige();
-                addObject(beige,x,y);
+                addObject(beige, x, y);
             }
         }
-        for (x = 1; x < DIM_X - 2; x += 2)
-        {
-            for (y = 1; y < 8; y += 2)
-            {
+        for (x = 1; x < DIM_X - 2; x += 2) {
+            for (y = 1; y < 8; y += 2) {
                 Beige beige = new Beige();
-                addObject(beige,x,y);
+                addObject(beige, x, y);
             }
         }
 
         observers = new ArrayList<>();
-        setPaintOrder(ChessPiece.class,Tile.class,Label.class,MoveHistory.class);
+        setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
         start();
-        
+
         //initialize timer and lambda functions for decorators
         timerActor = TimerActor.getNewInstance();
-        
+
         minDec = (Integer rawSeconds) -> {
-            
+
             int minutes = rawSeconds / 60;
             String minutesPadding = "";
-            if(rawSeconds > 600) {
-                minutesPadding = Integer.toString(rawSeconds/10);
+            if (rawSeconds > 600) {
+                minutesPadding = Integer.toString(rawSeconds / 10);
                 minutes = minutes % 10;
-            }
-            else {
+            } else {
                 minutesPadding = "0";
             }
-            String minutesString = "Timer: " + minutesPadding + Integer.toString(minutes) + ":";
-            return minutesString;
+            return "Timer: " + minutesPadding + minutes + ":";
         };
-        
-        secDec = (Integer rawSeconds) -> {   
+
+        secDec = (Integer rawSeconds) -> {
             int seconds = (rawSeconds) % 60;
-            
+
             String secondsPadding = "";
-            
-            if(seconds < 10) secondsPadding = "0";
-            String secondsString = secondsPadding + Integer.toString(seconds);        
-            return secondsString;
+
+            if (seconds < 10) {
+                secondsPadding = "0";
+            }
+            return secondsPadding + seconds;
         };
-        
+
     }
 
-    private void start()
-    {
+    private void start() {
         // true == white,false == black
-        
+
         King wk = new King(true);
         Queen wq = new Queen(true);
         Bishop wb1 = new Bishop(true);
@@ -145,82 +125,77 @@ public class Chessboard extends World implements IChessMoveSubject
         Rook br2 = new Rook(false);
 
         //King
-        addObject(wk,4,DIM_Y - 1);
-        addObject(bk,4,1);
+        addObject(wk, 4, DIM_Y - 1);
+        addObject(bk, 4, 1);
 
         //Queen
-        addObject(wq,3,DIM_Y - 1);
-        addObject(bq,3,1);
+        addObject(wq, 3, DIM_Y - 1);
+        addObject(bq, 3, 1);
 
         //Bishop
-        addObject(wb1,2,DIM_Y - 1);
-        addObject(wb2,5,DIM_Y - 1);
-        addObject(bb1,5,1);
-        addObject(bb2,2,1);
+        addObject(wb1, 2, DIM_Y - 1);
+        addObject(wb2, 5, DIM_Y - 1);
+        addObject(bb1, 5, 1);
+        addObject(bb2, 2, 1);
 
         //Knight
-        addObject(wk1,1,DIM_Y - 1);
-        addObject(wk2,6,DIM_Y - 1);
-        addObject(bk1,6,1);
-        addObject(bk2,1,1);
+        addObject(wk1, 1, DIM_Y - 1);
+        addObject(wk2, 6, DIM_Y - 1);
+        addObject(bk1, 6, 1);
+        addObject(bk2, 1, 1);
 
         //Rook
-        addObject(wr1,0,DIM_Y - 1);
-        addObject(wr2,7,DIM_Y - 1);
-        addObject(br1,7,1);
-        addObject(br2,0,1);
+        addObject(wr1, 0, DIM_Y - 1);
+        addObject(wr2, 7, DIM_Y - 1);
+        addObject(br1, 7, 1);
+        addObject(br2, 0, 1);
 
         //Pawn
-        for (int i = 0;i < DIM_Y - 1;i++)
-        {
+        for (int i = 0; i < DIM_Y - 1; i++) {
             Pawn wp = new Pawn(true);
-            addObject(wp,i,DIM_Y-2);
+            addObject(wp, i, DIM_Y - 2);
         }
-        for (int i = DIM_Y - 2;i >= 0;i--)
-        {
+        for (int i = DIM_Y - 2; i >= 0; i--) {
             Pawn bp = new Pawn(false);
-            addObject(bp,i,2);
+            addObject(bp, i, 2);
         }
-        
+
         //adding observers to this board
         MoveHistory mh = new MoveHistory();
         addObserver(mh);
-        addObject(mh,getWidth() - 2, getHeight() / 2); //position of movehistory block
-        
+        addObject(mh, getWidth() - 2, getHeight() / 2); //position of movehistory block
+
     }
 
-    private void change()
-    {
-
-        if (swapTurn != turn)
-        {
+    private void change() {
+        if (swapTurn != turn) {
             Greenfoot.delay(30);
 
             int edgeX = DIM_Y - 2;
             int edgeY = DIM_Y;
 
-            for(King king:getObjects(King.class)) {
-                king.setLocation(edgeX-king.getX(),edgeY-king.getY());
+            for (King king : getObjects(King.class)) {
+                king.setLocation(edgeX - king.getX(), edgeY - king.getY());
             }
 
-            for(Queen q:getObjects(Queen.class)) {
-                q.setLocation(edgeX-q.getX(),edgeY-q.getY());
+            for (Queen q : getObjects(Queen.class)) {
+                q.setLocation(edgeX - q.getX(), edgeY - q.getY());
             }
 
-            for(Rook r:getObjects(Rook.class)) {
-                r.setLocation(edgeX-r.getX(),edgeY-r.getY());
+            for (Rook r : getObjects(Rook.class)) {
+                r.setLocation(edgeX - r.getX(), edgeY - r.getY());
             }
 
-            for(Pawn p:getObjects(Pawn.class)) {
-                p.setLocation(edgeX-p.getX(),edgeY-p.getY());
+            for (Pawn p : getObjects(Pawn.class)) {
+                p.setLocation(edgeX - p.getX(), edgeY - p.getY());
             }
 
-            for(Bishop b:getObjects(Bishop.class)) {
-                b.setLocation(edgeX-b.getX(),edgeY-b.getY());
+            for (Bishop b : getObjects(Bishop.class)) {
+                b.setLocation(edgeX - b.getX(), edgeY - b.getY());
             }
 
-            for(Knight k:getObjects(Knight.class)) {
-                k.setLocation(edgeX-k.getX(),edgeY-k.getY());
+            for (Knight k : getObjects(Knight.class)) {
+                k.setLocation(edgeX - k.getX(), edgeY - k.getY());
             }
 
             swapTurn = turn;
@@ -229,25 +204,25 @@ public class Chessboard extends World implements IChessMoveSubject
 
     @Override
     public void notifyObservers(int turn, String movement) {
-        for(IChessMoveObserver obs:observers) 
+        for (IChessMoveObserver obs : observers) {
             obs.update(turn, movement);
+        }
     }
-    
+
     @Override
     public void addObserver(IChessMoveObserver obs) {
         observers.add(obs);
     }
-    
+
     @Override
     public void deleteObserver(IChessMoveObserver obs) {
         observers.remove(obs);
     }
-    
+
     // used to turn x and y coords into a string that labels can display 
     @Override
-    public void processMove(int x,int y,String pieceType) {
-        String out =  pieceType + "[" + String.valueOf(x) + "," 
-        + String.valueOf(y) + "]";
-        notifyObservers(move,out);
+    public void processMove(int x, int y, String pieceType) {
+        String out = pieceType + "[" + x + "," + y + "]";
+        notifyObservers(move, out);
     }
 }

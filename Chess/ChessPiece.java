@@ -1,98 +1,112 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.*;
+import greenfoot.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
-
-public class ChessPiece extends Actor 
-{
-    boolean selected = false;
-    boolean ready = false;
-    boolean occupied = false;
-
-    protected boolean color; // false for black, true for white 
+public abstract class ChessPiece extends Actor {
+    protected boolean selected = false;
+    protected boolean ready = false;
+    protected boolean occupied = false;
+    protected boolean color; // false for black, true for white
+    protected boolean moved = false; // for castling, can't castle if king or rook moved
+    protected Chessboard chessboard;
 
     public ChessPiece(Boolean color) {
         this.color = color;
     }
-    
-    public ChessPiece() {
+
+    @Override
+    public void act() {
+        chessboard = (Chessboard) getWorld();
+        if (color == chessboard.turn) {
+            select();
+            move();
+            changeStatus();
+            capture();
+        }
     }
 
-    protected void select()
-    {
-        int x = this.getX();
-        int y = this.getY();
+    protected void select() {
+        int x = getX();
+        int y = getY();
 
-        if (Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1)
-        {
-            if (getWorld().getObjects(Select.class).size() == 0)
-            {
-                addSelection(x,y);
-            }
-            else if (getWorld().getObjectsAt(x,y,Select.class).size() == 1)
-            {
+        if (Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
+            if (chessboard.getObjects(Select.class).size() == 0) {
+                addSelection(x, y);
+            } else if (chessboard.getObjectsAt(x, y, Select.class).size() == 1) {
                 deleteSelection();
+            } else {
+                addSelection(x, y);
             }
-            else
-            {
-                addSelection(x,y);
-            }
-        }
-        else if (Greenfoot.mouseClicked(null) && selected)
-        {
+        } else if (isClickedAnywhere() && selected) {
             deleteSelection();
         }
     }
 
-    protected void changeStatus()
-    {
-        if (selected)
-        {
+    private void changeStatus() {
+        if (selected) {
             ready = true;
         }
     }
 
-    private void addSelection(int x,int y)
-    {
+    private void addSelection(int x, int y) {
         Select select = new Select();
-        getWorld().addObject(select,x,y);
+        chessboard.addObject(select, x, y);
         selected = true;
     }
 
-    private void deleteSelection()
-    {
-        Select select = getWorld().getObjects(Select.class).get(0);
-        getWorld().removeObject(select);
+    private void deleteSelection() {
+        Select select = chessboard.getObjects(Select.class).get(0);
+        chessboard.removeObject(select);
         selected = false;
     }
 
-    protected void move(int x,int y) //movehistory should prob go here
-    {
-        this.setLocation(x,y);
-        Chessboard chessBoard = (Chessboard)getWorld();
-        chessBoard.turn = !chessBoard.turn;
-        
-        String pieceType = this.getClass().getSimpleName().substring(0,1);
-        if(pieceType.equals("K")) 
-            pieceType = this.getClass().getSimpleName().substring(0,2);
+    protected abstract void move();
+
+    //movehistory should prob go here
+    protected void move(int x, int y) {
+        moved = true;
+
+        setLocation(x, y);
+        chessboard.turn = !chessboard.turn;
+
+        String pieceType = getClass().getSimpleName().substring(0, 1);
+        if (pieceType.equals("K")) {
+            pieceType = getClass().getSimpleName().substring(0, 2);
+        }
         //+1 to not start from 0,8 to have distance measured from bottom as opposed to top
-        
-        chessBoard.processMove(x + 1,8 - y + 1,pieceType);
-        chessBoard.move++;
-        
-        chessBoard.timerActor.startTimer();
+
+        chessboard.processMove(x + 1, 8 - y + 1, pieceType);
+        chessboard.move++;
+
+        chessboard.timerActor.startTimer();
     }
 
-    protected void capture()
-    {
+    private void capture() {
         ChessPiece touchPiece = (ChessPiece) getOneIntersectingObject(ChessPiece.class);
-        if (touchPiece != null && touchPiece.color != this.color)
-        {
-            getWorld().removeObject(touchPiece);
+        if (touchPiece != null && touchPiece.color != color) {
+            chessboard.removeObject(touchPiece);
         }
-    } 
-    
+    }
+
+    protected boolean isClickedAnywhere() {
+        return Greenfoot.mouseClicked(null);
+    }
+
+    protected int getMouseX() {
+        return Greenfoot.getMouseInfo().getX();
+    }
+
+    protected int getMouseY() {
+        return Greenfoot.getMouseInfo().getY();
+    }
+
+    protected boolean isTileEmpty(int x, int y) {
+        return chessboard.getObjectsAt(x, y, ChessPiece.class).isEmpty();
+    }
+
+    protected boolean getPieceColor(int x, int y) {
+        return getPieceAt(x, y).color;
+    }
+
+    protected ChessPiece getPieceAt(int x, int y) {
+        return chessboard.getObjectsAt(x, y, ChessPiece.class).get(0);
+    }
 }

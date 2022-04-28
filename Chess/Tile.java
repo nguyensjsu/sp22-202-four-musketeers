@@ -1,14 +1,6 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * @author Pavol Biacko
- * @version date: 10.5.2020
- */
-
-public class Tile extends Actor
-{
-    public void act() 
-    {
-        // Add your action code here.
-    }    
+public class Tile extends Actor {
+    public void act() {
+    }
 }
