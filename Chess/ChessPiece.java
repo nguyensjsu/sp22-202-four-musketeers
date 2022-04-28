@@ -1,20 +1,20 @@
 import greenfoot.*;
 
 public abstract class ChessPiece extends Actor {
-    protected boolean color; // False for black, true for white
+    protected boolean isWhite;
     protected boolean moved = false; // For castling, can't castle if king or rook moved
     protected boolean selected = false;
     protected boolean ready = false;
     protected Chessboard chessboard;
 
-    public ChessPiece(Boolean color) {
-        this.color = color;
+    public ChessPiece(boolean isWhite) {
+        this.isWhite = isWhite;
     }
 
     @Override
     public void act() {
         chessboard = (Chessboard) getWorld();
-        if (color == chessboard.turn) {
+        if (isWhite == chessboard.isWhiteTurn) {
             select();
             move();
             changeStatus();
@@ -46,7 +46,7 @@ public abstract class ChessPiece extends Actor {
 
     private void capture() {
         ChessPiece touchPiece = (ChessPiece) getOneIntersectingObject(ChessPiece.class);
-        if (touchPiece != null && touchPiece.color != color) {
+        if (touchPiece != null && touchPiece.isWhite != isWhite) {
             chessboard.removeObject(touchPiece);
         }
     }
@@ -66,7 +66,7 @@ public abstract class ChessPiece extends Actor {
     protected boolean isEmptyOrEnemy() {
         int mouseX = getMouseX();
         int mouseY = getMouseY();
-        return isTileEmpty(mouseX, mouseY) || getPieceColor(mouseX, mouseY) != color;
+        return isTileEmpty(mouseX, mouseY) || isPieceWhite(mouseX, mouseY) != isWhite;
     }
 
     protected boolean isVerticalMove() {
@@ -129,7 +129,8 @@ public abstract class ChessPiece extends Actor {
         moved = true;
 
         setLocation(x, y);
-        chessboard.turn = !chessboard.turn;
+
+        chessboard.isWhiteTurn = !chessboard.isWhiteTurn;
 
         String pieceType = getClass().getSimpleName().substring(0, 1);
         if (pieceType.equals("K")) {
@@ -138,7 +139,7 @@ public abstract class ChessPiece extends Actor {
 
         // +1 to not start from 0, 8 to have distance measured from bottom as opposed to top
         chessboard.processMove(x + 1, 8 - y + 1, pieceType);
-        chessboard.move++;
+        chessboard.moveNumber++;
 
         chessboard.timerActor.startTimer();
     }
@@ -159,8 +160,8 @@ public abstract class ChessPiece extends Actor {
         return chessboard.getObjectsAt(x, y, ChessPiece.class).isEmpty();
     }
 
-    protected boolean getPieceColor(int x, int y) {
-        return getPieceAt(x, y).color;
+    protected boolean isPieceWhite(int x, int y) {
+        return getPieceAt(x, y).isWhite;
     }
 
     protected ChessPiece getPieceAt(int x, int y) {

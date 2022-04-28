@@ -6,9 +6,9 @@ import javafx.util.Pair;
 
 public class Knight extends ChessPiece {
 
-    public Knight(Boolean color) {
-        super(color);
-        setImage(color ? "white_knight.png" : "black_knight.png");
+    public Knight(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_knight.png" : "black_knight.png");
     }
 
     @Override

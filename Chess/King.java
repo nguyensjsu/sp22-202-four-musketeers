@@ -3,9 +3,9 @@ import greenfoot.*;
 import java.util.List;
 
 public class King extends ChessPiece {
-    public King(Boolean color) {
-        super(color);
-        setImage(color ? "white_king.png" : "black_king.png");
+    public King(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_king.png" : "black_king.png");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class King extends ChessPiece {
             if (absDiffX <= 1 && absDiffY <= 1) {
                 move(mouseX, mouseY);
             } else if (!moved) {
-                if (color) {
+                if (isWhite) {
                     castleWhite(mouseX, mouseY);
                 } else {
                     castleBlack(mouseX, mouseY);
@@ -35,7 +35,7 @@ public class King extends ChessPiece {
     }
 
     private void castleWhite(int mouseX, int mouseY) {
-        int y = chessboard.DIM_Y - 1;
+        int y = Chessboard.DIM_Y - 1;
         if (mouseX == 2 && mouseY == y) {
             // Castle left
             if (isTileEmpty(1, y) && isTileEmpty(2, y) && isTileEmpty(3, y)) {
@@ -58,7 +58,7 @@ public class King extends ChessPiece {
     }
 
     private void castleBlack(int mouseX, int mouseY) {
-        int y = chessboard.DIM_Y - 1;
+        int y = Chessboard.DIM_Y - 1;
         if (mouseX == 1 && mouseY == y) {
             // Castle left
             if (isTileEmpty(1, y) && isTileEmpty(2, y)) {

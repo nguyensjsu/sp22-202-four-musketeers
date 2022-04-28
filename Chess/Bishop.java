@@ -1,9 +1,9 @@
 import greenfoot.*;
 
 public class Bishop extends ChessPiece {
-    public Bishop(Boolean color) {
-        super(color);
-        setImage(color ? "white_bishop.png" : "black_bishop.png");
+    public Bishop(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_bishop.png" : "black_bishop.png");
     }
 
     @Override

@@ -1,9 +1,9 @@
 import greenfoot.*;
 
 public class Queen extends ChessPiece {
-    public Queen(Boolean color) {
-        super(color);
-        setImage(color ? "white_queen.png" : "black_queen.png");
+    public Queen(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_queen.png" : "black_queen.png");
     }
 
     @Override

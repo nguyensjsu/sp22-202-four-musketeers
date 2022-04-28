@@ -63,7 +63,7 @@ public class Label extends Actor {
     }
 
     // this is how black movements are inserted into existing labels (can maybe take out move1 stuff)
-    public void updateValues(String move, Boolean colorPiece) {
+    public void updateValues(String move, boolean colorPiece) {
         if (colorPiece) {
             this.move1 = move;
         } else {
