@@ -47,12 +47,6 @@ public class Pawn extends ChessPiece {
 
                 int delta_x = x - this.getX();
                 int delta_y = y - this.getY();
-                
-                System.err.println("Current X:" + this.getX() + " Current Y:" + this.getY());
-                System.err.println("X :" + x + " Y:" + y);            
-
-                //check if the click location contain any chess pieces
-                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
 
                 //only advancing
                 if(x == this.getX())
@@ -61,9 +55,7 @@ public class Pawn extends ChessPiece {
                     if(this.getY() == chessboard.DIM_Y - 2 && delta_y == -2)
                     {
                         //check if the 2 spaces in front of it are blank
-                        boolean space1 = this.isSpaceEmpty(x, y);
-                        boolean space2 = this.isSpaceEmpty(x, y+1);
-                        if( space1 && space2 )
+                        if( this.isSpaceEmpty(x, y) && this.isSpaceEmpty(x, y+1) )
                         {
                             stepTwo = chessboard.move;
                             move(x,y);
