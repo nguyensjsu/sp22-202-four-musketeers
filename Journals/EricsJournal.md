@@ -37,8 +37,10 @@ Team Member Name: Eric Arreola
 
 What I did since last weekly scrum:
 -  In the past week since the last scrum meeting I worked on the implementation of the move history feature which would track what moves players recently made. I used the Observer pattern for this feature which just has the MoveHistory object observe the Chessboard and it is updated on whenever a chesspiece moves from its original position. The location it moved to along with the type of piece that moved is converted to a string and sent to the observer which in this case just displays it on the side of the screen. The move history moves up infinitely as new moves are made. Each history entry within the move history object displays the current turn and the movements of both the black and white players during that turn. I also did some further research into ches s itself since I had never really played it before and did not understand the rules well. I played it a few times and now feel comfortable being able to tell what rules a chess game should follow. 
+
 What I plan to do this week:
 -  During the meeting I was demonstrating the move history functionalities and during that Ryan noticed a bug with how the pieces were being displayed which wasn't there before and I also noticed that the move history being displayed was not displaying the exact coordinates that pieces were moving to so I have to figure out both roots of those bugs. Once I figure out those and patch them I need to merge my branch with the main branch so that others can continue their work. A suggestion for move history was also to maybe try adding a scroll bar so I will look into that and see what the implementation would look like in terms of time and effort. If it is feasible and worth the time then I can try adding it.
+
 What blockers I have:
 -  I am not really sure how to handle implementing a scroll bar so I have to do some research. I'm also not sure how Greenfoot handles storing data for past moves. I need to figure out the source of the bugs that were caught in the meeting since I have a vague idea of where they could be but nothing concrete yet. 
 
