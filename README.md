@@ -32,3 +32,20 @@ Structure meetings?
 1. Opening -- PR review
 2. Issues we're facing?
 3. Features and where we're going.
+
+## 4/27/2022 ##
+Review Eric's move history. All appears to be good. Only potential request was to include the color of the piece that moved. 
+John demo the timer. Current move timer is set to 30 sec, a bug was observed where the person can have their turn skipped if the timer expires.
+Team voted to allow the bug as it adds uniqueness to the game. 
+
+Issue, Richard: how do you make a popup where you can select options.
+
+This week:
+John: enable timer disabling, add timer difficulty levels, and fix bugs
+Eric: To fix record moves and start on showing valid moves
+Richard: Pawn promotion.
+Ryan: Castling through compromised squares and capturing king. And check alert. 
+
+Obstacles:
+Richard: popup dialog box.
+Eric: Figure out source of bug with select

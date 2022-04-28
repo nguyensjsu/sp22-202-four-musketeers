@@ -82,6 +82,8 @@ public class ChessPiece extends Actor
         
         chessBoard.processMove(x + 1,8 - y + 1,pieceType);
         chessBoard.move++;
+        
+        chessBoard.timerActor.startTimer();
     }
 
     protected void capture()
