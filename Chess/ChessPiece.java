@@ -84,13 +84,10 @@ public abstract class ChessPiece extends Actor {
     protected boolean isPathBlocked() {
         int mouseX = getMouseX();
         int mouseY = getMouseY();
-
         int x = getX();
         int y = getY();
-
         int diffX = mouseX - x;
         int diffY = mouseY - y;
-
         int absDiffX = Math.abs(mouseX - x);
         int absDiffY = Math.abs(mouseY - y);
 
@@ -117,7 +114,6 @@ public abstract class ChessPiece extends Actor {
                 }
             }
         } else if (isDiagonalMove()) {
-            // Diagonal
             for (int i = 1; i < absDiffX; i++) {
                 if (!isTileEmpty(x + (multX * i), y + (multY * i))) {
                     return true;

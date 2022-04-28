@@ -13,13 +13,15 @@ public class Knight extends ChessPiece {
 
     @Override
     protected void move() {
-        if (!ready || !isClickedAnywhere()) {
-            return;
+        if (ready && isClickedAnywhere()) {
+            if (isKnightMove() && isEmptyOrEnemy()) {
+                move(getMouseX(), getMouseY());
+            }
+            ready = false;
         }
+    }
 
-        int mouseX = getMouseX();
-        int mouseY = getMouseY();
-
+    private boolean isKnightMove() {
         List<Pair<Integer, Integer>> vals = List.of(
                 new Pair<>(-2, -1), new Pair<>(-2, 1),
                 new Pair<>(-1, -2), new Pair<>(-1, 2),
@@ -27,18 +29,16 @@ public class Knight extends ChessPiece {
                 new Pair<>(2, -1), new Pair<>(2, 1)
         );
 
-        boolean empty = isTileEmpty(mouseX, mouseY);
+        int mouseX = getMouseX();
+        int mouseY = getMouseY();
+        int x = getX();
+        int y = getY();
 
-        //if tile is empty or other color
-        if (empty || getPieceColor(mouseX, mouseY) != color) {
-            for (Pair<Integer, Integer> p : vals) {
-                if ((mouseX == getX() + p.getKey() && mouseY == getY() + p.getValue())) {
-                    move(mouseX, mouseY);
-                    break;
-                }
+        for (Pair<Integer, Integer> p : vals) {
+            if (mouseX == x + p.getKey() && mouseY == y + p.getValue()) {
+                return true;
             }
         }
-
-        ready = false;
+        return false;
     }
 }
