@@ -67,9 +67,7 @@ public class Chessboard extends World implements IChessMoveSubject
             }
         }
         observers = new ArrayList<>();
-        
-        setPaintOrder(ChessPiece.class,Tile.class);
-        setPaintOrder(Label.class,MoveHistory.class);
+        setPaintOrder(ChessPiece.class,Tile.class,Label.class,MoveHistory.class);
         
         start();
     }

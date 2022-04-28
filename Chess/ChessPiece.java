@@ -80,7 +80,7 @@ public class ChessPiece extends Actor
             pieceType = this.getClass().getSimpleName().substring(0,2);
         //+1 to not start from 0,8 to have distance measured from bottom as opposed to top
         
-        chessBoard.processMove(x + 1,8 - y,pieceType);
+        chessBoard.processMove(x + 1,8 - y + 1,pieceType);
         chessBoard.move++;
     }
 

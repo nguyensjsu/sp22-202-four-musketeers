@@ -18,7 +18,7 @@ public class MoveHistory extends Actor implements IChessMoveObserver
     private static final int height = 900;
     private int turnDisplayed = 1; //only iterates on white turns
 
-    private int labelY = 1;
+    private int labelY = 1; 
     private int labelX = 9;
 
     GreenfootImage boardImage; // large rectangle background
@@ -37,7 +37,6 @@ public class MoveHistory extends Actor implements IChessMoveObserver
         myWorld = (Chessboard) w;
         boardImage = new GreenfootImage(width,height);
         boardImage.setColor(Color.LIGHT_GRAY);
-        myWorld.setPaintOrder(Label.class,MoveHistory.class);
         boardImage.fillRect(0,0,width,height);
         setImage(boardImage);
         
