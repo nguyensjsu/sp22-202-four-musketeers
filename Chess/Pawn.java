@@ -1,7 +1,7 @@
 import greenfoot.*;
 
 public class Pawn extends ChessPiece {
-    int stepTwo;
+    private int stepTwo;
 
     public Pawn(Boolean color) {
         super(color);
@@ -14,50 +14,36 @@ public class Pawn extends ChessPiece {
             return;
         }
 
-        //get the location of the click
         int mouseX = getMouseX();
         int mouseY = getMouseY();
-
         int x = getX();
         int y = getY();
+        int diffX = mouseX - x;
+        int diffY = mouseY - y;
 
-        int delta_x = mouseX - x;
-        int delta_y = mouseY - y;
-
-        //only advancing
-        if (mouseX == x) {
-            //if first move allow 2 spaces. (need to check 2 spaces ahead to allow move)
-            if (y == chessboard.DIM_Y - 2 && delta_y == -2) {
-                //check if the 2 spaces in front of it are blank
-                if (isTileEmpty(mouseX, mouseY) && isTileEmpty(mouseX, mouseY + 1)) {
-                    stepTwo = chessboard.move;
-                    move(mouseX, mouseY);
-                }
-            }
-            //else allow for 1 move forward
-            else if (delta_y == -1 && isTileEmpty(mouseX, mouseY)) {
+        if (isVerticalMove()) {
+            if (y == chessboard.DIM_Y - 2 && diffY == -2 && isTileEmpty(mouseX, mouseY) && isTileEmpty(mouseX, mouseY + 1)) {
+                // First move allow move 2 tiles, check if 2 tiles in front are empty
+                stepTwo = chessboard.move;
+                move(mouseX, mouseY);
+            } else if (diffY == -1 && isTileEmpty(mouseX, mouseY)) {
+                // Move 1 tile
                 move(mouseX, mouseY);
             }
-        }
-        //capturing
-        else if (Math.abs(delta_x) == 1 && delta_y == -1) {
-
-            //case 1 capturing a standard piece
-            //check if the space is not empty and if the piece there is not the same color
+        } else if (Math.abs(diffX) == 1 && diffY == -1) {
             if (!isTileEmpty(mouseX, mouseY) && getPieceColor(mouseX, mouseY) != color) {
+                // Normal capture
                 move(mouseX, mouseY);
-            }
-            //case 2 en passant
-            else if (chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).size() != 0) {
+            } else if (!chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).isEmpty()) {
+                // En passant
                 Pawn oppPawn = chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).get(0);
-                if (color != oppPawn.color) {
-                    if (oppPawn.stepTwo == chessboard.move - 1) {
-                        move(mouseX, mouseY);
-                        chessboard.removeObject(oppPawn);
-                    }
+                if (color != oppPawn.color && oppPawn.stepTwo == chessboard.move - 1) {
+                    move(mouseX, mouseY);
+                    chessboard.removeObject(oppPawn);
                 }
             }
         }
+
         ready = false;
     }
 }
