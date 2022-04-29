@@ -1,6 +1,14 @@
 import greenfoot.*;
+import javafx.util.Pair;
+
+import java.util.HashSet;
+import java.util.List;
 
 public class Pawn extends ChessPiece {
+    private static final List<Pair<Integer, Integer>> MOVES = List.of(
+            new Pair<>(-1, -1), new Pair<>(1, -1)
+    );
+
     private int stepTwo;
 
     public Pawn(boolean isWhite) {
@@ -22,16 +30,16 @@ public class Pawn extends ChessPiece {
         int diffY = mouseY - y;
 
         if (isVerticalMove()) {
-            if (y == Chessboard.DIM_Y - 2 && diffY == -2 && isTileEmpty(mouseX, mouseY) && isTileEmpty(mouseX, mouseY + 1)) {
+            if (y == Chessboard.DIM_Y - 2 && diffY == -2 && isEmptyTile(mouseX, mouseY) && isEmptyTile(mouseX, mouseY + 1)) {
                 // First move allow move 2 tiles, check if 2 tiles in front are empty
                 stepTwo = chessboard.moveNumber;
                 move(mouseX, mouseY);
-            } else if (diffY == -1 && isTileEmpty(mouseX, mouseY)) {
+            } else if (diffY == -1 && isEmptyTile(mouseX, mouseY)) {
                 // Move 1 tile
                 move(mouseX, mouseY);
             }
         } else if (Math.abs(diffX) == 1 && diffY == -1) {
-            if (!isTileEmpty(mouseX, mouseY) && isPieceWhite(mouseX, mouseY) != isWhite) {
+            if (!isEmptyTile(mouseX, mouseY) && isWhitePiece(mouseX, mouseY) != isWhite) {
                 // Normal capture
                 move(mouseX, mouseY);
             } else if (!chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).isEmpty()) {
@@ -45,5 +53,19 @@ public class Pawn extends ChessPiece {
         }
 
         ready = false;
+    }
+
+    @Override
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+        // TODO: Separate moves vs captures
+        HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
+        for (Pair<Integer, Integer> move : MOVES) {
+            int x = getX() + move.getKey();
+            int y = getY() + move.getValue();
+            if (isTile(x, y) && isEmptyOrEnemy(x, y)) {
+                moves.add(new Pair<>(x, y));
+            }
+        }
+        return moves;
     }
 }

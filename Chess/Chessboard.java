@@ -1,6 +1,7 @@
 import greenfoot.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.*;
 
 public class Chessboard extends World implements IChessMoveSubject {
@@ -30,6 +31,8 @@ public class Chessboard extends World implements IChessMoveSubject {
         if (rawSeconds == 0) {
             isWhiteTurn = !isWhiteTurn;
             timerActor.startTimer();
+
+            // TODO: If time runs out and you're in check, game over
         }
 
         // Update timer display
@@ -170,6 +173,9 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         Greenfoot.delay(30);
 
+        clearSelection();
+        clearValidMoves();
+
         int edgeX = DIM_Y - 2;
         int edgeY = DIM_Y;
 
@@ -197,7 +203,19 @@ public class Chessboard extends World implements IChessMoveSubject {
             k.setLocation(edgeX - k.getX(), edgeY - k.getY());
         }
 
+        for (Check check : getObjects(Check.class)) {
+            check.setLocation(edgeX - check.getX(), edgeY - check.getY());
+        }
+
         swapTurn = isWhiteTurn;
+    }
+
+    public void clearSelection() {
+        removeObjects(getObjects(Select.class));
+    }
+
+    public void clearValidMoves() {
+        removeObjects(getObjects(Valid.class));
     }
 
     @Override

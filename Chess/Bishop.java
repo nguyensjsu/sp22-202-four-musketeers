@@ -1,5 +1,9 @@
 import greenfoot.*;
 
+import java.util.HashSet;
+
+import javafx.util.Pair;
+
 public class Bishop extends ChessPiece {
     public Bishop(boolean isWhite) {
         super(isWhite);
@@ -14,5 +18,10 @@ public class Bishop extends ChessPiece {
             }
             ready = false;
         }
+    }
+
+    @Override
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+        return getDiagonalMoves(curX, curY, moveX, moveY);
     }
 }
