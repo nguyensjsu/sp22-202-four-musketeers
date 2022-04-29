@@ -43,16 +43,21 @@ XP Core Value **Courage** :
 Team Member Name: Ryan Tran
 
 What tasks did I work on / complete:
-- 
+- I performed major refactoring of most of the code, namely the piece movements.
+- I added check and possible moves functionality.
 
 What am I planning to work on next:
-- 
+- I plan to continue improving the piece movement code.
+- The check and possible moves functionality is not 100% done yet, so I will complete those.
+- I will then move on to checkmate and stalemate functionality.
 
 What tasks are blocked waiting on another team member:
-- 
+- None.
 
 XP Core Value **Courage** : 
--  
+-  Again, our team is working smoothly so far, so there are no organizational issues that reduce our team's effectiveness.
+-  Again, there has not yet been a situation where anyone has tried doing something that doesn't work for too long.
+-  Again, there has not been a situation where critical feedback was provided.
 
 ---
 ## Four Musketeers: Weekly Scrum Report 5/4
