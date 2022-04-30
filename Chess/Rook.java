@@ -10,16 +10,6 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    protected void move() {
-        if (ready && isClickedAnywhere()) {
-            if ((isVerticalMove() || isHorizontalMove()) && isEmptyOrEnemy() && !isPathBlocked()) {
-                move(getMouseX(), getMouseY());
-            }
-            ready = false;
-        }
-    }
-
-    @Override
     protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
         moves.addAll(getVerticalMoves(curX, curY, moveX, moveY));

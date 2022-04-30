@@ -19,15 +19,21 @@ public abstract class ChessPiece extends Actor {
     public void act() {
         chessboard = (Chessboard) getWorld();
         if (isWhite == chessboard.isWhiteTurn) {
-            select();
             move();
+            select();
             changeStatus();
             capture();
         }
     }
 
-    private boolean isSelected() {
-        return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
+    private void move() {
+        if (isSelected() && isClickedAnywhere()) {
+            int mouseX = getMouseX();
+            int mouseY = getMouseY();
+            if (!chessboard.getObjectsAt(mouseX, mouseY, Valid.class).isEmpty()) {
+                move(mouseX, mouseY);
+            }
+        }
     }
 
     private void select() {
@@ -63,8 +69,6 @@ public abstract class ChessPiece extends Actor {
         chessboard.clearValidMoves();
     }
 
-    protected abstract void move();
-
     private void changeStatus() {
         if (isSelected()) {
             ready = true;
@@ -78,57 +82,10 @@ public abstract class ChessPiece extends Actor {
         }
     }
 
-    protected boolean isPathBlocked() {
-        int mouseX = getMouseX();
-        int mouseY = getMouseY();
-        int x = getX();
-        int y = getY();
-        int diffX = mouseX - x;
-        int diffY = mouseY - y;
-        int absDiffX = Math.abs(mouseX - x);
-        int absDiffY = Math.abs(mouseY - y);
-
-        int multX = 0;
-        if (diffX != 0) {
-            multX = diffX < 0 ? -1 : 1;
-        }
-
-        int multY = 0;
-        if (diffY != 0) {
-            multY = diffY < 0 ? -1 : 1;
-        }
-
-        if (isVerticalMove()) {
-            for (int i = 1; i < absDiffY; i++) {
-                if (!isEmptyTile(mouseX, y + (multY * i))) {
-                    return true;
-                }
-            }
-        } else if (isHorizontalMove()) {
-            for (int i = 1; i < absDiffX; i++) {
-                if (!isEmptyTile(x + (multX * i), mouseY)) {
-                    return true;
-                }
-            }
-        } else if (isDiagonalMove()) {
-            for (int i = 1; i < absDiffX; i++) {
-                if (!isEmptyTile(x + (multX * i), y + (multY * i))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     // Move history should prob go here
-    protected void move(int x, int y) {
-        if (!isValidMove(x, y)) {
-            return;
-        }
-
+    protected void move(int mouseX, int mouseY) {
         moved = true;
-        setLocation(x, y);
+        setLocation(mouseX, mouseY);
         updateCheck();
 
         chessboard.isWhiteTurn = !chessboard.isWhiteTurn;
@@ -139,7 +96,7 @@ public abstract class ChessPiece extends Actor {
         }
 
         // +1 to not start from 0, 8 to have distance measured from bottom as opposed to top
-        chessboard.processMove(x + 1, 8 - y + 1, pieceType);
+        chessboard.processMove(mouseX + 1, 8 - mouseY + 1, pieceType);
         chessboard.moveNumber++;
 
         chessboard.timerActor.startTimer();
@@ -336,6 +293,11 @@ public abstract class ChessPiece extends Actor {
         return true;
     }
 
+    protected boolean isEnemy(int x, int y) {
+        List<ChessPiece> piece = chessboard.getObjectsAt(x, y, ChessPiece.class);
+        return !piece.isEmpty() && piece.get(0).isWhite != isWhite;
+    }
+
     protected boolean isEmptyOrEnemy() {
         return isEmptyOrEnemy(getMouseX(), getMouseY());
     }
@@ -354,6 +316,10 @@ public abstract class ChessPiece extends Actor {
 
     protected boolean isDiagonalMove() {
         return Math.abs(getMouseX() - getX()) == Math.abs(getMouseY() - getY());
+    }
+
+    private boolean isSelected() {
+        return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
     }
 
     protected boolean isClickedAnywhere() {

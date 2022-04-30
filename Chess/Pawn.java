@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Pawn extends ChessPiece {
-    private static final List<Pair<Integer, Integer>> MOVES = List.of(
+    private static final List<Pair<Integer, Integer>> CAPTURES = List.of(
+            new Pair<>(-1, -1), new Pair<>(1, -1)
+    );
+    private static final List<Pair<Integer, Integer>> EN_PASSANT = List.of(
             new Pair<>(-1, -1), new Pair<>(1, -1)
     );
 
-    private int stepTwo;
+    private int moveTwoTilesMoveNumber;
 
     public Pawn(boolean isWhite) {
         super(isWhite);
@@ -17,55 +20,75 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    protected void move() {
-        if (!ready || !isClickedAnywhere()) {
-            return;
-        }
-
-        int mouseX = getMouseX();
-        int mouseY = getMouseY();
-        int x = getX();
-        int y = getY();
-        int diffX = mouseX - x;
-        int diffY = mouseY - y;
-
-        if (isVerticalMove()) {
-            if (y == Chessboard.DIM_Y - 2 && diffY == -2 && isEmptyTile(mouseX, mouseY) && isEmptyTile(mouseX, mouseY + 1)) {
-                // First move allow move 2 tiles, check if 2 tiles in front are empty
-                stepTwo = chessboard.moveNumber;
-                move(mouseX, mouseY);
-            } else if (diffY == -1 && isEmptyTile(mouseX, mouseY)) {
-                // Move 1 tile
-                move(mouseX, mouseY);
-            }
-        } else if (Math.abs(diffX) == 1 && diffY == -1) {
-            if (!isEmptyTile(mouseX, mouseY) && isWhitePiece(mouseX, mouseY) != isWhite) {
-                // Normal capture
-                move(mouseX, mouseY);
-            } else if (!chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).isEmpty()) {
-                // En passant
-                Pawn oppPawn = chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class).get(0);
-                if (isWhite != oppPawn.isWhite && oppPawn.stepTwo == chessboard.moveNumber - 1) {
-                    move(mouseX, mouseY);
-                    chessboard.removeObject(oppPawn);
-                }
+    protected void move(int mouseX, int mouseY) {
+        if (Math.abs(mouseY - getY()) == 2) {
+            // Move two tiles
+            moveTwoTilesMoveNumber = chessboard.moveNumber;
+        } else {
+            // En passant
+            List<Pawn> pawn = chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class);
+            if (isEnPassant(pawn)) {
+                chessboard.removeObject(pawn.get(0));
             }
         }
-
-        ready = false;
+        super.move(mouseX, mouseY);
     }
 
     @Override
     protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
-        // TODO: Separate moves vs captures
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
-        for (Pair<Integer, Integer> move : MOVES) {
-            int x = getX() + move.getKey();
-            int y = getY() + move.getValue();
-            if (isTile(x, y) && isEmptyOrEnemy(x, y)) {
-                moves.add(new Pair<>(x, y));
+
+        int posX = getX();
+        int posY = getY();
+
+        // Move 1 tile
+        if (curX == -1) {
+            if (isTile(posX, posY - 1) && isEmptyTile(posX, posY - 1)) {
+                moves.add(new Pair<>(posX, posY - 1));
+
+                // Move 2 tiles
+                if (!moved && isTile(posX, posY - 2) && isEmptyTile(posX, posY - 2)) {
+                    moves.add(new Pair<>(posX, posY - 2));
+                }
             }
         }
+
+        // Normal captures
+        for (Pair<Integer, Integer> move : CAPTURES) {
+            // Pawn is special, need to explicitly separate checking own/enemy move
+            if (curX == -1) {
+                // Checking own move
+                int x = posX + move.getKey();
+                int y = posY + move.getValue();
+                if (isTile(x, y) && isEnemy(x, y)) {
+                    moves.add(new Pair<>(x, y));
+                }
+            } else {
+                // Checking enemy move
+                int x = posX + move.getKey();
+                int y = posY - move.getValue();
+                if (x == moveX && y == moveY) {
+                    moves.add(new Pair<>(x, y));
+                }
+            }
+        }
+
+        // En passant
+        if (curX == -1) {
+            for (Pair<Integer, Integer> move : EN_PASSANT) {
+                int x = posX + move.getKey();
+                int y = posY + move.getValue();
+                List<Pawn> pawn = chessboard.getObjectsAt(x, y + 1, Pawn.class);
+                if (isTile(x, y) && isEnPassant(pawn)) {
+                    moves.add(new Pair<>(x, y));
+                }
+            }
+        }
+
         return moves;
+    }
+
+    private boolean isEnPassant(List<Pawn> pawn) {
+        return !pawn.isEmpty() && pawn.get(0).isWhite != isWhite && pawn.get(0).moveTwoTilesMoveNumber == chessboard.moveNumber - 1;
     }
 }
