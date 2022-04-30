@@ -133,11 +133,30 @@ public abstract class ChessPiece extends Actor {
 
         // Can't endanger own king
         King ownKing = getOwnKing();
+        int kingX = ownKing.getX();
+        int kingY = ownKing.getY();
         HashSet<Pair<Integer, Integer>> enemyMoves = getEnemyMoves(moveX, moveY);
-        if (this == ownKing) {
+
+        // This piece is not king, check current king position
+        if (this != ownKing) {
+            return !enemyMoves.contains(new Pair<>(kingX, kingY));
+        }
+
+        // This piece is king, check future king position
+        if (Math.abs(moveX - kingX) != 2) {
             return !enemyMoves.contains(new Pair<>(moveX, moveY));
         }
-        return !enemyMoves.contains(new Pair<>(ownKing.getX(), ownKing.getY()));
+
+        // Castling path must also be safe
+        if (moveX < kingX) {
+            // Castle left
+            enemyMoves.addAll(getEnemyMoves(moveX + 1, moveY));
+            return !enemyMoves.contains(new Pair<>(moveX + 1, moveY));
+        } else {
+            // Castle right
+            enemyMoves.addAll(getEnemyMoves(moveX - 1, moveY));
+            return !enemyMoves.contains(new Pair<>(moveX - 1, moveY));
+        }
     }
 
     private King getOwnKing() {
