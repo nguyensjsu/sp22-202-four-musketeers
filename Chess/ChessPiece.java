@@ -142,19 +142,27 @@ public abstract class ChessPiece extends Actor {
             return !enemyMoves.contains(new Pair<>(kingX, kingY));
         }
 
-        // This piece is king, check future king position
+        // This piece is king, not castling, check future king position
         if (Math.abs(moveX - kingX) != 2) {
             return !enemyMoves.contains(new Pair<>(moveX, moveY));
+        }
+
+        // Castling, must not be in check
+        if (!chessboard.getObjectsAt(kingX, kingY, Check.class).isEmpty()) {
+            return false;
+        }
+
+        // Castling tile must be safe
+        if (enemyMoves.contains(new Pair<>(moveX, moveY))) {
+            return false;
         }
 
         // Castling path must also be safe
         if (moveX < kingX) {
             // Castle left
-            enemyMoves.addAll(getEnemyMoves(moveX + 1, moveY));
             return !enemyMoves.contains(new Pair<>(moveX + 1, moveY));
         } else {
             // Castle right
-            enemyMoves.addAll(getEnemyMoves(moveX - 1, moveY));
             return !enemyMoves.contains(new Pair<>(moveX - 1, moveY));
         }
     }
