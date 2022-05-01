@@ -26,12 +26,22 @@ public class Pawn extends ChessPiece {
             moveTwoTilesMoveNumber = chessboard.moveNumber;
             super.move(mouseX, mouseY);
         } else {
-            // En passant
             List<Pawn> pawn = chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class);
             if (isEnPassant(pawn)) {
+                // En passant
                 chessboard.removeObject(pawn.get(0));
                 Greenfoot.playSound("capture.mp3");
                 move(mouseX, mouseY, true);
+            } else if (mouseY == 1) {
+                // Remove pawn
+                removed = true;
+                chessboard.removeObject(this);
+
+                // Add queen
+                Queen queen = new Queen(isWhite);
+                queen.chessboard = chessboard;
+                chessboard.addObject(queen, mouseX, mouseY);
+                queen.move(mouseX, mouseY, false);
             } else {
                 super.move(mouseX, mouseY);
             }

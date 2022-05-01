@@ -7,7 +7,8 @@ import javafx.util.Pair;
 
 public abstract class ChessPiece extends Actor {
     protected boolean isWhite;
-    protected boolean moved = false; // For castling, can't castle if king or rook moved
+    protected boolean moved; // For castling, can't castle if king or rook moved
+    protected boolean removed; // For pawn promotion
     protected Chessboard chessboard;
 
     public ChessPiece(boolean isWhite) {
@@ -19,7 +20,9 @@ public abstract class ChessPiece extends Actor {
         chessboard = (Chessboard) getWorld();
         if (!chessboard.gameOver && isWhite == chessboard.isWhiteTurn) {
             move();
-            select();
+            if (!removed) {
+                select();
+            }
         }
     }
 
@@ -118,8 +121,6 @@ public abstract class ChessPiece extends Actor {
             chessboard.addObject(new Checkmate(), enemyKing.getX(), enemyKing.getY());
 
             Greenfoot.playSound("stalemate.mp3");
-        } else {
-
         }
         chessboard.moveNumber++;
         chessboard.isWhiteTurn = !chessboard.isWhiteTurn;
