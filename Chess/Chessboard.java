@@ -7,7 +7,7 @@ import java.util.function.*;
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
-    public static final int TURN_TIME = 30;
+    public static final int TURN_TIME = 5;
 
     private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
@@ -29,6 +29,9 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         // Swap turns if time is up
         if (rawSeconds == 0) {
+            processMove(0,0,"-");
+            moveNumber++;
+            
             isWhiteTurn = !isWhiteTurn;
             timerActor.startTimer();
 
@@ -238,7 +241,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     // Used to turn x and y coords into a string that labels can display
     @Override
     public void processMove(int x, int y, String pieceType) {
-        String out = pieceType + "[" + x + "," + y + "]";
+        String out = pieceType.equals("-") ? " - " : pieceType + "[" + x + "," + y + "]";
         notifyObservers(moveNumber, out);
     }
 }
