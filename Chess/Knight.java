@@ -19,12 +19,12 @@ public class Knight extends ChessPiece {
     }
 
     @Override
-    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
         for (Pair<Integer, Integer> move : MOVES) {
             int x = getX() + move.getKey();
             int y = getY() + move.getValue();
-            if (isTile(x, y) && isEmptyOrEnemy(x, y)) {
+            if (isTile(x, y) && (isEmpty(x, y) || isEnemy(x, y))) {
                 moves.add(new Pair<>(x, y));
             }
         }

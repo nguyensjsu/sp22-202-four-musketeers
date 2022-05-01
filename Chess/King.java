@@ -31,19 +31,22 @@ public class King extends ChessPiece {
             } else if (mouseX == 5) {
                 chessboard.getObjectsAt(7, y, Rook.class).get(0).setLocation(4, y);
             }
+            Greenfoot.playSound("castle.mp3");
+            move(mouseX, mouseY, true);
+        } else {
+            super.move(mouseX, mouseY);
         }
-        super.move(mouseX, mouseY);
     }
 
     @Override
-    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
 
         // Normal moves
         for (Pair<Integer, Integer> move : MOVES) {
             int x = getX() + move.getKey();
             int y = getY() + move.getValue();
-            if (isTile(x, y) && (isEmptyOrEnemy(x, y) || (x == moveX && y == moveY))) {
+            if (isTile(x, y) && (isEmpty(x, y) || isEnemy(x, y) || (x == moveX && y == moveY))) {
                 moves.add(new Pair<>(x, y));
             }
         }
@@ -54,7 +57,7 @@ public class King extends ChessPiece {
 
             if (isWhite) {
                 // Castle left
-                if (isEmptyTile(1, y) && isEmptyTile(2, y) && isEmptyTile(3, y)) {
+                if (isEmpty(1, y) && isEmpty(2, y) && isEmpty(3, y)) {
                     List<Rook> leftRook = chessboard.getObjectsAt(0, y, Rook.class);
                     if (!leftRook.isEmpty() && !leftRook.get(0).moved) {
                         moves.add(new Pair<>(2, y));
@@ -62,7 +65,7 @@ public class King extends ChessPiece {
                 }
 
                 // Castle right
-                if (isEmptyTile(5, y) && isEmptyTile(6, y)) {
+                if (isEmpty(5, y) && isEmpty(6, y)) {
                     List<Rook> rightRook = chessboard.getObjectsAt(7, y, Rook.class);
                     if (!rightRook.isEmpty() && !rightRook.get(0).moved) {
                         moves.add(new Pair<>(6, y));
@@ -70,7 +73,7 @@ public class King extends ChessPiece {
                 }
             } else {
                 // Castle left
-                if (isEmptyTile(1, y) && isEmptyTile(2, y)) {
+                if (isEmpty(1, y) && isEmpty(2, y)) {
                     List<Rook> leftRook = chessboard.getObjectsAt(0, y, Rook.class);
                     if (!leftRook.isEmpty() && !leftRook.get(0).moved) {
                         moves.add(new Pair<>(1, y));
@@ -78,7 +81,7 @@ public class King extends ChessPiece {
                 }
 
                 // Castle right
-                if (isEmptyTile(4, y) && isEmptyTile(5, y) && isEmptyTile(6, y)) {
+                if (isEmpty(4, y) && isEmpty(5, y) && isEmpty(6, y)) {
                     List<Rook> rightRook = chessboard.getObjectsAt(7, y, Rook.class);
                     if (!rightRook.isEmpty() && !rightRook.get(0).moved) {
                         moves.add(new Pair<>(5, y));

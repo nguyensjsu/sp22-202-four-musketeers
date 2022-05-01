@@ -8,7 +8,6 @@ import javafx.util.Pair;
 public abstract class ChessPiece extends Actor {
     protected boolean isWhite;
     protected boolean moved = false; // For castling, can't castle if king or rook moved
-    protected boolean ready = false;
     protected Chessboard chessboard;
 
     public ChessPiece(boolean isWhite) {
@@ -18,11 +17,9 @@ public abstract class ChessPiece extends Actor {
     @Override
     public void act() {
         chessboard = (Chessboard) getWorld();
-        if (isWhite == chessboard.isWhiteTurn) {
+        if (!chessboard.gameOver && isWhite == chessboard.isWhiteTurn) {
             move();
             select();
-            changeStatus();
-            capture();
         }
     }
 
@@ -52,15 +49,8 @@ public abstract class ChessPiece extends Actor {
 
     private void addSelection(int x, int y) {
         chessboard.addObject(new Select(), x, y);
-
-        // Show valid moves
-        HashSet<Pair<Integer, Integer>> moves = getPossibleMoves();
-        for (Pair<Integer, Integer> move : moves) {
-            int moveX = move.getKey();
-            int moveY = move.getValue();
-            if (isValidMove(moveX, moveY)) {
-                chessboard.addObject(new Valid(), moveX, moveY);
-            }
+        for (Pair<Integer, Integer> validMove : getValidMoves(false)) {
+            chessboard.addObject(new Valid(), validMove.getKey(), validMove.getValue());
         }
     }
 
@@ -69,27 +59,15 @@ public abstract class ChessPiece extends Actor {
         chessboard.clearValidMoves();
     }
 
-    private void changeStatus() {
-        if (isSelected()) {
-            ready = true;
-        }
-    }
-
-    private void capture() {
-        ChessPiece touchPiece = (ChessPiece) getOneIntersectingObject(ChessPiece.class);
-        if (touchPiece != null && touchPiece.isWhite != isWhite) {
-            chessboard.removeObject(touchPiece);
-        }
-    }
-
-    // Move history should prob go here
     protected void move(int mouseX, int mouseY) {
+        move(mouseX, mouseY, false);
+    }
+
+    protected void move(int mouseX, int mouseY, boolean isSpecialMove) {
         moved = true;
         setLocation(mouseX, mouseY);
-        updateCheck();
 
-        chessboard.isWhiteTurn = !chessboard.isWhiteTurn;
-
+        // Move history
         String pieceType = getClass().getSimpleName().substring(0, 1);
         if (pieceType.equals("K")) {
             pieceType = getClass().getSimpleName().substring(0, 2);
@@ -97,35 +75,98 @@ public abstract class ChessPiece extends Actor {
 
         // +1 to not start from 0, 8 to have distance measured from bottom as opposed to top
         chessboard.processMove(mouseX + 1, 8 - mouseY + 1, pieceType);
-        chessboard.moveNumber++;
 
         chessboard.timerActor.startTimer();
+
+        capture(isSpecialMove);
+        updateGameState();
+        deleteSelection();
     }
 
-    private void updateCheck() {
-        // Remove check tile
+    private void capture(boolean isSpecialMove) {
+        ChessPiece touchPiece = (ChessPiece) getOneIntersectingObject(ChessPiece.class);
+        if (touchPiece != null) {
+            chessboard.removeObject(touchPiece);
+            Greenfoot.playSound("capture.mp3");
+        } else if (!isSpecialMove) {
+            Greenfoot.playSound("move.mp3");
+        }
+    }
+
+    private void updateGameState() {
         chessboard.removeObjects(chessboard.getObjects(Check.class));
+        boolean enemyHasNoMoves = enemyHasNoMoves();
+        if (isCheck()) {
+            King enemyKing = getEnemyKing();
+            int enemyKingX = enemyKing.getX();
+            int enemyKingY = enemyKing.getY();
+            if (enemyHasNoMoves) {
+                chessboard.gameOver = true;
+                chessboard.addObject(new Checkmate(), enemyKingX, enemyKingY);
+                Greenfoot.playSound("checkmate.mp3");
+            } else {
+                chessboard.addObject(new Check(), enemyKingX, enemyKingY);
+                Greenfoot.playSound("check.mp3");
+            }
+        } else if (enemyHasNoMoves) {
+            chessboard.gameOver = true;
 
-        // Set check for enemy king
-        King enemyKing = getEnemyKing();
-        int enemyKingX = enemyKing.getX();
-        int enemyKingY = enemyKing.getY();
+            King ownKing = getOwnKing();
+            chessboard.addObject(new Checkmate(), ownKing.getX(), ownKing.getY());
 
-        // Moves for this team against the enemy
-        HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
+            King enemyKing = getEnemyKing();
+            chessboard.addObject(new Checkmate(), enemyKing.getX(), enemyKing.getY());
+
+            Greenfoot.playSound("stalemate.mp3");
+        } else {
+
+        }
+        chessboard.moveNumber++;
+        chessboard.isWhiteTurn = !chessboard.isWhiteTurn;
+    }
+
+    private boolean enemyHasNoMoves() {
+        HashSet<Pair<Integer, Integer>> enemyValidMoves = new HashSet<>();
         for (ChessPiece piece : chessboard.getObjects(ChessPiece.class)) {
-            if (piece.isWhite == isWhite) {
-                moves.addAll(piece.getPossibleMoves());
+            if (piece.isWhite != isWhite) {
+                enemyValidMoves.addAll(piece.getValidMoves(true));
             }
         }
-
-        // Add check tile
-        if (moves.contains(new Pair<>(enemyKingX, enemyKingY))) {
-            chessboard.addObject(new Check(), enemyKingX, enemyKingY);
-        }
+        return enemyValidMoves.isEmpty();
     }
 
-    private boolean isValidMove(int moveX, int moveY) {
+    private boolean isCheck() {
+        HashSet<Pair<Integer, Integer>> teamPossibleMoves = new HashSet<>();
+        for (ChessPiece piece : chessboard.getObjects(ChessPiece.class)) {
+            if (piece.isWhite == isWhite) {
+                teamPossibleMoves.addAll(piece.getPossibleMoves(false));
+            }
+        }
+        King enemyKing = getEnemyKing();
+        return teamPossibleMoves.contains(new Pair<>(enemyKing.getX(), enemyKing.getY()));
+    }
+
+    protected abstract HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves);
+
+    private HashSet<Pair<Integer, Integer>> getPossibleMoves(boolean isCheckingNoMoves) {
+        return getPossibleMoves(-1, -1, -1, -1, isCheckingNoMoves);
+    }
+
+    // Need isCheckingNoMoves because pawns make life difficult
+    private HashSet<Pair<Integer, Integer>> getValidMoves(boolean isCheckingNoMoves) {
+        HashSet<Pair<Integer, Integer>> validMoves = new HashSet<>();
+        for (Pair<Integer, Integer> possibleMove : getPossibleMoves(isCheckingNoMoves)) {
+            if (isValidMove(possibleMove, isCheckingNoMoves)) {
+                validMoves.add(possibleMove);
+            }
+        }
+        return validMoves;
+    }
+
+    private boolean isValidMove(Pair<Integer, Integer> move, boolean isCheckingNoMoves) {
+        int moveX = move.getKey();
+        int moveY = move.getValue();
+
         // Can't capture enemy king
         if (!chessboard.getObjectsAt(moveX, moveY, King.class).isEmpty()) {
             return false;
@@ -135,16 +176,16 @@ public abstract class ChessPiece extends Actor {
         King ownKing = getOwnKing();
         int kingX = ownKing.getX();
         int kingY = ownKing.getY();
-        HashSet<Pair<Integer, Integer>> enemyMoves = getEnemyMoves(moveX, moveY);
+        HashSet<Pair<Integer, Integer>> enemyPossibleMoves = getEnemyPossibleMoves(moveX, moveY, isCheckingNoMoves);
 
         // This piece is not king, check current king position
         if (this != ownKing) {
-            return !enemyMoves.contains(new Pair<>(kingX, kingY));
+            return !enemyPossibleMoves.contains(new Pair<>(kingX, kingY));
         }
 
         // This piece is king, not castling, check future king position
         if (Math.abs(moveX - kingX) != 2) {
-            return !enemyMoves.contains(new Pair<>(moveX, moveY));
+            return !enemyPossibleMoves.contains(new Pair<>(moveX, moveY));
         }
 
         // Castling, must not be in check
@@ -153,53 +194,29 @@ public abstract class ChessPiece extends Actor {
         }
 
         // Castling tile must be safe
-        if (enemyMoves.contains(new Pair<>(moveX, moveY))) {
+        if (enemyPossibleMoves.contains(new Pair<>(moveX, moveY))) {
             return false;
         }
 
         // Castling path must also be safe
         if (moveX < kingX) {
             // Castle left
-            return !enemyMoves.contains(new Pair<>(moveX + 1, moveY));
+            return !enemyPossibleMoves.contains(new Pair<>(moveX + 1, moveY));
         } else {
             // Castle right
-            return !enemyMoves.contains(new Pair<>(moveX - 1, moveY));
+            return !enemyPossibleMoves.contains(new Pair<>(moveX - 1, moveY));
         }
     }
 
-    private King getOwnKing() {
-        for (King king : chessboard.getObjects(King.class)) {
-            if (king.isWhite == isWhite) {
-                return king;
-            }
-        }
-        return null;
-    }
-
-    private King getEnemyKing() {
-        for (King king : chessboard.getObjects(King.class)) {
-            if (king.isWhite != isWhite) {
-                return king;
-            }
-        }
-        return null;
-    }
-
-    private HashSet<Pair<Integer, Integer>> getEnemyMoves(int moveX, int moveY) {
+    private HashSet<Pair<Integer, Integer>> getEnemyPossibleMoves(int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> enemyMoves = new HashSet<>();
         for (ChessPiece piece : chessboard.getObjects(ChessPiece.class)) {
             // Enemy and not captured (planned)
             if (piece.isWhite != isWhite && (piece.getX() != moveX || piece.getY() != moveY)) {
-                enemyMoves.addAll(piece.getPossibleMoves(getX(), getY(), moveX, moveY));
+                enemyMoves.addAll(piece.getPossibleMoves(getX(), getY(), moveX, moveY, isCheckingNoMoves));
             }
         }
         return enemyMoves;
-    }
-
-    protected abstract HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY);
-
-    protected HashSet<Pair<Integer, Integer>> getPossibleMoves() {
-        return getPossibleMoves(-1, -1, -1, -1);
     }
 
     protected HashSet<Pair<Integer, Integer>> getVerticalMoves(int curX, int curY, int moveX, int moveY) {
@@ -320,60 +337,50 @@ public abstract class ChessPiece extends Actor {
         return true;
     }
 
-    protected boolean isEnemy(int x, int y) {
-        List<ChessPiece> piece = chessboard.getObjectsAt(x, y, ChessPiece.class);
-        return !piece.isEmpty() && piece.get(0).isWhite != isWhite;
+    private King getOwnKing() {
+        for (King king : chessboard.getObjects(King.class)) {
+            if (king.isWhite == isWhite) {
+                return king;
+            }
+        }
+        return null;
     }
 
-    protected boolean isEmptyOrEnemy() {
-        return isEmptyOrEnemy(getMouseX(), getMouseY());
-    }
-
-    protected boolean isEmptyOrEnemy(int x, int y) {
-        return isEmptyTile(x, y) || isWhitePiece(x, y) != isWhite;
-    }
-
-    protected boolean isVerticalMove() {
-        return getMouseX() == getX();
-    }
-
-    protected boolean isHorizontalMove() {
-        return getMouseY() == getY();
-    }
-
-    protected boolean isDiagonalMove() {
-        return Math.abs(getMouseX() - getX()) == Math.abs(getMouseY() - getY());
-    }
-
-    private boolean isSelected() {
-        return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
-    }
-
-    protected boolean isClickedAnywhere() {
-        return Greenfoot.mouseClicked(null);
-    }
-
-    protected int getMouseX() {
-        return Greenfoot.getMouseInfo().getX();
-    }
-
-    protected int getMouseY() {
-        return Greenfoot.getMouseInfo().getY();
-    }
-
-    protected boolean isEmptyTile(int x, int y) {
-        return chessboard.getObjectsAt(x, y, ChessPiece.class).isEmpty();
+    private King getEnemyKing() {
+        for (King king : chessboard.getObjects(King.class)) {
+            if (king.isWhite != isWhite) {
+                return king;
+            }
+        }
+        return null;
     }
 
     protected boolean isTile(int x, int y) {
         return !chessboard.getObjectsAt(x, y, Tile.class).isEmpty();
     }
 
-    protected boolean isWhitePiece(int x, int y) {
-        return getPieceAt(x, y).isWhite;
+    protected boolean isEmpty(int x, int y) {
+        return chessboard.getObjectsAt(x, y, ChessPiece.class).isEmpty();
     }
 
-    protected ChessPiece getPieceAt(int x, int y) {
-        return chessboard.getObjectsAt(x, y, ChessPiece.class).get(0);
+    protected boolean isEnemy(int x, int y) {
+        List<ChessPiece> piece = chessboard.getObjectsAt(x, y, ChessPiece.class);
+        return !piece.isEmpty() && piece.get(0).isWhite != isWhite;
+    }
+
+    private int getMouseX() {
+        return Greenfoot.getMouseInfo().getX();
+    }
+
+    private int getMouseY() {
+        return Greenfoot.getMouseInfo().getY();
+    }
+
+    private boolean isClickedAnywhere() {
+        return Greenfoot.mouseClicked(null);
+    }
+
+    private boolean isSelected() {
+        return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
     }
 }
