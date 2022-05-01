@@ -3,10 +3,10 @@
 ### Commit Log ###
 Inital commit is the base code we will be using from Greenfoot at https://www.greenfoot.org/scenarios/25919. The code is initally written in Czech.
 
-Eric: Respect
-John: Communication
-Richard: Feedback
-Ryan: Simplicity 
+Eric: Respect  
+John: Communication  
+Richard: Feedback  
+Ryan: Courage  
 
 ## 4/20/2022 ##
 John fixed castling. All of the numbers were off. Which cause the need to refactor.

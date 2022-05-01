@@ -64,13 +64,20 @@ XP Core Value **Courage** :
 Team Member Name: Ryan Tran
 
 What tasks did I work on / complete:
-- 
+- I completed the standard chess functionalities: check, checkmate, and stalemate.
+- I fixed bugs related to king safety including pins and during castling.
+- I continued refactoring the entire codebase as I progressed.
+- I added sound effects.
 
 What am I planning to work on next:
-- 
+- I need to implement a design pattern.
+- I will work on the main README and other team requirements such as the project demo video.
+- I might implement a minimax AI if time allows, as the scope for this feature is rather large for the time remaining.
 
 What tasks are blocked waiting on another team member:
-- 
+- None.
 
 XP Core Value **Courage** : 
--  
+-  Again, our team is working smoothly so far, so there are no organizational issues that reduce our team's effectiveness.
+-  Again, there has not yet been a situation where anyone has tried doing something that doesn't work for too long.
+-  Again, there has not been a situation where critical feedback was provided.
