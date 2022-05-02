@@ -38,6 +38,20 @@ I think our initial structure should be.
 
 
 
+##  4/27/2022
+### Task worked on ###
+Working on the Pawn promption problem but after further invesitagation it appears that some of the pawns core movements are broken and the code is too "messy" to properly function. Refactored the pawn class such that there's less redundency for hte move options. Also fixed the "jumping" issue where a pawn can jump over any piece in the first move. 
+
+### Task Planned for next week ###
+Continue the spike to figure out how to do a popup window for pawn promption. if fail go with pre-established buttons.
+
+### Blocking items waiting on another team member ###
+Help, I still can't fiugre out how to do a popup menu. (toast style)
+
+### Scrum notes ###
+Feedback side, there was a bug John discovered where his chess clock would allow a person's turn to be skilled. However since we all liked it we decided to re-classify as a feature.
+
+
 # Template #
 ### Task worked on ###
 ### Task Planned for next week ###
