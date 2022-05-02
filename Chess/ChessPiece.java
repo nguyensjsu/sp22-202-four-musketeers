@@ -98,6 +98,7 @@ public abstract class ChessPiece extends Actor {
         // +1 to not start from 0, 8 to have distance measured from bottom as opposed to top
         chessboard.processMove(mouseX + 1, 8 - mouseY + 1, pieceType);
         chessboard.moveNumber++;
+        chessboard.gameStart = false;
 
         chessboard.timerActor.startTimer();
     }

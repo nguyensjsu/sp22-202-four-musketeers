@@ -13,30 +13,43 @@ public class Chessboard extends World implements IChessMoveSubject {
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
+    private TimerToggleButton timerToggleBtn;
 
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
+    public boolean gameStart = true;
+    public boolean isTimerOn = true;
     private boolean swapTurn = isWhiteTurn;
 
     public Chessboard() {
         super(DIM_X + 1, DIM_Y, 100);
-        init();
+        init(); 
     }
 
     @Override
     public void act() {
-        int rawSeconds = TURN_TIME - timerActor.checkTimer();
+        if(isTimerOn) {
+            
+            if(getObjectsAt(1,0,TimerActor.class).isEmpty()) addObject(timerActor,1,0);
+            
+            int rawSeconds = TURN_TIME - timerActor.checkTimer();
 
-        // Swap turns if time is up
-        if (rawSeconds == 0) {
-            isWhiteTurn = !isWhiteTurn;
-            timerActor.startTimer();
+            // Swap turns if time is up
+            if (rawSeconds == 0) {
+                isWhiteTurn = !isWhiteTurn;
+                timerActor.startTimer();
 
-            // TODO: If time runs out and you're in check, game over
+                // TODO: If time runs out and you're in check, game over
+
+            }
+
+            // Update timer display
+            timerActor.displayTimer(rawSeconds);
         }
-
-        // Update timer display
-        showText(timerActor.displayTimer(rawSeconds, minDec, secDec), 1, 0);
+        else {
+            // TODO
+            removeObject(timerActor);
+        }
 
         flipBoard();
     }
@@ -48,9 +61,12 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
-        // Initialize timer and lambda functions for decorators
-        timerActor = TimerActor.getNewInstance();
+        //Initialize timer toggle button
+        timerToggleBtn = new TimerToggleButton();
 
+        addObject(timerToggleBtn,0,0);
+        
+        // Initialize lambda functions for decorators
         minDec = (Integer rawSeconds) -> {
             int minutes = rawSeconds / 60;
             String minutesPadding = "";
@@ -60,7 +76,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             } else {
                 minutesPadding = "0";
             }
-            return "Timer: " + minutesPadding + minutes + ":";
+            return minutesPadding + minutes + ":";
         };
 
         secDec = (Integer rawSeconds) -> {
@@ -71,8 +87,11 @@ public class Chessboard extends World implements IChessMoveSubject {
             }
             return secondsPadding + seconds;
         };
-    }
 
+        // Initialize timer
+        timerActor = new TimerActor(minDec, secDec);
+    }
+    
     private void addTiles() {
         int x;
         int y;
