@@ -1,166 +1,95 @@
 import greenfoot.*;
+import javafx.util.Pair;
+
+import java.util.HashSet;
+import java.util.List;
 
 public class King extends ChessPiece {
-    int moveCount = 0;
+    private static final List<Pair<Integer, Integer>> MOVES = List.of(
+            new Pair<>(-1, -1), new Pair<>(0, -1),
+            new Pair<>(1, -1), new Pair<>(1, 0),
+            new Pair<>(1, 1), new Pair<>(0, 1),
+            new Pair<>(-1, 1), new Pair<>(-1, 0)
+    );
 
-    public King(Boolean color) {
-        super(color);
-        if(this.color == false) setImage("black_king.png");
-        else setImage("white_king.png");
+    public King(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_king.png" : "black_king.png");
     }
-    
-    public void act() 
-    {
-        Chessboard chessboard = (Chessboard)getWorld();
-        
-        if (this.color == chessboard.turn)
-        {
-            select();
-            move();
-            changeStatus();
-            capture();
-        }
-        
-    }
-    
-    private void move()
-    {
-        if (ready)
-        {
-            if (Greenfoot.mouseClicked(null))
-            {
-                int x = Greenfoot.getMouseInfo().getX();
-                int y = Greenfoot.getMouseInfo().getY();
-                
-                int absDiffX = Math.abs(x - this.getX());
-                int absDiffY = Math.abs(y - this.getY());
-                
-                //boolean empty = getWorld().getObjectsAt(x,y,Black.class).isEmpty();
-                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                //ChessPiece empty = getWorld().getObjectsAt(x,y,ChessPiece.class).get(0);
-                
-                if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //if tile is empty or other color
-                {
-                    if (absDiffX <= 1 && absDiffY <= 1)
-                    {
-                        move(x,y);
-                        moveCount++;
-                    }
-                    else if (moveCount == 0)   //castling
-                    {
-                        Chessboard chessboard = (Chessboard)getWorld();
 
-                        int intColor = this.color ? 1 : 0;
-                        switch(intColor) {
-                            case 0: blackKing(chessboard,x,y); break;
-                            case 1: whiteKing(chessboard,x,y); break;
-                        }
-                    }
-                }
-                
-                ready = false;
+    @Override
+    protected void move(int mouseX, int mouseY) {
+        // Castling, update rook position
+        if (Math.abs(mouseX - getX()) == 2) {
+            int y = Chessboard.DIM_Y - 1;
+            if (mouseX == 2) {
+                chessboard.getObjectsAt(0, y, Rook.class).get(0).setLocation(3, y);
+            } else if (mouseX == 6) {
+                chessboard.getObjectsAt(7, y, Rook.class).get(0).setLocation(5, y);
+            } else if (mouseX == 1) {
+                chessboard.getObjectsAt(0, y, Rook.class).get(0).setLocation(2, y);
+            } else if (mouseX == 5) {
+                chessboard.getObjectsAt(7, y, Rook.class).get(0).setLocation(4, y);
             }
+            Greenfoot.playSound("castle.mp3");
+            move(mouseX, mouseY, true);
+        } else {
+            super.move(mouseX, mouseY);
         }
     }
 
-    void blackKing(Chessboard chessboard,int x,int y) {
-        int dimY = chessboard.DIM_Y;
-        if (x == 1 && y == dimY - 1)
-        {
-            if (chessboard.getObjectsAt(1,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(2,dimY - 1,ChessPiece.class).isEmpty())
-            {
-                //Rook blackRook = chessboard.getObjects(Rook.class).get(2); // 2 is 3rd rook which is black
-                Rook blackRook = null;
-                for(Rook rook:chessboard.getObjects(Rook.class)) {
-                    if(!rook.color) {
-                        blackRook = rook;
-                        break;
+    @Override
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
+        HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
+
+        // Normal moves
+        for (Pair<Integer, Integer> move : MOVES) {
+            int x = getX() + move.getKey();
+            int y = getY() + move.getValue();
+            if (isTile(x, y) && (isEmpty(x, y) || isEnemy(x, y) || (x == moveX && y == moveY))) {
+                moves.add(new Pair<>(x, y));
+            }
+        }
+
+        // Castling
+        if (!moved) {
+            int y = Chessboard.DIM_Y - 1;
+
+            if (isWhite) {
+                // Castle left
+                if (isEmpty(1, y) && isEmpty(2, y) && isEmpty(3, y)) {
+                    List<Rook> leftRook = chessboard.getObjectsAt(0, y, Rook.class);
+                    if (!leftRook.isEmpty() && !leftRook.get(0).moved) {
+                        moves.add(new Pair<>(2, y));
                     }
                 }
-                if (blackRook.moveCount == 0)
-                {
-                    move(x,y);
-                    blackRook.setLocation(2,dimY - 1);
+
+                // Castle right
+                if (isEmpty(5, y) && isEmpty(6, y)) {
+                    List<Rook> rightRook = chessboard.getObjectsAt(7, y, Rook.class);
+                    if (!rightRook.isEmpty() && !rightRook.get(0).moved) {
+                        moves.add(new Pair<>(6, y));
+                    }
+                }
+            } else {
+                // Castle left
+                if (isEmpty(1, y) && isEmpty(2, y)) {
+                    List<Rook> leftRook = chessboard.getObjectsAt(0, y, Rook.class);
+                    if (!leftRook.isEmpty() && !leftRook.get(0).moved) {
+                        moves.add(new Pair<>(1, y));
+                    }
+                }
+
+                // Castle right
+                if (isEmpty(4, y) && isEmpty(5, y) && isEmpty(6, y)) {
+                    List<Rook> rightRook = chessboard.getObjectsAt(7, y, Rook.class);
+                    if (!rightRook.isEmpty() && !rightRook.get(0).moved) {
+                        moves.add(new Pair<>(5, y));
+                    }
                 }
             }
         }
-        else if (x == 5 && y == dimY - 1)
-        {
-            if (chessboard.getObjectsAt(4,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(5,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(6,dimY - 1,ChessPiece.class).isEmpty())
-            {
-                //Rook blackRook = chessboard.getObjects(Rook.class).get(3); // 3 is 4rd rook which is black
-                Rook blackRook = null;
-                int second = 0;
-                for(Rook rook:chessboard.getObjects(Rook.class)) {
-                    if(!rook.color) {
-                        second++;
-                        if(second == 2) 
-                            blackRook = rook;
-                    }
-                }
-                if (blackRook.moveCount == 0)
-                {
-                    move(x,y);
-                    moveCount++;
-                    blackRook.setLocation(4,dimY - 1);
-                    blackRook.moveCount++;
-                }
-            }
-        }
+
+        return moves;
     }
-
-    void whiteKing(Chessboard chessboard,int x,int y) {
-        int dimY = chessboard.DIM_Y;
-        if (x == 2 && y == dimY - 1)
-        {
-            if (chessboard.getObjectsAt(1,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(2,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(3,dimY - 1,ChessPiece.class).isEmpty())
-            {
-                Rook whiteRook = null;
-                for(Rook rook:chessboard.getObjects(Rook.class)) {
-                    if(rook.color) {
-                        whiteRook = rook;
-                        break;
-                    }
-                }
-
-                //Rook whiteRook = chessboard.getObjects(Rook.class).get(0); // 0 is 1st rook which is white
-                if (whiteRook.moveCount == 0)
-                {
-                    move(x,y);
-                    whiteRook.setLocation(3,dimY - 1);
-                }
-            }
-        }
-        else if (x == 6 && y == dimY - 1)
-        {
-            if (chessboard.getObjectsAt(5,dimY - 1,ChessPiece.class).isEmpty() && 
-                chessboard.getObjectsAt(6,dimY - 1,ChessPiece.class).isEmpty())
-            {
-                //Rook whiteRook = chessboard.getObjects(Rook.class).get(1); // 1 is 2nd rook which is white
-                Rook whiteRook = null;
-                int second = 0;
-                for(Rook rook:chessboard.getObjects(Rook.class)) {
-                    if(rook.color) {
-                        second++;
-                        if(second == 2) 
-                            whiteRook = rook;
-                    }
-                }
-                if (whiteRook.moveCount == 0)
-                {
-                    move(x,y);
-                    moveCount++;
-                    whiteRook.setLocation(5,dimY - 1);
-                    whiteRook.moveCount++;
-                }
-            }
-        }
-    }
-
-
 }

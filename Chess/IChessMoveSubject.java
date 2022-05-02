@@ -1,13 +1,9 @@
-/**
- * Write a description of class IChessMoveSubject here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public interface IChessMoveSubject  
-{
-    public void notifyObservers(int turn, String movement);
-    public void addObserver(IChessMoveObserver obs);
-    public void deleteObserver(IChessMoveObserver obs);
-    public void processMove(int x,int y,String pieceType);
+public interface IChessMoveSubject {
+    void notifyObservers(int turn, String movement);
+
+    void addObserver(IChessMoveObserver obs);
+
+    void deleteObserver(IChessMoveObserver obs);
+
+    void processMove(int x, int y, String pieceType);
 }

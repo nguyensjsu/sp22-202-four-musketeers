@@ -1,156 +1,109 @@
 import greenfoot.*;
-import java.util.*;
+import javafx.util.Pair;
 
+import java.util.HashSet;
+import java.util.List;
 
 public class Pawn extends ChessPiece {
-    int stepTwo;
+    private static final List<Pair<Integer, Integer>> CAPTURES = List.of(
+            new Pair<>(-1, -1), new Pair<>(1, -1)
+    );
+    private static final List<Pair<Integer, Integer>> EN_PASSANT = List.of(
+            new Pair<>(-1, -1), new Pair<>(1, -1)
+    );
 
-    public Pawn(Boolean color) {
-        super(color);
-        if(this.color == false) setImage("black_pawn.png");
-        else setImage("white_pawn.png");
+    private int moveTwoTilesMoveNumber;
+
+    public Pawn(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_pawn.png" : "black_pawn.png");
     }
 
-    public void act() 
-    {
-        Chessboard chessboard = (Chessboard)getWorld();
+    @Override
+    protected void move(int mouseX, int mouseY) {
+        if (Math.abs(mouseY - getY()) == 2) {
+            // Move two tiles
+            moveTwoTilesMoveNumber = chessboard.moveNumber;
+            super.move(mouseX, mouseY);
+        } else {
+            List<Pawn> pawn = chessboard.getObjectsAt(mouseX, mouseY + 1, Pawn.class);
+            if (isEnPassant(pawn)) {
+                // En passant
+                chessboard.removeObject(pawn.get(0));
+                Greenfoot.playSound("capture.mp3");
+                move(mouseX, mouseY, true);
+            } else if (mouseY == 1) {
+                // Remove pawn
+                removed = true;
+                chessboard.removeObject(this);
 
-        if (this.color == chessboard.turn)
-        {
-            select();
-            move();
-            changeStatus();
-            capture();
-        }
-        
-    }
-
-    private boolean isSpaceEmpty(int x, int y)
-    {
-        return getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-    }
-
-    private void move()
-    {
-
-        //check if it's the pawn's turn
-        if (ready)
-        {
-            //when a mouse is clicked anywhere
-            if (Greenfoot.mouseClicked(null))
-            {
-                Chessboard chessboard = (Chessboard)getWorld();
-                
-                //get the location of the click
-                int x = Greenfoot.getMouseInfo().getX();
-                int y = Greenfoot.getMouseInfo().getY();
-
-                int delta_x = x - this.getX();
-                int delta_y = y - this.getY();
-
-                //only advancing
-                if(x == this.getX())
-                {
-                    //if first move allow 2 spaces. (need to check 2 spaces ahead to allow move)
-                    if(this.getY() == chessboard.DIM_Y - 2 && delta_y == -2)
-                    {
-                        //check if the 2 spaces in front of it are blank
-                        if( this.isSpaceEmpty(x, y) && this.isSpaceEmpty(x, y+1) )
-                        {
-                            stepTwo = chessboard.move;
-                            move(x,y);
-                        }
-                    }
-                    //else allow for 1 move forward
-                    else if(delta_y == -1 && this.isSpaceEmpty(x, y))
-                    {
-                        move(x,y);
-                    }
-                }
-                //capturing 
-                else if(Math.abs(delta_x) == 1 && delta_y == -1 )
-                {
-
-
-                    //case 1 capturing a standard peice
-                    //check if the space is not empty and if the piece there is not the same color
-                    if(!isSpaceEmpty(x, y) && getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color)
-                    {
-                        move(x,y);
-                    }
-                    //case 2 en passant
-                    else if(chessboard.getObjectsAt(x,y + 1,Pawn.class).size() != 0)
-                    {
-                        Pawn oppPawn = chessboard.getObjectsAt(x,y + 1,Pawn.class).get(0);
-                        if(this.color != oppPawn.color){
-                            if (oppPawn.stepTwo == chessboard.move - 1)
-                            {
-                                move(x,y);
-                                chessboard.removeObject(oppPawn);
-                            }
-                        }
-                    }
-                }
-                    
-                //only capturing
-                    //check if 
-
-
-//removing old pawn code                 
-/*
-                //if tile is empty
-                if (empty) 
-                {
-                    //if first row
-                    if (this.getY() == chessboard.DIM_Y - 2)
-                    {
-                        //single square moves check
-                        if (x == this.getX() && y == this.getY() - 1)
-                        {
-                            move(x,y);
-                        }
-
-                        //allows the pawn to move 2 places on it's first try
-                        else if (x == this.getX() && y == this.getY() - 2)
-                        {
-                            stepTwo = chessboard.move;
-                            move(x,y);
-                        }
-                    }
-                    //standard forward move
-                    else if (x == this.getX() && y == this.getY() - 1)
-                    {
-                        move(x,y);
-                    }
-                    
-                    //en passant check x check for attacking y check for advancing.
-                    else if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
-                    {
-                        if (chessboard.getObjectsAt(x,y + 1,Pawn.class).size() != 0)
-                        {
-                            Pawn oppPawn = chessboard.getObjectsAt(x,y + 1,Pawn.class).get(0);
-                            if(this.color != oppPawn.color){
-                                if (oppPawn.stepTwo == chessboard.move - 1)
-                                {
-                                    move(x,y);
-                                    chessboard.removeObject(oppPawn);
-                                }
-                            }
-                        }
-                    }
-                }
-                //capture move
-                else if (getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //diff color at pos
-                {
-                    if ((x == this.getX() - 1 || x == this.getX() + 1) && y == this.getY() - 1)
-                    {
-                        move(x,y);
-                    }
-                }
-*/
-                ready = false;
+                // Add queen
+                Queen queen = new Queen(isWhite);
+                queen.chessboard = chessboard;
+                chessboard.addObject(queen, mouseX, mouseY);
+                queen.move(mouseX, mouseY, false);
+            } else {
+                super.move(mouseX, mouseY);
             }
         }
     }
 
+    @Override
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
+        HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
+
+        int posX = getX();
+        int posY = getY();
+
+        // Move 1 tile
+        if (curX == -1) {
+            int y = isCheckingNoMoves ? posY + 1 : posY - 1;
+            if (isTile(posX, y) && isEmpty(posX, y)) {
+                moves.add(new Pair<>(posX, y));
+
+                // Move 2 tiles
+                y = isCheckingNoMoves ? y + 1 : y - 1;
+                if (!moved && isTile(posX, y) && isEmpty(posX, y)) {
+                    moves.add(new Pair<>(posX, y));
+                }
+            }
+        }
+
+        // Normal captures
+        for (Pair<Integer, Integer> move : CAPTURES) {
+            // Pawn is special, need to explicitly separate checking game state vs own moves vs enemy moves
+            if (curX == -1) {
+                // Checking own move
+                int x = posX + move.getKey();
+                int y = isCheckingNoMoves ? posY - move.getValue() : posY + move.getValue();
+                if (isTile(x, y) && isEnemy(x, y)) {
+                    moves.add(new Pair<>(x, y));
+                }
+            } else {
+                // Checking enemy move
+                int x = posX + move.getKey();
+                int y = isCheckingNoMoves ? posY + move.getValue() : posY - move.getValue();
+                moves.add(new Pair<>(x, y));
+            }
+        }
+
+        // En passant
+        if (curX == -1) {
+            for (Pair<Integer, Integer> move : EN_PASSANT) {
+                int x = posX + move.getKey();
+                int y = isCheckingNoMoves ? posY - move.getValue() : posY + move.getValue();
+                int targetY = isCheckingNoMoves ? y - 1 : y + 1;
+                List<Pawn> pawn = chessboard.getObjectsAt(x, targetY, Pawn.class);
+                if (isTile(x, y) && isEnPassant(pawn)) {
+                    moves.add(new Pair<>(x, y));
+                }
+            }
+        }
+
+        return moves;
+    }
+
+    private boolean isEnPassant(List<Pawn> pawn) {
+        return !pawn.isEmpty() && pawn.get(0).isWhite != isWhite && pawn.get(0).moveTwoTilesMoveNumber == chessboard.moveNumber - 1;
+    }
 }

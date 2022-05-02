@@ -1,6 +1,6 @@
 import greenfoot.*;
 
-public class Gray extends Tile {
+public class Valid extends Tile {
     public void act() {
     }
 }

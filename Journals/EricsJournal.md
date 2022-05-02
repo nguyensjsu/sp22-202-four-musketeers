@@ -30,3 +30,19 @@ What blockers I have:
 
 XP Core Value **Respect** : 
 - Our group was able to uphold the value of respect through our process of reviewing merge requests. Whenever someone is trying to commit changes to the main branch, we have to wait until everyone gives their opinion or input on the changes and then only after that we can fully merge any changes that have been done. This is done so that everyone feels like their input is valued throughout the project. We are also trying to make sure that every person is assigned something during our meetings so that contribution feel equally distributed.
+
+---
+## Four Musketeers: Weekly Scrum Report 4/27
+Team Member Name: Eric Arreola
+
+What I did since last weekly scrum:
+-  In the past week since the last scrum meeting I worked on the implementation of the move history feature which would track what moves players recently made. I used the Observer pattern for this feature which just has the MoveHistory object observe the Chessboard and it is updated on whenever a chesspiece moves from its original position. The location it moved to along with the type of piece that moved is converted to a string and sent to the observer which in this case just displays it on the side of the screen. The move history moves up infinitely as new moves are made. Each history entry within the move history object displays the current turn and the movements of both the black and white players during that turn. I also did some further research into ches s itself since I had never really played it before and did not understand the rules well. I played it a few times and now feel comfortable being able to tell what rules a chess game should follow. 
+
+What I plan to do this week:
+-  During the meeting I was demonstrating the move history functionalities and during that Ryan noticed a bug with how the pieces were being displayed which wasn't there before and I also noticed that the move history being displayed was not displaying the exact coordinates that pieces were moving to so I have to figure out both roots of those bugs. Once I figure out those and patch them I need to merge my branch with the main branch so that others can continue their work. A suggestion for move history was also to maybe try adding a scroll bar so I will look into that and see what the implementation would look like in terms of time and effort. If it is feasible and worth the time then I can try adding it.
+
+What blockers I have:
+-  I am not really sure how to handle implementing a scroll bar so I have to do some research. I'm also not sure how Greenfoot handles storing data for past moves. I need to figure out the source of the bugs that were caught in the meeting since I have a vague idea of where they could be but nothing concrete yet. 
+
+XP Core Value **Respect** : 
+- As we were presenting our feature implementations to each other we tried to get each other's opinion on anything that could be changed to make the project better. In my case, I tried to get each of the other members of the group if there was any visual or code structure change thet thought I could make even if it was just an optional suggestion since everyone's feedback should be valid. Also to make sure we are respecting each others time and effort put into the project we addressed the responsibilities each person has for the next week. We also don't approve merge requests until we get everyone's approval since we want to maintain that everyone's opinion on aspects of the project are equally important. 

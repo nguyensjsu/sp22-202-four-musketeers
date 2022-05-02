@@ -1,58 +1,33 @@
 import greenfoot.*;
+
+import java.util.HashSet;
 import java.util.List;
+
 import javafx.util.Pair;
 
 public class Knight extends ChessPiece {
+    private static final List<Pair<Integer, Integer>> MOVES = List.of(
+            new Pair<>(-2, -1), new Pair<>(-2, 1),
+            new Pair<>(-1, -2), new Pair<>(-1, 2),
+            new Pair<>(1, -2), new Pair<>(1, 2),
+            new Pair<>(2, -1), new Pair<>(2, 1)
+    );
 
-    public Knight(Boolean color){
-        super(color);
-        if(this.color == false) setImage("black_knight.png");
-        else setImage("white_knight.png");
+    public Knight(boolean isWhite) {
+        super(isWhite);
+        setImage(isWhite ? "white_knight.png" : "black_knight.png");
     }
 
-    public void act() 
-    {
-        Chessboard chessBoard = (Chessboard)getWorld();
-        if (this.color == chessBoard.turn)
-        {
-            select();
-            move();
-            changeStatus();
-            capture();
-        }
-        
-    }
-    
-    private void move()
-    {
-        if (ready)
-        {
-            if (Greenfoot.mouseClicked(null))
-            {
-                int x = Greenfoot.getMouseInfo().getX();
-                int y = Greenfoot.getMouseInfo().getY();
-                
-                List<Pair<Integer, Integer>> vals = List.of(
-                    new Pair<>(-2, -1), new Pair<>(-2, 1),
-                    new Pair<>(-1, -2), new Pair<>(-1, 2),
-                    new Pair<>(1, -2), new Pair<>(1, 2),
-                    new Pair<>(2, -1), new Pair<>(2, 1)
-                );
-                
-                boolean empty = getWorld().getObjectsAt(x,y,ChessPiece.class).isEmpty();
-                
-                if (empty || getWorld().getObjectsAt(x,y,ChessPiece.class).get(0).color != this.color) //if tile is empty or other color
-                {
-                    for(Pair<Integer, Integer> p: vals) {
-                        if((x == this.getX() + p.getKey() && y == this.getY() + p.getValue())) {
-                            move(x, y);
-                            break;
-                        }
-                    }
-                }
-                
-                ready = false;
+    @Override
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
+        HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
+        for (Pair<Integer, Integer> move : MOVES) {
+            int x = getX() + move.getKey();
+            int y = getY() + move.getValue();
+            if (isTile(x, y) && (isEmpty(x, y) || isEnemy(x, y))) {
+                moves.add(new Pair<>(x, y));
             }
         }
-    }   
+        return moves;
+    }
 }
