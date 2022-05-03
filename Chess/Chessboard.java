@@ -7,14 +7,17 @@ import java.util.function.*;
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
-    public static final int TURN_TIME = 30;
 
     private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
     private TimerToggleButton timerToggleBtn;
+    private EasyDifficultySelectButton easyDiffBtn;
+    private MediumDifficultySelectButton medDiffBtn;
+    private HardDifficultySelectButton hardDiffBtn;
 
+    public int TURN_TIME = 30;
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
     public boolean gameStart = true;
@@ -30,7 +33,9 @@ public class Chessboard extends World implements IChessMoveSubject {
     public void act() {
         if(isTimerOn) {
             
-            if(getObjectsAt(1,0,TimerActor.class).isEmpty()) addObject(timerActor,1,0);
+            if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
+                addObject(timerActor,1,0);
+            }
             
             int rawSeconds = TURN_TIME - timerActor.checkTimer();
 
@@ -89,7 +94,16 @@ public class Chessboard extends World implements IChessMoveSubject {
         };
 
         // Initialize timer
-        timerActor = new TimerActor(minDec, secDec);
+        timerActor = new TimerActor(minDec, secDec, TURN_TIME);
+        
+        // Difficulty buttons
+        easyDiffBtn = new EasyDifficultySelectButton();
+        medDiffBtn = new MediumDifficultySelectButton();
+        hardDiffBtn = new HardDifficultySelectButton();
+        
+        addObject(easyDiffBtn,3,0);
+        addObject(medDiffBtn,4,0);
+        addObject(hardDiffBtn,5,0);
     }
     
     private void addTiles() {

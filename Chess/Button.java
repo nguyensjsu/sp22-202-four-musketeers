@@ -10,10 +10,6 @@ public class Button extends Actor
     
     //public void getChild() {}
     
-    public String display() {
-        return "";
-    }
-    
     @Override
     public void act() { }
 }
