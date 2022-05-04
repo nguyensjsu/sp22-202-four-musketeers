@@ -17,6 +17,8 @@ public class Chessboard extends World implements IChessMoveSubject {
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
     private boolean swapTurn = isWhiteTurn;
+    
+    public PromotionButton testButton;
 
     public boolean gameOver;
 
@@ -27,7 +29,8 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     @Override
     public void act() {
-        if (gameOver) {
+        if (gameOver) 
+        {
             return;
         }
 
@@ -64,6 +67,9 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
+        
+        testButton = new PromotionButton("target.png");
+        addObject(testButton, 4,0);
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
