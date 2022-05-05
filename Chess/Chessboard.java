@@ -71,10 +71,10 @@ public class Chessboard extends World implements IChessMoveSubject {
         addPieces();
         addMoveHistory();
         
-        rookButton = new PromotionButton("grayedRookButton.png");
-        knightButton = new PromotionButton("grayedKnightButton.png");
-        bishopButton = new PromotionButton("grayedBishopButton.png");
-        queenButton = new PromotionButton("grayedQueenButton.png");
+        rookButton = new rookPromotionButton();
+        knightButton = new knightPromotionButton();
+        bishopButton = new bishopPromotionButton();
+        queenButton = new queenPromotionButton();
 
         addObject(rookButton, 4,0);
         addObject(knightButton, 5,0);
