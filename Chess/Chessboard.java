@@ -68,7 +68,7 @@ public class Chessboard extends World implements IChessMoveSubject {
         addPieces();
         addMoveHistory();
         
-        testButton = new PromotionButton("target.png");
+        testButton = new PromotionButton("grayedBishopButton.png");
         addObject(testButton, 4,0);
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);

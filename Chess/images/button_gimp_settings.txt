@@ -1,0 +1,7 @@
+exposure of black image 2.850
+background gray: cfcfcf
+drop shadow: (x,y) 3.077
+blur radius: 0
+grow shape: circle
+grow raidus -13
+opacity: 0.590
