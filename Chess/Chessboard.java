@@ -18,8 +18,11 @@ public class Chessboard extends World implements IChessMoveSubject {
     public boolean isWhiteTurn = true;
     private boolean swapTurn = isWhiteTurn;
     
-    public PromotionButton testButton;
-
+    public PromotionButton rookButton;
+    public PromotionButton knightButton;
+    public PromotionButton bishopButton;
+    public PromotionButton queenButton;
+    
     public boolean gameOver;
 
     public Chessboard() {
@@ -68,8 +71,15 @@ public class Chessboard extends World implements IChessMoveSubject {
         addPieces();
         addMoveHistory();
         
-        testButton = new PromotionButton("grayedBishopButton.png");
-        addObject(testButton, 4,0);
+        rookButton = new PromotionButton("grayedRookButton.png");
+        knightButton = new PromotionButton("grayedKnightButton.png");
+        bishopButton = new PromotionButton("grayedBishopButton.png");
+        queenButton = new PromotionButton("grayedQueenButton.png");
+
+        addObject(rookButton, 4,0);
+        addObject(knightButton, 5,0);
+        addObject(bishopButton, 6,0);
+        addObject(queenButton, 7,0);
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
