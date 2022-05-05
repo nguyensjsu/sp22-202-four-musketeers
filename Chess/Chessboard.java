@@ -224,6 +224,10 @@ public class Chessboard extends World implements IChessMoveSubject {
             k.setLocation(edgeX - k.getX(), edgeY - k.getY());
         }
 
+        for (Super s : getObjects(Super.class)) {
+            s.setLocation(edgeX - s.getX(), edgeY - s.getY());
+        }
+
         for (Check check : getObjects(Check.class)) {
             check.setLocation(edgeX - check.getX(), edgeY - check.getY());
         }
