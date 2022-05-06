@@ -14,6 +14,8 @@ public class Chessboard extends World implements IChessMoveSubject {
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
 
+    private MoveHistory mh;
+
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
     private boolean swapTurn = isWhiteTurn;
@@ -35,8 +37,9 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         // Swap turns if time is up
         if (rawSeconds == 0) {
-            processMove(0,0,"-");
-            moveNumber++;
+            processMove(0,0,"-"); // empty move since turn skipped
+            moveNumber++; //turn iterated
+            mh.resetToRecentHistory();
             
             isWhiteTurn = !isWhiteTurn;
             timerActor.startTimer();
@@ -64,9 +67,9 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
+        addScrollButtons();
 
-        setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
-
+        setPaintOrder(ChessPiece.class, Tile.class, Label.class,ScrollButton.class, MoveHistory.class);
         // Initialize timer and lambda functions for decorators
         timerActor = TimerActor.getNewInstance();
 
@@ -182,9 +185,23 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void addMoveHistory() {
-        MoveHistory mh = new MoveHistory();
+        mh = new MoveHistory();
         addObserver(mh);
         addObject(mh, getWidth() - 2, getHeight() / 2);
+    }
+
+    private void addScrollButtons() {
+        //scroll button initiation
+        ScrollButton upScroll = new ScrollButton("upArrow.png","up");
+        ScrollButton downScroll = new ScrollButton("downArrow.png","down");
+        
+        //add observers to scroll buttons
+        upScroll.addObserver(mh);
+        downScroll.addObserver(mh);
+        
+        //scroll button positioning
+        addObject(upScroll,getWidth()-3,getHeight());
+        addObject(downScroll,getWidth(),getHeight());
     }
 
     private void flipBoard() {
