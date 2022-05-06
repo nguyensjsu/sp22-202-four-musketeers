@@ -37,11 +37,11 @@ public class Pawn extends ChessPiece {
                 removed = true;
                 chessboard.removeObject(this);
 
-                // Add queen
-                Queen queen = new Queen(isWhite);
-                queen.chessboard = chessboard;
-                chessboard.addObject(queen, mouseX, mouseY);
-                queen.move(mouseX, mouseY, false);
+                // Add super piece
+                Super superPiece = new Super(isWhite);
+                superPiece.chessboard = chessboard;
+                chessboard.addObject(superPiece, mouseX, mouseY);
+                superPiece.move(mouseX, mouseY, false);
             } else {
                 super.move(mouseX, mouseY);
             }
