@@ -4,7 +4,8 @@ import javafx.util.Pair;
 import java.util.HashSet;
 import java.util.List;
 
-public class Pawn extends ChessPiece {
+public class Pawn extends ChessPiece implements iPromotionSub
+{
     private static final List<Pair<Integer, Integer>> CAPTURES = List.of(
             new Pair<>(-1, -1), new Pair<>(1, -1)
     );
@@ -12,12 +13,15 @@ public class Pawn extends ChessPiece {
             new Pair<>(-1, -1), new Pair<>(1, -1)
     );
 
+    private PromotionButton observer;
     private int moveTwoTilesMoveNumber;
 
     public Pawn(boolean isWhite) {
         super(isWhite);
         setImage(isWhite ? "white_pawn.png" : "black_pawn.png");
     }
+
+    
 
     @Override
     protected void move(int mouseX, int mouseY) {
@@ -105,5 +109,13 @@ public class Pawn extends ChessPiece {
 
     private boolean isEnPassant(List<Pawn> pawn) {
         return !pawn.isEmpty() && pawn.get(0).isWhite != isWhite && pawn.get(0).moveTwoTilesMoveNumber == chessboard.moveNumber - 1;
+    }
+
+
+
+    @Override
+    public void activatePromotion(boolean color, int promoXCord, int promoYCord) 
+    {
+        observer.notify();   
     }
 }

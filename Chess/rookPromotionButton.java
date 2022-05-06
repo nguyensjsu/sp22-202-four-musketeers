@@ -12,8 +12,12 @@ public class rookPromotionButton extends PromotionButton
     {
         super("grayedRookButton.png");
     }
+    
     public void act()
     {
-        // Add your action code here.
+        if(Greenfoot.mouseClicked(this))
+        {
+            
+        }
     }
 }

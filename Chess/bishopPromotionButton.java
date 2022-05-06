@@ -13,6 +13,7 @@ public class bishopPromotionButton extends PromotionButton
     {
         super("grayedBishopButton.png");
     }
+    
     public void act()
     {
         // Add your action code here.

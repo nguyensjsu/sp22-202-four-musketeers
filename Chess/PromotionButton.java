@@ -6,7 +6,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class PromotionButton extends Actor
+
+abstract class PromotionButton extends Actor
 {
     /**
      * Act - do whatever the PromotionButton wants to do. This method is called whenever
@@ -20,8 +21,16 @@ public class PromotionButton extends Actor
 
         setImage(iconImage);
     }
+
     public void act()
     {
         // Add your action code here.
+    }
+
+
+
+    public void notifyObserver(boolean color, int x, int y)
+    {
+        
     }
 }

@@ -52,6 +52,13 @@ Help, I still can't fiugre out how to do a popup menu. (toast style)
 Feedback side, there was a bug John discovered where his chess clock would allow a person's turn to be skilled. However since we all liked it we decided to re-classify as a feature.
 
 
+## 5/5/2022 working notes
+Pawn has to be a subject class that holds pointer to PromotionButton master class. This class will hold all of the promotional buttons.
+(needs array list)
+
+Buttons extended from the promotional class will need to have a create and delete option. Constructors should have an add to the promotion class to add the item to an instance variable.
+
+
 # Template #
 ### Task worked on ###
 ### Task Planned for next week ###
