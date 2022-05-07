@@ -18,10 +18,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     public boolean isWhiteTurn = true;
     private boolean swapTurn = isWhiteTurn;
     
-    public PromotionButton rookButton;
-    public PromotionButton knightButton;
-    public PromotionButton bishopButton;
-    public PromotionButton queenButton;
+    promotionObserver promotionObs;
     
     public boolean gameOver;
 
@@ -70,16 +67,8 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
-        
-        rookButton = new rookPromotionButton();
-        knightButton = new knightPromotionButton();
-        bishopButton = new bishopPromotionButton();
-        queenButton = new queenPromotionButton();
-
-        addObject(rookButton, 4,0);
-        addObject(knightButton, 5,0);
-        addObject(bishopButton, 6,0);
-        addObject(queenButton, 7,0);
+    
+        promotionObs = promotionObserver.getInstance();
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
