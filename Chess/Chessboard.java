@@ -13,49 +13,67 @@ public class Chessboard extends World implements IChessMoveSubject {
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
+    private TimerToggleButton timerToggleBtn;
+    private EasyDifficultySelectButton easyDiffBtn;
+    private MediumDifficultySelectButton medDiffBtn;
+    private HardDifficultySelectButton hardDiffBtn;
 
+    public int TURN_TIME = 30;
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
+    public boolean gameStart = true;
+    public boolean isTimerOn = true;
     private boolean swapTurn = isWhiteTurn;
 
     public boolean gameOver;
 
     public Chessboard() {
         super(DIM_X + 1, DIM_Y, 100);
-        init();
+        init(); 
     }
 
     @Override
     public void act() {
-        if (gameOver) {
-            return;
+	    if (gameOver) {
+	        return;
         }
 
-        int rawSeconds = TURN_TIME - timerActor.checkTimer();
-
-        // Swap turns if time is up
-        if (rawSeconds == 0) {
-            processMove(0,0,"-");
-            moveNumber++;
-            
-            isWhiteTurn = !isWhiteTurn;
-            timerActor.startTimer();
-
-            // Game over if in check
-            List<Check> possibleCheck = getObjects(Check.class);
-            if (!possibleCheck.isEmpty()) {
-                gameOver = true;
-                clearSelection();
-                clearValidMoves();
-                Check check = possibleCheck.get(0);
-                addObject(new Checkmate(), check.getX(), check.getY());
-                removeObject(check);
-                Greenfoot.playSound("checkmate.mp3");
+        if(isTimerOn) {
+            if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
+                addObject(timerActor,1,0);
             }
-        }
+            
+            int rawSeconds = TURN_TIME - timerActor.checkTimer();
 
-        // Update timer display
-        showText(timerActor.displayTimer(rawSeconds, minDec, secDec), 1, 0);
+            // Swap turns if time is up
+            if (rawSeconds == 0) {
+                processMove(0,0,"-");
+                moveNumber++;
+                gameStart = false;
+                
+                isWhiteTurn = !isWhiteTurn;
+                timerActor.startTimer();
+
+                // Game over if in check
+                List<Check> possibleCheck = getObjects(Check.class);
+                if (!possibleCheck.isEmpty()) {
+                    gameOver = true;
+                    clearSelection();
+                    clearValidMoves();
+                    Check check = possibleCheck.get(0);
+                    addObject(new Checkmate(), check.getX(), check.getY());
+                    removeObject(check);
+                    Greenfoot.playSound("checkmate.mp3");
+                }
+            }
+
+            // Update timer display
+            timerActor.displayTimer(rawSeconds);
+        }
+        else {
+            // TODO
+            removeObject(timerActor);
+        }
 
         flipBoard();
     }
@@ -67,9 +85,12 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
-        // Initialize timer and lambda functions for decorators
-        timerActor = TimerActor.getNewInstance();
+        //Initialize timer toggle button
+        timerToggleBtn = new TimerToggleButton();
 
+        addObject(timerToggleBtn,0,0);
+        
+        // Initialize lambda functions for decorators
         minDec = (Integer rawSeconds) -> {
             int minutes = rawSeconds / 60;
             String minutesPadding = "";
@@ -79,7 +100,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             } else {
                 minutesPadding = "0";
             }
-            return "Timer: " + minutesPadding + minutes + ":";
+            return minutesPadding + minutes + ":";
         };
 
         secDec = (Integer rawSeconds) -> {
@@ -91,9 +112,21 @@ public class Chessboard extends World implements IChessMoveSubject {
             return secondsPadding + seconds;
         };
 
+        // Initialize timer
+        timerActor = new TimerActor(minDec, secDec, TURN_TIME);
+        
+        // Difficulty buttons
+        easyDiffBtn = new EasyDifficultySelectButton();
+        medDiffBtn = new MediumDifficultySelectButton();
+        hardDiffBtn = new HardDifficultySelectButton();
+        
+        addObject(easyDiffBtn,3,0);
+        addObject(medDiffBtn,4,0);
+        addObject(hardDiffBtn,5,0);
+      
         Greenfoot.playSound("start.mp3");
     }
-
+    
     private void addTiles() {
         int x;
         int y;
