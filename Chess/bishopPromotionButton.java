@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * Write a description of class bishopPromotionButton here.
@@ -11,7 +12,7 @@ public class bishopPromotionButton extends PromotionButton
 
     public bishopPromotionButton()
     {
-        super("grayedBishopButton.png");
+        super(new ArrayList<>(Arrays.asList("grayedBishopButton.png", "whiteBishopButton.png", "blackBishopButton.png")));
     }
     
     public void act()

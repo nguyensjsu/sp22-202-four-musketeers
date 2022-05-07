@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Write a description of class knightPromotionButton here.
  * 
@@ -11,7 +11,7 @@ public class knightPromotionButton extends PromotionButton
 
     public knightPromotionButton()
     {
-        super("grayedKnightButton.png");
+        super(new ArrayList<>(Arrays.asList("grayedKnightButton.png", "whiteKnightButton.png", "blackKnightButton.png")));
     }
     public void act()
     {

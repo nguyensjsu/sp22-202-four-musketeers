@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.*;
 /**
  * Write a description of class queenPromotionButton here.
  * 
@@ -8,10 +8,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class queenPromotionButton extends PromotionButton
 {
-
     public queenPromotionButton()
     {
-        super("grayedQueenButton.png");
+        super(new ArrayList<>(Arrays.asList("grayedQueenButton.png", "whiteQueenButton.png", "blackQueenButton.png")));
     }
     public void act()
     {

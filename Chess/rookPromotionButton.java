@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * Write a description of class rookPromotionButton here.
@@ -8,9 +11,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class rookPromotionButton extends PromotionButton
 {
+
     public rookPromotionButton()
-    {
-        super("grayedRookButton.png");
+    {        
+        super(new ArrayList<>(Arrays.asList("grayedRookButton.png", "whiteRookButton.png", "blackRookButton.png")));
     }
     
     public void act()

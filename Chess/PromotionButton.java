@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.*;
 
 /**
  * Write a description of class PromotionButton here.
@@ -7,19 +8,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version (a version number or a date)
  */
 
-abstract class PromotionButton extends Actor
+public class PromotionButton extends Actor
 {
-    /**
-     * Act - do whatever the PromotionButton wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    
-    public PromotionButton(String image)
-    {
-        GreenfootImage iconImage = new GreenfootImage(image);
-        iconImage.scale(50,50);
 
-        setImage(iconImage);
+    //0 = gray, 1 = white, 2 = black
+    ArrayList<String> imgLocation;
+
+    public PromotionButton()
+    {
+        imgLocation = new ArrayList<>();
+    }
+
+    public PromotionButton(ArrayList<String> image)
+    {
+        imgLocation = image;
+        this.setIcon(imgLocation.get(0));
     }
 
     public void act()
@@ -27,10 +30,13 @@ abstract class PromotionButton extends Actor
         // Add your action code here.
     }
 
-
-
-    public void notifyObserver(boolean color, int x, int y)
+    private void setIcon(String image)
     {
-        
+        GreenfootImage iconImage = new GreenfootImage(image);
+        iconImage.scale(50,50);
+
+        setImage(iconImage);
     }
+
+
 }
