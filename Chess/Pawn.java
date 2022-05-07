@@ -4,7 +4,7 @@ import javafx.util.Pair;
 import java.util.HashSet;
 import java.util.List;
 
-public class Pawn extends ChessPiece implements iPromotionSub
+public class Pawn extends ChessPiece
 {
     private static final List<Pair<Integer, Integer>> CAPTURES = List.of(
             new Pair<>(-1, -1), new Pair<>(1, -1)
@@ -113,9 +113,8 @@ public class Pawn extends ChessPiece implements iPromotionSub
 
 
 
-    @Override
     public void activatePromotion(boolean color, int promoXCord, int promoYCord) 
     {
-        observer.notify();   
+        observer.notify();
     }
 }
