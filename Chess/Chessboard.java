@@ -7,7 +7,6 @@ import java.util.function.*;
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
-    public static final int TURN_TIME = 15;
 
     private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
@@ -34,8 +33,8 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     @Override
     public void act() {
-	    if (gameOver) {
-	        return;
+        if (gameOver) {
+            return;
         }
 
         if(isTimerOn) {
@@ -48,7 +47,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             // Swap turns if time is up
             if (rawSeconds == 0) {
                 processMove(0,0,"-");
-                moveNumber++;
+                moveNumber++; //Not sure if this should be updated here i.e. if one side fails to make move
                 gameStart = false;
                 
                 isWhiteTurn = !isWhiteTurn;
