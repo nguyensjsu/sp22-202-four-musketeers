@@ -1,27 +1,22 @@
-import javax.swing.SingleSelectionModel;
+import greenfoot.*;
+import java.util.*;
 
 public class promotionObserver
 {
     private static promotionObserver observer = null;
+    //World cb = getWorld();
 
-    private PromotionButton rookButton;
-    private PromotionButton knightButton;
-    private PromotionButton bishopButton;
-    private PromotionButton queenButton;
+    private Dictionary buttonList = new Hashtable<>();
+
+    rookPromotionButton rpb;
 
     private promotionObserver()
     {
-        //initalize and add the buttons
-        rookButton = new rookPromotionButton();
-        knightButton = new knightPromotionButton();
-        bishopButton = new bishopPromotionButton();
-        queenButton = new queenPromotionButton();
-
-        //add them to the world
-        addObject(rookButton, 4,0);
-        addObject(knightButton, 5,0);
-        addObject(bishopButton, 6,0);
-        addObject(queenButton, 7,0);
+        // //initalize and add the buttons
+        buttonList.put("rook", new rookPromotionButton());
+        buttonList.put("knight", new knightPromotionButton());
+        buttonList.put("bishop", new bishopPromotionButton());
+        buttonList.put("queen", new queenPromotionButton());
     }
 
     public static promotionObserver getInstance()
@@ -31,6 +26,11 @@ public class promotionObserver
             observer = new promotionObserver();
         }
         return observer;
+    }
+
+    public Dictionary getButtonList()
+    {
+        return buttonList;
     }
 
 }

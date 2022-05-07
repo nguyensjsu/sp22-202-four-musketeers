@@ -2,6 +2,7 @@ import greenfoot.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import java.util.function.*;
 
 public class Chessboard extends World implements IChessMoveSubject {
@@ -18,7 +19,9 @@ public class Chessboard extends World implements IChessMoveSubject {
     public boolean isWhiteTurn = true;
     private boolean swapTurn = isWhiteTurn;
     
+    //Promotion Section Buttons
     promotionObserver promotionObs;
+    private Dictionary buttonList = new Hashtable<>();
     
     public boolean gameOver;
 
@@ -67,8 +70,6 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
-    
-        promotionObs = promotionObserver.getInstance();
 
         setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
@@ -96,6 +97,9 @@ public class Chessboard extends World implements IChessMoveSubject {
             return secondsPadding + seconds;
         };
 
+        //create the promotional buttons.
+        this.createPromotionalButtons();
+        
         Greenfoot.playSound("start.mp3");
     }
 
@@ -266,5 +270,19 @@ public class Chessboard extends World implements IChessMoveSubject {
     public void processMove(int x, int y, String pieceType) {
         String out = pieceType.equals("-") ? " - " : pieceType + "[" + x + "," + y + "]";
         notifyObservers(moveNumber, out);
+    }
+
+    //helper method to isolate the promotion button creation
+    private void createPromotionalButtons()
+    {
+        //initalize the buttons
+        promotionObs = promotionObserver.getInstance();
+        this.buttonList = promotionObs.getButtonList();
+
+        //add them to the world
+        addObject((PromotionButton)buttonList.get("rook"), 4,0);
+        addObject((PromotionButton)buttonList.get("knight"), 5,0);
+        addObject((PromotionButton)buttonList.get("bishop"), 6,0);
+        addObject((PromotionButton)buttonList.get("queen"), 7,0);
     }
 }

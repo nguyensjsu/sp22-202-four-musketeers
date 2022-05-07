@@ -1,13 +1,8 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 
-/**
- * Write a description of class PromotionButton here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 
+//this class is the parent class to all of the promotion buttons
 public class PromotionButton extends Actor
 {
 
