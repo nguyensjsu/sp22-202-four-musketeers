@@ -7,6 +7,7 @@ import java.util.function.*;
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
+    public static final int TURN_TIME = 15;
 
     private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
@@ -24,6 +25,8 @@ public class Chessboard extends World implements IChessMoveSubject {
     public boolean isTimerOn = true;
     private boolean swapTurn = isWhiteTurn;
 
+    public boolean gameOver;
+
     public Chessboard() {
         super(DIM_X + 1, DIM_Y, 100);
         init(); 
@@ -31,8 +34,11 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     @Override
     public void act() {
+	    if (gameOver) {
+	        return;
+        }
+
         if(isTimerOn) {
-            
             if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
                 addObject(timerActor,1,0);
             }
@@ -41,11 +47,24 @@ public class Chessboard extends World implements IChessMoveSubject {
 
             // Swap turns if time is up
             if (rawSeconds == 0) {
+                processMove(0,0,"-");
+                moveNumber++;
+                gameStart = false;
+                
                 isWhiteTurn = !isWhiteTurn;
                 timerActor.startTimer();
 
-                // TODO: If time runs out and you're in check, game over
-
+                // Game over if in check
+                List<Check> possibleCheck = getObjects(Check.class);
+                if (!possibleCheck.isEmpty()) {
+                    gameOver = true;
+                    clearSelection();
+                    clearValidMoves();
+                    Check check = possibleCheck.get(0);
+                    addObject(new Checkmate(), check.getX(), check.getY());
+                    removeObject(check);
+                    Greenfoot.playSound("checkmate.mp3");
+                }
             }
 
             // Update timer display
@@ -104,6 +123,8 @@ public class Chessboard extends World implements IChessMoveSubject {
         addObject(easyDiffBtn,3,0);
         addObject(medDiffBtn,4,0);
         addObject(hardDiffBtn,5,0);
+      
+        Greenfoot.playSound("start.mp3");
     }
     
     private void addTiles() {
@@ -200,7 +221,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void flipBoard() {
-        if (swapTurn == isWhiteTurn) {
+        if (gameOver || swapTurn == isWhiteTurn) {
             return;
         }
 
@@ -234,6 +255,10 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         for (Knight k : getObjects(Knight.class)) {
             k.setLocation(edgeX - k.getX(), edgeY - k.getY());
+        }
+
+        for (Super s : getObjects(Super.class)) {
+            s.setLocation(edgeX - s.getX(), edgeY - s.getY());
         }
 
         for (Check check : getObjects(Check.class)) {
@@ -271,7 +296,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     // Used to turn x and y coords into a string that labels can display
     @Override
     public void processMove(int x, int y, String pieceType) {
-        String out = pieceType + "[" + x + "," + y + "]";
+        String out = pieceType.equals("-") ? " - " : pieceType + "[" + x + "," + y + "]";
         notifyObservers(moveNumber, out);
     }
 }

@@ -10,7 +10,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
         moves.addAll(getVerticalMoves(curX, curY, moveX, moveY));
         moves.addAll(getHorizontalMoves(curX, curY, moveX, moveY));

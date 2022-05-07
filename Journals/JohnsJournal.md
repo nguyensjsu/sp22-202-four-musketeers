@@ -49,3 +49,20 @@ Obstacles:
 
 XP Core Values: Communication 
 - Throughout the past week, I was very transparent on what changes I made as well as what issues or questions I had. During the meeting, I made sure everyone was on the same page and got a chance to talk. I also made sure to ask about everyone's other responsibilities and about how much time they could dedicate to this project.
+
+---
+## Four Musketeers: Weekly Scrum Report 05/06
+Team Member Name: John Lu
+
+### 05/06/2022
+Progress since the last weekly scrum: 
+- Eric fixed bugs for move history, John implemented timer toggling and timer difficulty changes, Ryan created a super piece that has the moveset of queen and knight, and Richard made buttons for pawn promotion.
+
+What we did:
+- We discussed how we should tackle adding design patterns to timer, move history scrolling, and super piece. We also talked about planning for administrative stuff including the UML diagram and the user story video.
+
+Obstacles:
+- I was initially confused on how to make the Greenfoot image, but reading through documentation helped me solve the problem. I had another obstacle of how to work in design patterns into timer, since timer is dependent on toggling/difficulty change buttons AND state changes are apparent in difficulty toggling visually. Also I was sick the majority of this week.
+
+XP Core Values: Communication 
+- Throughout the past week, I was very transparent on what changes I made as well as what issues or questions I had. During the meeting, I made sure everyone was on the same page and got a chance to talk. I also made sure to ask about everyone's other responsibilities and about how much time they could dedicate to this project.

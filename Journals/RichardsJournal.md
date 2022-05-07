@@ -38,6 +38,35 @@ I think our initial structure should be.
 
 
 
+##  4/27/2022
+### Task worked on ###
+Working on the Pawn promption problem but after further invesitagation it appears that some of the pawns core movements are broken and the code is too "messy" to properly function. Refactored the pawn class such that there's less redundency for hte move options. Also fixed the "jumping" issue where a pawn can jump over any piece in the first move. 
+
+### Task Planned for next week ###
+Continue the spike to figure out how to do a popup window for pawn promption. if fail go with pre-established buttons.
+
+### Blocking items waiting on another team member ###
+Help, I still can't fiugre out how to do a popup menu. (toast style)
+
+### Scrum notes ###
+Feedback side, there was a bug John discovered where his chess clock would allow a person's turn to be skilled. However since we all liked it we decided to re-classify as a feature.
+
+## 5/5/2022 ##
+### Task worked on ###
+Figured out how to add the promotion buttons to the UI and started basic integration to the Chess board. Converted to a primative observer pattern and singleton to facilitate operations.
+### Task Planned for next week ###
+Refactor and further expand on the promotion buttons task needed.
+[] need to change colors as needed
+[] pawn class need to add a forwarding method to call 
+### Blocking items waiting on another team member ###
+[] not cirtical now but need to talk with John on how to integrate the timer.
+[] also neogiate the button real estate.
+### Scrum notes ###
+Help organized the scrum meeting into the 3 orginal questions. We potentially have too much conversation. For a growing team this is good for a short build cycle not as much.
+1. what did you do
+2. what will you do
+3. what are your blockers
+
 # Template #
 ### Task worked on ###
 ### Task Planned for next week ###

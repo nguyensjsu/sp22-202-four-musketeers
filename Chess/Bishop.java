@@ -11,7 +11,7 @@ public class Bishop extends ChessPiece {
     }
 
     @Override
-    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY) {
+    protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         return getDiagonalMoves(curX, curY, moveX, moveY);
     }
 }
