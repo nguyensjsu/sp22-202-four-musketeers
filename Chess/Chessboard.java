@@ -17,6 +17,8 @@ public class Chessboard extends World implements IChessMoveSubject {
     private MediumDifficultySelectButton medDiffBtn;
     private HardDifficultySelectButton hardDiffBtn;
 
+    private MoveHistory mh;
+  
     public int TURN_TIME = 30;
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
@@ -37,6 +39,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             return;
         }
 
+
         if(isTimerOn) {
             if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
                 addObject(timerActor,1,0);
@@ -46,9 +49,9 @@ public class Chessboard extends World implements IChessMoveSubject {
 
             // Swap turns if time is up
             if (rawSeconds == 0) {
-                processMove(0,0,"-");
-                moveNumber++; //Not sure if this should be updated here i.e. if one side fails to make move
-                gameStart = false;
+                processMove(0,0,"-"); // empty move since turn skipped
+                moveNumber++; //turn iterated
+                mh.resetToRecentHistory();
                 
                 isWhiteTurn = !isWhiteTurn;
                 timerActor.startTimer();
@@ -81,12 +84,13 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
+        addScrollButtons();
 
-        setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
+
+        setPaintOrder(ChessPiece.class, Tile.class, Label.class,ScrollButton.class, MoveHistory.class);
 
         //Initialize timer toggle button
         timerToggleBtn = new TimerToggleButton();
-
         addObject(timerToggleBtn,0,0);
         
         // Initialize lambda functions for decorators
@@ -214,9 +218,23 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void addMoveHistory() {
-        MoveHistory mh = new MoveHistory();
+        mh = new MoveHistory();
         addObserver(mh);
         addObject(mh, getWidth() - 2, getHeight() / 2);
+    }
+
+    private void addScrollButtons() {
+        //scroll button initiation
+        ScrollButton upScroll = new ScrollButton("upArrow.png","up");
+        ScrollButton downScroll = new ScrollButton("downArrow.png","down");
+        
+        //add observers to scroll buttons
+        upScroll.addObserver(mh);
+        downScroll.addObserver(mh);
+        
+        //scroll button positioning
+        addObject(upScroll,getWidth()-3,getHeight());
+        addObject(downScroll,getWidth(),getHeight());
     }
 
     private void flipBoard() {

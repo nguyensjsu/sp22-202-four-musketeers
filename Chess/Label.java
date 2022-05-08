@@ -2,6 +2,12 @@ import greenfoot.*;
 
 // Leaf class
 public class Label extends Actor {
+    private ILabelState onScreen;
+    private ILabelState offScreen;
+    
+    private ILabelState currentState;
+    
+    
     private int fontSize;
     private Color lineColor = Color.BLACK;
     private Color fillColor = Color.BLACK;
@@ -11,12 +17,11 @@ public class Label extends Actor {
     private String move2;
 
     private static final Color transparent = new Color(0, 0, 0, 0);
-
-    public Label(String header) {
-        this.turn = -1;
-        this.move1 = header;
-        this.move2 = "";
-        updateImage();
+    
+    private int yPosition;
+    
+    public enum LabelStates {
+        OFF,ON
     }
 
     /**
@@ -28,6 +33,15 @@ public class Label extends Actor {
         this.move1 = "";
         this.move2 = "";
         updateImage();
+        
+    }
+    
+    public void addedToWorld(World w) { //triggers when object added to a world
+        yPosition = getY();
+        onScreen = new LabelStateOnScreen(this);
+        offScreen = new LabelStateOffScreen(this);
+        
+        currentState = onScreen;
     }
 
     /**
@@ -53,13 +67,9 @@ public class Label extends Actor {
     /**
      * Update the image on screen to show the current value.
      */
-    private void updateImage() {
-        if (turn == -1) { //if header label
-            setImage(move1);
-        } else { // if history label
-            String value = turn + "." + "" + move1 + " " + move2;
-            setImage(new GreenfootImage(value, fontSize, fillColor, transparent, lineColor));
-        }
+    public void updateImage() {
+        String value = turn + "." + "" + move1 + " " + move2;
+        setImage(new GreenfootImage(value, fontSize, fillColor, transparent, lineColor));
     }
 
     // this is how black movements are inserted into existing labels (can maybe take out move1 stuff)
@@ -71,10 +81,38 @@ public class Label extends Actor {
         }
         updateImage();
     }
-
+    
+    public void setState(LabelStates state) {
+        switch(state) {
+            case OFF: currentState = offScreen; break;
+            case ON: currentState = onScreen; break;
+            default: break;
+        }
+    }
+    
+    public ILabelState getState() {
+        return currentState;
+    }
+    
+    public int getYPos() {
+        return yPosition;
+    }
+    
+    public void setYPos(int y) {
+        yPosition = y;
+    }
+        
     //shift self up 100 px
     public void shiftUpwards() {
-        setLocation(getX(), getY() - 1);
-        updateImage();
+        currentState.upButtonPress();
     }
+    
+    public void shiftDownwards() {
+        currentState.downButtonPress();
+    }
+    
+    public World getLabelWorld() {
+        return getWorld();
+    }
+    
 }
