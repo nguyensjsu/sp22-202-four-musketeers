@@ -32,8 +32,6 @@ public abstract class ChessPiece extends Actor {
             int mouseY = getMouseY();
             if (!chessboard.getObjectsAt(mouseX, mouseY, Valid.class).isEmpty()) {
                 move(mouseX, mouseY);
-                chessboard.gameStart = false;
-                chessboard.moveNumber++;
             }
         }
     }
