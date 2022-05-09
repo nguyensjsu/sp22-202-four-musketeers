@@ -41,11 +41,14 @@ public class Pawn extends ChessPiece
                 removed = true;
                 chessboard.removeObject(this);
 
-                // Add queen
-                Queen queen = new Queen(isWhite);
+                // Add queen (orginal code)
+/*                 Queen queen = new Queen(isWhite);
                 queen.chessboard = chessboard;
                 chessboard.addObject(queen, mouseX, mouseY);
-                queen.move(mouseX, mouseY, false);
+                queen.move(mouseX, mouseY, false); */
+
+                promotionObserver obs = promotionObserver.getInstance();
+                obs.openPromotion(isWhite, mouseX, mouseY);
             } else {
                 super.move(mouseX, mouseY);
             }

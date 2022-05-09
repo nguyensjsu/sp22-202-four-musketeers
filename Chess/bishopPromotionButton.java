@@ -15,8 +15,10 @@ public class bishopPromotionButton extends PromotionButton
         super(new ArrayList<>(Arrays.asList("grayedBishopButton.png", "whiteBishopButton.png", "blackBishopButton.png")));
     }
     
-    public void act()
+    @Override
+    public ChessPiece getPiece() 
     {
-        // Add your action code here.
+        return new Bishop(this.getColor());
     }
+    
 }

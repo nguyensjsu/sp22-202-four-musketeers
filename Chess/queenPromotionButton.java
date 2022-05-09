@@ -12,8 +12,10 @@ public class queenPromotionButton extends PromotionButton
     {
         super(new ArrayList<>(Arrays.asList("grayedQueenButton.png", "whiteQueenButton.png", "blackQueenButton.png")));
     }
-    public void act()
+    
+    @Override
+    public ChessPiece getPiece() 
     {
-        // Add your action code here.
+        return new Queen(this.getColor());
     }
 }

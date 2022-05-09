@@ -21,7 +21,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     
     //Promotion Section Buttons
     promotionObserver promotionObs;
-    private Dictionary buttonList = new Hashtable<>();
+    private Map buttonList = new Hashtable<>();
     
     public boolean gameOver;
 
