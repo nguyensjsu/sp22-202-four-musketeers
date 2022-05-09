@@ -29,8 +29,12 @@ public abstract class PromotionButton extends Actor
     {
         if(isActive)
         {
-            this.addPiece();
-            this.obs.closePromotion();
+            if (Greenfoot.mouseClicked(this))
+            {
+                this.addPiece();
+                this.obs.closePromotion();
+            }
+
         }
     }
 

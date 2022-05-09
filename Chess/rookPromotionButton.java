@@ -21,9 +21,4 @@ public class rookPromotionButton extends PromotionButton
     {
         return new Rook(this.getColor());
     }
-    
-    public void act()
-    {
-        System.out.println("acted");
-    }
 }
