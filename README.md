@@ -49,3 +49,29 @@ Ryan: Castling through compromised squares and capturing king. And check alert.
 Obstacles:
 Richard: popup dialog box.
 Eric: Figure out source of bug with select
+
+## 5/5/2022 ##
+Eric: Movie history, scroll bar is not possible since the layout making percised points not possible. Must use buttons. 
+ask team: is this ok? It's not as nice but it's the simpliest. 
+
+Trying to work a pattern into it. The observer for the buttons and the labels. This would mean each label would have it's own state.
+Move history should be done wihtin a day or two.
+
+John: (Sick)
+my progress: implement timer toggling and timer difficulty changing
+obstacles: figuring out how to do greenfoot image, future obstacle is how to implement design patterns for timer
+
+Richard:
+got buttons for pieces in.
+will continue working on it
+need collab to set button locations and supper piece
+
+Ryan:
+Created a "super piece". 
+Will refactor code for design patterns. 
+
+John:
+We should work on admin stuff.
+
+Feedback for options:
+Random piece alloactions. Or out of the 3 options we can present one of the options. 

@@ -1,25 +1,26 @@
 import greenfoot.*;
+import java.awt.Color;
 
 import java.util.function.*;
 
 public class TimerActor extends Actor {
-    private final SimpleTimer timer;
-    private static TimerActor timerActor;
+    
+    private SimpleTimer timer;
+    private GreenfootImage img;
+    
+    private Function<Integer, String> minDec;
+    private Function<Integer, String> secDec;
 
-    private TimerActor() {
+    public TimerActor(Function<Integer, String> minutesDec,
+                      Function<Integer, String> secondsDec,
+                      int turnTime) {
         timer = new SimpleTimer();
+        
+        minDec = minutesDec;
+        secDec = secondsDec;
+        
         startTimer();
-    }
-
-    public synchronized static TimerActor getInstance() {
-        if (timerActor == null) {
-            timerActor = getNewInstance();
-        }
-        return timerActor;
-    }
-
-    public synchronized static TimerActor getNewInstance() {
-        return new TimerActor();
+        displayTimer(turnTime);
     }
 
     public void startTimer() {
@@ -30,13 +31,21 @@ public class TimerActor extends Actor {
         return timer.millisElapsed() / 1000;
     }
 
-    public String displayTimer(int rawSeconds,
-                               Function<Integer, String> minutesDec,
-                               Function<Integer, String> secondsDec) {
-
-        return minutesDec.apply(rawSeconds) + secondsDec.apply(rawSeconds);
+    public void displayTimer(int rawSeconds) {
+        String newTime = minDec.apply(rawSeconds) + secDec.apply(rawSeconds);
+        
+        // display timer text
+        img = new GreenfootImage(100,50);
+        
+        // changing color of text based on time left
+        if(rawSeconds >= 10) img.setColor(greenfoot.Color.GREEN);
+        else img.setColor(greenfoot.Color.RED);
+        
+        Font font = img.getFont().deriveFont(30f);
+        img.setFont(font);
+        img.drawString(newTime,15,30);
+        setImage(img);
     }
 
-    public void act() {
-    }
+    public void act() { }
 }

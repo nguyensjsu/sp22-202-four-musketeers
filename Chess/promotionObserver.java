@@ -7,8 +7,7 @@ public class promotionObserver
     //World cb = getWorld();
 
     private Map<String, PromotionButton> buttonList = new Hashtable<String, PromotionButton>();
-
-    rookPromotionButton rpb;
+    private Chessboard cb;
 
     private promotionObserver()
     {
@@ -35,6 +34,8 @@ public class promotionObserver
 
     public void openPromotion(Pawn toRemove, int xLocation, int yLocation)
     {
+        cb.removeDifficultyButton();
+        cb.createPromotionalButtons();
         for(PromotionButton pb : buttonList.values())
         {
             pb.activationPromotion(toRemove, xLocation, yLocation, this);
@@ -43,10 +44,17 @@ public class promotionObserver
 
     public void closePromotion()
     {
+        cb.removePromotionalButtons();
+        cb.addDifficultyButton();
         for(PromotionButton pb : buttonList.values())
         {
             pb.deActivatePromotion();
         }
+    }
+
+    public void addChessBoard(Chessboard gameboard)
+    {
+        cb = gameboard;
     }
 }
 

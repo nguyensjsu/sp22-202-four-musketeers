@@ -8,15 +8,23 @@ import java.util.function.*;
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
-    public static final int TURN_TIME = 15;
 
     private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
+    private TimerToggleButton timerToggleBtn;
+    private EasyDifficultySelectButton easyDiffBtn;
+    private MediumDifficultySelectButton medDiffBtn;
+    private HardDifficultySelectButton hardDiffBtn;
 
+    private MoveHistory mh;
+  
+    public int TURN_TIME = 30;
     public int moveNumber = 1;
     public boolean isWhiteTurn = true;
+    public boolean gameStart = true;
+    public boolean isTimerOn = true;
     private boolean swapTurn = isWhiteTurn;
     
     //Promotion Section Buttons
@@ -27,7 +35,7 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     public Chessboard() {
         super(DIM_X + 1, DIM_Y, 100);
-        init();
+        init(); 
     }
 
     @Override
@@ -37,33 +45,44 @@ public class Chessboard extends World implements IChessMoveSubject {
             return;
         }
 
-        int rawSeconds = TURN_TIME - timerActor.checkTimer();
 
-        // Swap turns if time is up
-        if (rawSeconds == 0) {
-            processMove(0,0,"-");
-            moveNumber++;
-            promotionObs.closePromotion();
-            
-            isWhiteTurn = !isWhiteTurn;
-            timerActor.startTimer();
-            
-
-            // Game over if in check
-            List<Check> possibleCheck = getObjects(Check.class);
-            if (!possibleCheck.isEmpty()) {
-                gameOver = true;
-                clearSelection();
-                clearValidMoves();
-                Check check = possibleCheck.get(0);
-                addObject(new Checkmate(), check.getX(), check.getY());
-                removeObject(check);
-                Greenfoot.playSound("checkmate.mp3");
+        if(isTimerOn) {
+            if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
+                addObject(timerActor,1,0);
             }
-        }
+            
+            int rawSeconds = TURN_TIME - timerActor.checkTimer();
 
-        // Update timer display
-        showText(timerActor.displayTimer(rawSeconds, minDec, secDec), 1, 0);
+            // Swap turns if time is up
+            if (rawSeconds == 0) {
+                processMove(0,0,"-"); // empty move since turn skipped
+                moveNumber++; //turn iterated
+                promotionObs.closePromotion();
+                mh.resetToRecentHistory();
+                
+                isWhiteTurn = !isWhiteTurn;
+                timerActor.startTimer();
+
+                // Game over if in check
+                List<Check> possibleCheck = getObjects(Check.class);
+                if (!possibleCheck.isEmpty()) {
+                    gameOver = true;
+                    clearSelection();
+                    clearValidMoves();
+                    Check check = possibleCheck.get(0);
+                    addObject(new Checkmate(), check.getX(), check.getY());
+                    removeObject(check);
+                    Greenfoot.playSound("checkmate.mp3");
+                }
+            }
+
+            // Update timer display
+            timerActor.displayTimer(rawSeconds);
+        }
+        else {
+            // TODO
+            removeObject(timerActor);
+        }
 
         flipBoard();
     }
@@ -72,12 +91,16 @@ public class Chessboard extends World implements IChessMoveSubject {
         addTiles();
         addPieces();
         addMoveHistory();
+        addScrollButtons();
 
-        setPaintOrder(ChessPiece.class, Tile.class, Label.class, MoveHistory.class);
 
-        // Initialize timer and lambda functions for decorators
-        timerActor = TimerActor.getNewInstance();
+        setPaintOrder(ChessPiece.class, Tile.class, Label.class,ScrollButton.class, MoveHistory.class);
 
+        //Initialize timer toggle button
+        timerToggleBtn = new TimerToggleButton();
+        addObject(timerToggleBtn,0,0);
+        
+        // Initialize lambda functions for decorators
         minDec = (Integer rawSeconds) -> {
             int minutes = rawSeconds / 60;
             String minutesPadding = "";
@@ -87,7 +110,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             } else {
                 minutesPadding = "0";
             }
-            return "Timer: " + minutesPadding + minutes + ":";
+            return minutesPadding + minutes + ":";
         };
 
         secDec = (Integer rawSeconds) -> {
@@ -99,10 +122,37 @@ public class Chessboard extends World implements IChessMoveSubject {
             return secondsPadding + seconds;
         };
 
+        // Initialize timer
+        timerActor = new TimerActor(minDec, secDec, TURN_TIME);
+        
+        // Difficulty buttons
+        easyDiffBtn = new EasyDifficultySelectButton();
+        medDiffBtn = new MediumDifficultySelectButton();
+        hardDiffBtn = new HardDifficultySelectButton();
+        
+        //add difficultybutton to the screen
+        this.addDifficultyButton();
+
         //create the promotional buttons.
-        this.createPromotionalButtons();
+        promotionObs = promotionObserver.getInstance();
+        promotionObs.addChessBoard(this);
+        this.buttonList = promotionObs.getButtonList();
         
         Greenfoot.playSound("start.mp3");
+    }
+    
+    public void addDifficultyButton()
+    {
+        addObject(easyDiffBtn,3,0);
+        addObject(medDiffBtn,4,0);
+        addObject(hardDiffBtn,5,0);
+    }
+
+    public void removeDifficultyButton()
+    {
+        removeObject(easyDiffBtn);
+        removeObject(medDiffBtn);
+        removeObject(hardDiffBtn);
     }
 
     private void addTiles() {
@@ -193,9 +243,23 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void addMoveHistory() {
-        MoveHistory mh = new MoveHistory();
+        mh = new MoveHistory();
         addObserver(mh);
         addObject(mh, getWidth() - 2, getHeight() / 2);
+    }
+
+    private void addScrollButtons() {
+        //scroll button initiation
+        ScrollButton upScroll = new ScrollButton("upArrow.png","up");
+        ScrollButton downScroll = new ScrollButton("downArrow.png","down");
+        
+        //add observers to scroll buttons
+        upScroll.addObserver(mh);
+        downScroll.addObserver(mh);
+        
+        //scroll button positioning
+        addObject(upScroll,getWidth()-3,getHeight());
+        addObject(downScroll,getWidth(),getHeight());
     }
 
     private void flipBoard() {
@@ -233,6 +297,10 @@ public class Chessboard extends World implements IChessMoveSubject {
 
         for (Knight k : getObjects(Knight.class)) {
             k.setLocation(edgeX - k.getX(), edgeY - k.getY());
+        }
+
+        for (Super s : getObjects(Super.class)) {
+            s.setLocation(edgeX - s.getX(), edgeY - s.getY());
         }
 
         for (Check check : getObjects(Check.class)) {
@@ -275,16 +343,21 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     //helper method to isolate the promotion button creation
-    private void createPromotionalButtons()
+    public void createPromotionalButtons()
     {
-        //initalize the buttons
-        promotionObs = promotionObserver.getInstance();
-        this.buttonList = promotionObs.getButtonList();
-
         //add them to the world
         addObject((PromotionButton)buttonList.get("rook"), 4,0);
         addObject((PromotionButton)buttonList.get("knight"), 5,0);
         addObject((PromotionButton)buttonList.get("bishop"), 6,0);
         addObject((PromotionButton)buttonList.get("queen"), 7,0);
+    }
+
+    public void removePromotionalButtons()
+    {
+        //add them to the world
+        removeObject((PromotionButton)buttonList.get("rook"));
+        removeObject((PromotionButton)buttonList.get("knight"));
+        removeObject((PromotionButton)buttonList.get("bishop"));
+        removeObject((PromotionButton)buttonList.get("queen"));
     }
 }

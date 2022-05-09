@@ -36,11 +36,15 @@ public class Pawn extends ChessPiece
                 chessboard.removeObject(pawn.get(0));
                 Greenfoot.playSound("capture.mp3");
                 move(mouseX, mouseY, true);
-            } else if (mouseY == 1) 
-            {
+            } else if (mouseY == 1) {
                 promotionObserver obs = promotionObserver.getInstance();
                 obs.openPromotion(this, mouseX, mouseY);
-               
+
+                // Add super piece
+/*                 Super superPiece = new Super(isWhite);
+                superPiece.chessboard = chessboard;
+                chessboard.addObject(superPiece, mouseX, mouseY);
+                superPiece.move(mouseX, mouseY, false); */
             } else {
                 super.move(mouseX, mouseY);
             }

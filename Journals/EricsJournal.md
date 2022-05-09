@@ -46,3 +46,19 @@ What blockers I have:
 
 XP Core Value **Respect** : 
 - As we were presenting our feature implementations to each other we tried to get each other's opinion on anything that could be changed to make the project better. In my case, I tried to get each of the other members of the group if there was any visual or code structure change thet thought I could make even if it was just an optional suggestion since everyone's feedback should be valid. Also to make sure we are respecting each others time and effort put into the project we addressed the responsibilities each person has for the next week. We also don't approve merge requests until we get everyone's approval since we want to maintain that everyone's opinion on aspects of the project are equally important. 
+
+---
+## Four Musketeers: Weekly Scrum Report 5/4
+Team Member Name: Eric Arreola
+
+What I did since last weekly scrum:
+- Since the last meeting I have looked into the implementation of a scrollbar and have been deciding what works with our current code. With how placements of actors works with our code and that granular movement is not possible I decided that an efficient and well done scrollbar would not be feasible. Then my focus switched to having two buttons that control scrolling instead since I can just place those somewhere on the world and not worry too much about movement. I have come up with a few ideas for how to integrate patterns into that process, but I have still deciding in the past week. 
+
+What I plan to do this week:
+-  Coordinate with teammates to make sure that my placements of buttons does not interfere with their parallel changes since there are only so many empty spaces. I also need to commit to some specific patterns to use in the implementation, my current idea is to have move history have states of off screen and on screen while the Move History object observes the buttons that I end up adding. 
+
+What blockers I have:
+- I am still unsure of how to retain the history entries while removing them from the world and then bringing them back. I am also unsure of how specifically a state pattern should be implemented with the different move history entries. I think with some review of patterns and some thinking I should be able to take care of it. If not then my teammates should be available for advising.
+
+XP Core Value **Respect** : 
+- We have been trying to respect people's time outside of this class so we don't enforce strict deadlines but we also keep in mind that it would be direspectful to just let others do all the work so to help with that we have been listing out every thing we have each done and plan to do. This has helped with keeping people accountable. Also whenever one person has an idea that they think would be good to add to the project we go through everyones opinions of the idea in terms of time cost and general worth and only if everyone agrees do we think about implementations of the idea. Once such idea was including an AI opponent in the project but due to time constraints we eventually decided against it as a group.
