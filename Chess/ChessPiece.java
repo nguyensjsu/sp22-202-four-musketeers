@@ -384,4 +384,9 @@ public abstract class ChessPiece extends Actor {
     private boolean isSelected() {
         return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
     }
+
+    public boolean getIsWhite()
+    {
+        return isWhite;
+    }
 }

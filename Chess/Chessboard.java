@@ -43,9 +43,11 @@ public class Chessboard extends World implements IChessMoveSubject {
         if (rawSeconds == 0) {
             processMove(0,0,"-");
             moveNumber++;
+            promotionObs.closePromotion();
             
             isWhiteTurn = !isWhiteTurn;
             timerActor.startTimer();
+            
 
             // Game over if in check
             List<Check> possibleCheck = getObjects(Check.class);

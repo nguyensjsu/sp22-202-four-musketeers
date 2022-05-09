@@ -13,6 +13,7 @@ public abstract class PromotionButton extends Actor
     private int newPieceXLocation;
     private int newPieceYLocation;
     private promotionObserver obs;
+    private Pawn trade;
 
     public PromotionButton()
     {
@@ -46,13 +47,14 @@ public abstract class PromotionButton extends Actor
         setImage(iconImage);
     }
 
-    public void activationPromotion(boolean color, int xLocation, int yLocation, promotionObserver chain)
+    public void activationPromotion(Pawn toRemove, int xLocation, int yLocation, promotionObserver chain)
     {
-        isWhite = color;
+        isWhite = toRemove.getIsWhite();
         newPieceXLocation = xLocation;
         newPieceYLocation = yLocation;
         isActive = true;
         obs = chain;
+        trade = toRemove;
 
         if(this.isWhite)
         {
@@ -69,6 +71,7 @@ public abstract class PromotionButton extends Actor
         Chessboard chessboard = (Chessboard) getWorld();
         ChessPiece promotion = this.getPiece();
         promotion.chessboard = chessboard;
+        trade.removePawn();
         chessboard.addObject(promotion, newPieceXLocation, newPieceYLocation);
         promotion.move(newPieceXLocation, newPieceYLocation, false);
     }

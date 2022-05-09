@@ -36,25 +36,22 @@ public class Pawn extends ChessPiece
                 chessboard.removeObject(pawn.get(0));
                 Greenfoot.playSound("capture.mp3");
                 move(mouseX, mouseY, true);
-            } else if (mouseY == 1) {
-                // Remove pawn
-                removed = true;
-                chessboard.removeObject(this);
-
-                // Add queen (orginal code)
-/*                 Queen queen = new Queen(isWhite);
-                queen.chessboard = chessboard;
-                chessboard.addObject(queen, mouseX, mouseY);
-                queen.move(mouseX, mouseY, false); */
-
+            } else if (mouseY == 1) 
+            {
                 promotionObserver obs = promotionObserver.getInstance();
-                obs.openPromotion(isWhite, mouseX, mouseY);
+                obs.openPromotion(this, mouseX, mouseY);
+               
             } else {
                 super.move(mouseX, mouseY);
             }
         }
     }
 
+    public void removePawn()
+    {
+        removed = true;
+        chessboard.removeObject(this);
+    }
     @Override
     protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();

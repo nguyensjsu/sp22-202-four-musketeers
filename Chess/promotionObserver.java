@@ -33,11 +33,11 @@ public class promotionObserver
         return buttonList;
     }
 
-    public void openPromotion(boolean color, int xLocation, int yLocation)
+    public void openPromotion(Pawn toRemove, int xLocation, int yLocation)
     {
         for(PromotionButton pb : buttonList.values())
         {
-            pb.activationPromotion(color, xLocation, yLocation, this);
+            pb.activationPromotion(toRemove, xLocation, yLocation, this);
         }
     }
 
