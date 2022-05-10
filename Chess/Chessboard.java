@@ -12,6 +12,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
+    public IDifficultyStateManager dsm;
     private TimerToggleButton timerToggleBtn;
     private EasyDifficultySelectButton easyDiffBtn;
     private MediumDifficultySelectButton medDiffBtn;
@@ -126,6 +127,9 @@ public class Chessboard extends World implements IChessMoveSubject {
         addObject(easyDiffBtn,3,0);
         addObject(medDiffBtn,4,0);
         addObject(hardDiffBtn,5,0);
+        
+        // Initialize difficulty state machine manager
+        dsm = new DifficultyStateManager();
       
         Greenfoot.playSound("start.mp3");
     }

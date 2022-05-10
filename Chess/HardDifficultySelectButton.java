@@ -18,10 +18,21 @@ public class HardDifficultySelectButton extends DifficultySelectButton {
     @Override
     public void act() {
         Chessboard chessboard = (Chessboard)getWorld();
+        
+        if(chessboard.dsm.getCurDifficulty() == "HardDifficultyState") {
+            img.setTransparency(255);
+            setImage(img);
+        }
+        else {
+            img.setTransparency(64);
+            setImage(img);
+        }
+        
         if (Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
             if(chessboard.gameStart) {
                 chessboard.TURN_TIME = 5;
                 chessboard.timerActor.startTimer();
+                chessboard.dsm.setHardDifficulty();
             }
         }
     }
