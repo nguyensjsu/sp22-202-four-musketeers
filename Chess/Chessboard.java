@@ -41,13 +41,11 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     @Override
     public void act() {
-        if (gameOver) 
-        {
-            return;
-        }
+        if (gameOver) return;
+        
+        if(!gameStart) this.removeDifficultyButtons();
 
-
-        if(isTimerOn) {
+        if (isTimerOn) {
             if(getObjectsAt(1,0,TimerActor.class).isEmpty()) {
                 addObject(timerActor,1,0);
             }
@@ -93,8 +91,7 @@ public class Chessboard extends World implements IChessMoveSubject {
         addPieces();
         addMoveHistory();
         addScrollButtons();
-
-
+        
         setPaintOrder(ChessPiece.class, Tile.class, Label.class,ScrollButton.class, MoveHistory.class);
 
         //Initialize timer toggle button
@@ -135,7 +132,7 @@ public class Chessboard extends World implements IChessMoveSubject {
         dsm = new DifficultyStateManager();
 
         //add difficultybutton to the screen
-        this.addDifficultyButton();
+        this.addDifficultyButtons();
 
         //create the promotional buttons.
         promotionObs = promotionObserver.getInstance();
@@ -145,14 +142,14 @@ public class Chessboard extends World implements IChessMoveSubject {
         Greenfoot.playSound("start.mp3");
     }
     
-    public void addDifficultyButton()
+    public void addDifficultyButtons()
     {
         addObject(easyDiffBtn,3,0);
         addObject(medDiffBtn,4,0);
         addObject(hardDiffBtn,5,0);
     }
 
-    public void removeDifficultyButton()
+    public void removeDifficultyButtons()
     {
         removeObject(easyDiffBtn);
         removeObject(medDiffBtn);
