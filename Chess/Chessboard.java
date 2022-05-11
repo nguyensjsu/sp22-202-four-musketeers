@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.*;
 import java.util.function.*;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
@@ -263,6 +265,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void flipBoard() {
+        System.out.println(moveNumber);
         if (gameOver || swapTurn == isWhiteTurn) {
             return;
         }
@@ -349,7 +352,14 @@ public class Chessboard extends World implements IChessMoveSubject {
         addObject((PromotionButton)buttonList.get("rook"), 4,0);
         addObject((PromotionButton)buttonList.get("knight"), 5,0);
         addObject((PromotionButton)buttonList.get("bishop"), 6,0);
-        addObject((PromotionButton)buttonList.get("queen"), 7,0);
+        if(this.moveNumber % 3 == 0)
+        {
+            addObject((PromotionButton)buttonList.get("super"), 7,0);
+        }
+        else
+        {
+            addObject((PromotionButton)buttonList.get("queen"), 7,0);
+        }
     }
 
     public void removePromotionalButtons()
@@ -359,5 +369,6 @@ public class Chessboard extends World implements IChessMoveSubject {
         removeObject((PromotionButton)buttonList.get("knight"));
         removeObject((PromotionButton)buttonList.get("bishop"));
         removeObject((PromotionButton)buttonList.get("queen"));
+        removeObject((PromotionButton)buttonList.get("super"));
     }
 }

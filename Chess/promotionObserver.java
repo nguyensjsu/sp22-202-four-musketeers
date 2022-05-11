@@ -16,6 +16,7 @@ public class promotionObserver
         buttonList.put("knight", new knightPromotionButton());
         buttonList.put("bishop", new bishopPromotionButton());
         buttonList.put("queen", new queenPromotionButton());
+        buttonList.put("super", new superPromotionButton());
     }
 
     public static promotionObserver getInstance()
