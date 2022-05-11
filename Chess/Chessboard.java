@@ -2,7 +2,10 @@ import greenfoot.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 import java.util.function.*;
+
+import javax.lang.model.util.ElementScanner6;
 
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
@@ -25,7 +28,11 @@ public class Chessboard extends World implements IChessMoveSubject {
     public boolean gameStart = true;
     public boolean isTimerOn = true;
     private boolean swapTurn = isWhiteTurn;
-
+    
+    //Promotion Section Buttons
+    promotionObserver promotionObs;
+    private Map buttonList = new Hashtable<>();
+    
     public boolean gameOver;
 
     public Chessboard() {
@@ -35,7 +42,8 @@ public class Chessboard extends World implements IChessMoveSubject {
 
     @Override
     public void act() {
-        if (gameOver) {
+        if (gameOver) 
+        {
             return;
         }
 
@@ -51,6 +59,7 @@ public class Chessboard extends World implements IChessMoveSubject {
             if (rawSeconds == 0) {
                 processMove(0,0,"-"); // empty move since turn skipped
                 moveNumber++; //turn iterated
+                promotionObs.closePromotion();
                 mh.resetToRecentHistory();
                 
                 isWhiteTurn = !isWhiteTurn;
@@ -123,13 +132,31 @@ public class Chessboard extends World implements IChessMoveSubject {
         medDiffBtn = new MediumDifficultySelectButton();
         hardDiffBtn = new HardDifficultySelectButton();
         
-        addObject(easyDiffBtn,3,0);
-        addObject(medDiffBtn,4,0);
-        addObject(hardDiffBtn,5,0);
-      
+        //add difficultybutton to the screen
+        this.addDifficultyButton();
+
+        //create the promotional buttons.
+        promotionObs = promotionObserver.getInstance();
+        promotionObs.addChessBoard(this);
+        this.buttonList = promotionObs.getButtonList();
+        
         Greenfoot.playSound("start.mp3");
     }
     
+    public void addDifficultyButton()
+    {
+        addObject(easyDiffBtn,3,0);
+        addObject(medDiffBtn,4,0);
+        addObject(hardDiffBtn,5,0);
+    }
+
+    public void removeDifficultyButton()
+    {
+        removeObject(easyDiffBtn);
+        removeObject(medDiffBtn);
+        removeObject(hardDiffBtn);
+    }
+
     private void addTiles() {
         int x;
         int y;
@@ -238,6 +265,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void flipBoard() {
+        System.out.println(moveNumber);
         if (gameOver || swapTurn == isWhiteTurn) {
             return;
         }
@@ -315,5 +343,32 @@ public class Chessboard extends World implements IChessMoveSubject {
     public void processMove(int x, int y, String pieceType) {
         String out = pieceType.equals("-") ? " - " : pieceType + "[" + x + "," + y + "]";
         notifyObservers(moveNumber, out);
+    }
+
+    //helper method to isolate the promotion button creation
+    public void createPromotionalButtons()
+    {
+        //add them to the world
+        addObject((PromotionButton)buttonList.get("rook"), 4,0);
+        addObject((PromotionButton)buttonList.get("knight"), 5,0);
+        addObject((PromotionButton)buttonList.get("bishop"), 6,0);
+        if(this.moveNumber % 3 == 0)
+        {
+            addObject((PromotionButton)buttonList.get("super"), 7,0);
+        }
+        else
+        {
+            addObject((PromotionButton)buttonList.get("queen"), 7,0);
+        }
+    }
+
+    public void removePromotionalButtons()
+    {
+        //add them to the world
+        removeObject((PromotionButton)buttonList.get("rook"));
+        removeObject((PromotionButton)buttonList.get("knight"));
+        removeObject((PromotionButton)buttonList.get("bishop"));
+        removeObject((PromotionButton)buttonList.get("queen"));
+        removeObject((PromotionButton)buttonList.get("super"));
     }
 }

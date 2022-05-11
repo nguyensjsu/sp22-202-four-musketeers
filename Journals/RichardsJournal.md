@@ -67,6 +67,13 @@ Help organized the scrum meeting into the 3 orginal questions. We potentially ha
 2. what will you do
 3. what are your blockers
 
+## 5/5/2022 working notes
+Pawn has to be a subject class that holds pointer to PromotionButton master class. This class will hold all of the promotional buttons.
+(needs array list)
+
+Buttons extended from the promotional class will need to have a create and delete option. Constructors should have an add to the promotion class to add the item to an instance variable.
+
+
 # Template #
 ### Task worked on ###
 ### Task Planned for next week ###
