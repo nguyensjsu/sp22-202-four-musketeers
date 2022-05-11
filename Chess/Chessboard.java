@@ -9,7 +9,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
 
-    private final ArrayList<IChessMoveObserver> observers = new ArrayList<>();
+    private final List<IChessMoveObserver> observers = new ArrayList<>();
     private Function<Integer, String> minDec;
     private Function<Integer, String> secDec;
     public TimerActor timerActor;
@@ -29,7 +29,7 @@ public class Chessboard extends World implements IChessMoveSubject {
     private boolean swapTurn = isWhiteTurn;
     
     //Promotion Section Buttons
-    promotionObserver promotionObs;
+    private promotionObserver promotionObs;
     private Map buttonList = new Hashtable<>();
     
     public boolean gameOver;

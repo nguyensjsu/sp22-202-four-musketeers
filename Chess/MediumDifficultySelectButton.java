@@ -9,11 +9,11 @@ public class MediumDifficultySelectButton extends DifficultySelectButton {
     public MediumDifficultySelectButton() {
         
         // display timer text
-        img = new GreenfootImage(100,50);
+        img = new GreenfootImage(WIDTH, LENGTH);
         img.setColor(greenfoot.Color.ORANGE);
-        Font font = img.getFont().deriveFont(30f);
+        Font font = img.getFont().deriveFont(fontSize);
         img.setFont(font);
-        img.drawString("Med",15,30);
+        img.drawString("Med",FONT_WIDTH,FONT_LENGTH);
         setImage(img);
     }
     
