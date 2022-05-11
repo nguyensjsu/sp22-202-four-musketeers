@@ -4,7 +4,8 @@ import javafx.util.Pair;
 import java.util.HashSet;
 import java.util.List;
 
-public class Pawn extends ChessPiece {
+public class Pawn extends ChessPiece
+{
     private static final List<Pair<Integer, Integer>> CAPTURES = List.of(
             new Pair<>(-1, -1), new Pair<>(1, -1)
     );
@@ -12,12 +13,15 @@ public class Pawn extends ChessPiece {
             new Pair<>(-1, -1), new Pair<>(1, -1)
     );
 
+    private PromotionButton observer;
     private int moveTwoTilesMoveNumber;
 
     public Pawn(boolean isWhite) {
         super(isWhite);
         setImage(isWhite ? "white_pawn.png" : "black_pawn.png");
     }
+
+    
 
     @Override
     protected void move(int mouseX, int mouseY) {
@@ -33,21 +37,25 @@ public class Pawn extends ChessPiece {
                 Greenfoot.playSound("capture.mp3");
                 move(mouseX, mouseY, true);
             } else if (mouseY == 1) {
-                // Remove pawn
-                removed = true;
-                chessboard.removeObject(this);
+                promotionObserver obs = promotionObserver.getInstance();
+                obs.openPromotion(this, mouseX, mouseY);
 
                 // Add super piece
-                Super superPiece = new Super(isWhite);
+/*                 Super superPiece = new Super(isWhite);
                 superPiece.chessboard = chessboard;
                 chessboard.addObject(superPiece, mouseX, mouseY);
-                superPiece.move(mouseX, mouseY, false);
+                superPiece.move(mouseX, mouseY, false); */
             } else {
                 super.move(mouseX, mouseY);
             }
         }
     }
 
+    public void removePawn()
+    {
+        removed = true;
+        chessboard.removeObject(this);
+    }
     @Override
     protected HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         HashSet<Pair<Integer, Integer>> moves = new HashSet<>();
@@ -105,5 +113,12 @@ public class Pawn extends ChessPiece {
 
     private boolean isEnPassant(List<Pawn> pawn) {
         return !pawn.isEmpty() && pawn.get(0).isWhite != isWhite && pawn.get(0).moveTwoTilesMoveNumber == chessboard.moveNumber - 1;
+    }
+
+
+
+    public void activatePromotion(boolean color, int promoXCord, int promoYCord) 
+    {
+        observer.notify();
     }
 }
