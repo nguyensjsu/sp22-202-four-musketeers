@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.*;
 import java.util.function.*;
 
-import javax.lang.model.util.ElementScanner6;
-
 public class Chessboard extends World implements IChessMoveSubject {
     public static final int DIM_X = 10;
     public static final int DIM_Y = 9;
@@ -265,7 +263,6 @@ public class Chessboard extends World implements IChessMoveSubject {
     }
 
     private void flipBoard() {
-        System.out.println(moveNumber);
         if (gameOver || swapTurn == isWhiteTurn) {
             return;
         }
