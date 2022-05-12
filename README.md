@@ -75,3 +75,22 @@ We should work on admin stuff.
 
 Feedback for options:
 Random piece alloactions. Or out of the 3 options we can present one of the options. 
+
+## 5/11/2022 ##
+John: PR for toggling the difficulty using the state pattern.
+Richard: PR for promotional buttons
+
+Team: We're going through the last items on the Kanban board to either add or strikeout items.
+Vote to strike out, save game. 
+
+
+Ryan: Superqueen is racist. 
+Richard: sorry it's mod 3, will update to 3rd button.
+
+
+Needs:
+1. Quick pitch videos
+2. wireframe layout
+3. make sure the UML Class diagram is re-organized
+4. each person types up a summary of what they did with design decisions.
+5. 
