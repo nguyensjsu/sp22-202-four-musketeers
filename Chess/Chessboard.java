@@ -346,17 +346,12 @@ public class Chessboard extends World implements IChessMoveSubject {
     public void createPromotionalButtons()
     {
         //add them to the world
-        addObject((PromotionButton)buttonList.get("rook"), 4,0);
-        addObject((PromotionButton)buttonList.get("knight"), 5,0);
-        addObject((PromotionButton)buttonList.get("bishop"), 6,0);
-        if(this.moveNumber % 3 == 0)
-        {
-            addObject((PromotionButton)buttonList.get("super"), 7,0);
-        }
-        else
-        {
-            addObject((PromotionButton)buttonList.get("queen"), 7,0);
-        }
+        addObject((PromotionButton)buttonList.get("rook"), 3,0);
+        addObject((PromotionButton)buttonList.get("knight"), 4,0);
+        addObject((PromotionButton)buttonList.get("bishop"), 5,0);
+        addObject((PromotionButton)buttonList.get("super"), 7,0);
+        addObject((PromotionButton)buttonList.get("queen"), 6,0);
+
     }
 
     public void removePromotionalButtons()
