@@ -35,7 +35,6 @@ public class promotionObserver
 
     public void openPromotion(Pawn toRemove, int xLocation, int yLocation)
     {
-        cb.removeDifficultyButton();
         cb.createPromotionalButtons();
         for(PromotionButton pb : buttonList.values())
         {
@@ -46,7 +45,7 @@ public class promotionObserver
     public void closePromotion()
     {
         cb.removePromotionalButtons();
-        cb.addDifficultyButton();
+        
         for(PromotionButton pb : buttonList.values())
         {
             pb.deActivatePromotion();
