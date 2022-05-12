@@ -89,8 +89,10 @@ Richard: sorry it's mod 3, will update to 3rd button.
 
 
 Needs:
-1. Quick pitch videos
-2. wireframe layout
-3. make sure the UML Class diagram is re-organized
-4. each person types up a summary of what they did with design decisions.
-5. 
+1. demo videos - Richard
+2. Userstory video - Eric
+3. wireframe layout - John
+4. make sure the UML Class diagram is re-organized - Ryan
+5. Update readme.md (this file) to be an actual readme.
+5. summary of our project. - John
+6. each person types up a summary of what they did with design decisions.
