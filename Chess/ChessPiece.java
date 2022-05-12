@@ -1,6 +1,5 @@
 import greenfoot.*;
 
-import java.util.List;
 import java.util.HashSet;
 
 import javafx.util.Pair;
@@ -148,7 +147,11 @@ public abstract class ChessPiece extends Actor {
         return teamPossibleMoves.contains(new Pair<>(enemyKing.getX(), enemyKing.getY()));
     }
 
-    protected abstract HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves);
+    protected abstract MoveSet getMoveSet();
+
+    private HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
+        return getMoveSet().getPossibleMoves(curX, curY, moveX, moveY, isCheckingNoMoves);
+    }
 
     private HashSet<Pair<Integer, Integer>> getPossibleMoves(boolean isCheckingNoMoves) {
         return getPossibleMoves(-1, -1, -1, -1, isCheckingNoMoves);
@@ -221,124 +224,6 @@ public abstract class ChessPiece extends Actor {
         return enemyMoves;
     }
 
-    protected HashSet<Pair<Integer, Integer>> getVerticalMoves(int curX, int curY, int moveX, int moveY) {
-        HashSet<Pair<Integer, Integer>> verticalMoves = new HashSet<>();
-
-        // Up
-        for (int y = getY() - 1; y > 0; y--) {
-            if (addMove(curX, curY, moveX, moveY, getX(), y, verticalMoves)) {
-                break;
-            }
-        }
-
-        // Down
-        for (int y = getY() + 1; y < Chessboard.DIM_Y; y++) {
-            if (addMove(curX, curY, moveX, moveY, getX(), y, verticalMoves)) {
-                break;
-            }
-        }
-
-        return verticalMoves;
-    }
-
-    protected HashSet<Pair<Integer, Integer>> getHorizontalMoves(int curX, int curY, int moveX, int moveY) {
-        HashSet<Pair<Integer, Integer>> horizontalMoves = new HashSet<>();
-
-        // Left
-        for (int x = getX() - 1; x >= 0; x--) {
-            if (addMove(curX, curY, moveX, moveY, x, getY(), horizontalMoves)) {
-                break;
-            }
-        }
-
-        // Right
-        for (int x = getX() + 1; x < Chessboard.DIM_X - 2; x++) {
-            if (addMove(curX, curY, moveX, moveY, x, getY(), horizontalMoves)) {
-                break;
-            }
-        }
-
-        return horizontalMoves;
-    }
-
-    protected HashSet<Pair<Integer, Integer>> getDiagonalMoves(int curX, int curY, int moveX, int moveY) {
-        HashSet<Pair<Integer, Integer>> diagonalMoves = new HashSet<>();
-
-        // Up left
-        int y = getY() - 1;
-        int x = getX() - 1;
-        while (y > 0 && x >= 0) {
-            if (addMove(curX, curY, moveX, moveY, x, y, diagonalMoves)) {
-                break;
-            }
-            y--;
-            x--;
-        }
-
-        // Up right
-        y = getY() - 1;
-        x = getX() + 1;
-        while (y > 0 && x < Chessboard.DIM_X - 2) {
-            if (addMove(curX, curY, moveX, moveY, x, y, diagonalMoves)) {
-                break;
-            }
-            y--;
-            x++;
-        }
-
-        // Down left
-        y = getY() + 1;
-        x = getX() - 1;
-        while (y < Chessboard.DIM_Y && x >= 0) {
-            if (addMove(curX, curY, moveX, moveY, x, y, diagonalMoves)) {
-                break;
-            }
-            y++;
-            x--;
-        }
-
-        // Down right
-        y = getY() + 1;
-        x = getX() + 1;
-        while (y < Chessboard.DIM_Y && x < Chessboard.DIM_X - 2) {
-            if (addMove(curX, curY, moveX, moveY, x, y, diagonalMoves)) {
-                break;
-            }
-            y++;
-            x++;
-        }
-
-        return diagonalMoves;
-    }
-
-    private boolean addMove(int curX, int curY, int moveX, int moveY, int x, int y, HashSet<Pair<Integer, Integer>> moves) {
-        // Old position
-        if (x == curX && y == curY) {
-            moves.add(new Pair<>(x, y));
-            return false;
-        }
-
-        // New position
-        if (x == moveX && y == moveY) {
-            moves.add(new Pair<>(x, y));
-            return true;
-        }
-
-        // Empty
-        List<ChessPiece> possiblePiece = chessboard.getObjectsAt(x, y, ChessPiece.class);
-        if (possiblePiece.isEmpty()) {
-            moves.add(new Pair<>(x, y));
-            return false;
-        }
-
-        // Enemy
-        ChessPiece piece = possiblePiece.get(0);
-        if (piece.isWhite != isWhite) {
-            moves.add(new Pair<>(x, y));
-        }
-        return true;
-    }
-
     private King getOwnKing() {
         for (King king : chessboard.getObjects(King.class)) {
             if (king.isWhite == isWhite) {
@@ -357,19 +242,6 @@ public abstract class ChessPiece extends Actor {
         return null;
     }
 
-    protected boolean isTile(int x, int y) {
-        return !chessboard.getObjectsAt(x, y, Tile.class).isEmpty();
-    }
-
-    protected boolean isEmpty(int x, int y) {
-        return chessboard.getObjectsAt(x, y, ChessPiece.class).isEmpty();
-    }
-
-    protected boolean isEnemy(int x, int y) {
-        List<ChessPiece> piece = chessboard.getObjectsAt(x, y, ChessPiece.class);
-        return !piece.isEmpty() && piece.get(0).isWhite != isWhite;
-    }
-
     private int getMouseX() {
         return Greenfoot.getMouseInfo().getX();
     }
@@ -386,8 +258,7 @@ public abstract class ChessPiece extends Actor {
         return !chessboard.getObjectsAt(getX(), getY(), Select.class).isEmpty();
     }
 
-    public boolean getIsWhite()
-    {
+    public boolean getIsWhite() {
         return isWhite;
     }
 }
