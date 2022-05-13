@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.util.HashSet;
 import java.util.List;
 
-public abstract class MoveSet {
+public abstract class MoveSet implements IMoveSet {
     protected ChessPiece piece;
     protected Chessboard chessboard;
 
@@ -13,8 +13,6 @@ public abstract class MoveSet {
         this.piece = piece;
         chessboard = piece.chessboard;
     }
-
-    public abstract HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves);
 
     protected HashSet<Pair<Integer, Integer>> getVerticalMoves(int curX, int curY, int moveX, int moveY) {
         HashSet<Pair<Integer, Integer>> verticalMoves = new HashSet<>();

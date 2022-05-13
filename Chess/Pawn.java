@@ -39,7 +39,7 @@ public class Pawn extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new PawnMoveSet(this);
     }
 

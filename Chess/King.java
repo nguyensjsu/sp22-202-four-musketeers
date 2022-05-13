@@ -28,7 +28,7 @@ public class King extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new KingMoveSet(this);
     }
 }

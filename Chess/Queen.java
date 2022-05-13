@@ -7,7 +7,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new QueenMoveSet(this);
     }
 }

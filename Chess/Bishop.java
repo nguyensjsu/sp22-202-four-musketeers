@@ -7,7 +7,7 @@ public class Bishop extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new BishopMoveSet(this);
     }
 }

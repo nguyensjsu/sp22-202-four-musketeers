@@ -7,7 +7,7 @@ public class Super extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new SuperMoveSet(this);
     }
 }

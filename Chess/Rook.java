@@ -7,7 +7,7 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    protected MoveSet getMoveSet() {
+    protected IMoveSet getMoveSet() {
         return new RookMoveSet(this);
     }
 }

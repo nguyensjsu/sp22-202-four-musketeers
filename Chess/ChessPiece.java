@@ -147,7 +147,7 @@ public abstract class ChessPiece extends Actor {
         return teamPossibleMoves.contains(new Pair<>(enemyKing.getX(), enemyKing.getY()));
     }
 
-    protected abstract MoveSet getMoveSet();
+    protected abstract IMoveSet getMoveSet();
 
     private HashSet<Pair<Integer, Integer>> getPossibleMoves(int curX, int curY, int moveX, int moveY, boolean isCheckingNoMoves) {
         return getMoveSet().getPossibleMoves(curX, curY, moveX, moveY, isCheckingNoMoves);
