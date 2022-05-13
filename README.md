@@ -13,7 +13,14 @@ Chess
 - Eric Arreola:
 - John Lu:
 - Richard Ngo:
-- Ryan Tran:
+- Ryan Tran
+  - Translated some source code to English
+  - Refactored main game loop and pieces
+  - Fixed castling issues
+  - Added check, checkmate, and stalemate
+  - Added displaying possible moves
+  - Added super piece (queen and knight moveset)
+  - Added sound effects
 
 ## Summary of Project and Key Features
 
@@ -28,12 +35,13 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 
 
 ## Link to User Story Ad Video
-
+[https://www.youtube.com/watch?v=zv_YKkZTb7g](https://www.youtube.com/watch?v=zv_YKkZTb7g)
 
 ## Link to Demo Video
 
 
 ## Link to Scrum Task Sheet
+[https://docs.google.com/spreadsheets/d/1vNNHV441aIaOG6byEEKgsRQPKemb-DR_-ST4-R4IHVQ/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1vNNHV441aIaOG6byEEKgsRQPKemb-DR_-ST4-R4IHVQ/edit?usp=sharing)
 
 
 ## UI Wireframes
