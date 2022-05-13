@@ -54,5 +54,4 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 
 
 ## Link to UI Wireframes on Figma
-[https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1]
-(https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1)
+[https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1](https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1)
