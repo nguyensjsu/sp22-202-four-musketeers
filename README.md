@@ -12,6 +12,12 @@ Chess
 ## Summary of Contributions
 - Eric Arreola
 - John Lu
+  - Translated chunk of source code to English
+  - Refactored code of some chess pieces for readability
+  - Fixed coordinates of chessboard after space was made for move history and timer
+  - Added timer
+  - Added timer toggling
+  - Added timer difficulty changing
 - Richard Ngo
 - Ryan Tran
   - Translated some source code to English
@@ -33,7 +39,7 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 
 ## Who contributed what feature?
 - Eric Arreola: The primary feature I worked on was the move history functionality along with the ability to scroll through previous recorded move history. In order to get this functionality as a whole working I ended up using three patterns for different aspects of move history. The first aspect of the feature is being able to actually record the chesspiece movement in a way that would be useful for the user of the game. This was done by making move history a class object called MoveHistory that would become an observer of the class Chessboard which would act as a subject that takes in x and y coordinates from chesspieces, the pattern overall was thus Observer. On chesspiece movements, the Chessboard class would notify its observers with a string that represents the new position of the chess piece along with the chess piece type. In order to display these strings each history entry within the MoveHistory object is basically a container of the class type Label since greenfoot requires different displaying objects to each be of actor type which Label is. In order to implement the move history scrolling feature two patterns were used. The Observer pattern was once again used with MoveHistory being an observer but this time the subject would be objects of the ScrollingButton class. Each time one of the buttons would be clicked the ScrollingButton would send a notification to the MoveHistory object which would result in the Labels within the MoveHistory object being shifted up or down depending on button type sending the notification. Since only a limited amount of Label history entries were allowed on the screen at once there had to be some way to toggle the visibility of the Labels that were meant to be on screen or offf. This is where the second pattern, State comes into play. Each Label was able to enter either an OnScreen or OffScreen state with the default being OnScreen. When the position of a label was detected to be OffScreen in terms of the MoveHistory object container size then it would be sent to the OffScreen state and removed from the world, if at some point its position was modified enough to be on screen through the scrolling buttons then its state would be transferred to OnScreen. 
-- John Lu
+- John Lu: The primary feature I worked on was the timer leveraging Decorator and State patterns. The base functionality uses the built-in SimpleTimer class in Greenfoot, which I put into a wrapper class called TimerActor. This built-in timer acts as a stopwatch incrementing in milliseconds. Therefore, I had to use the Decorator pattern to convert the raw seconds (I had a separate function to convert milliseconds to seconds) into a readable display. For the Decorator pattern, I used two separate functions to output the minutes and seconds displays and passed them in as anonymous functions to TimerActor in Chessboard. For timer toggling and difficulty changing, I added buttons for each respective functionality. Timer toggling was controlled by a boolean in Chessboard; likewise, timer difficulty levels were controlled by a value denoting turn time. A gameStart boolean in Chessboard ensured that timer could only be modified at the start of the game. I used the state pattern to control the transparency of the difficulty buttons. This involved the DifficultyStateMachine manager and the IDifficultyState states. Depending on which difficulty was selected for the current state, I would change the transparency of each button in their respective act functions.
 - Richard Ngo
 - Ryan Tran: The main component that I own is the piece movement, which I used the factory method design pattern to implement. The factory method design pattern defines an interface for creating an object but lets subclasses decide which class to instantiate. I chose this design pattern because I wanted to delegate the responsibility of object instantiation to the subclasses. The interface IMoveSet acts as the Product participant that defines the interface of objects the factory method creates; it defines the getPossibleMoves method. The abstract MoveSet class implements IMoveSet and defines some shared methods between the concrete MoveSet classes. The concrete MoveSet classes (KingMoveSet, QueenMoveSet, etc.) act as the ConcreteProduct participants that override the getPossibleMoves method. The abstract class ChessPiece acts as the Creator participant that defines the abstract getMoveSet factory method. The concrete ChessPiece classes (King, Queen, etc.) act as the ConcreteCreator participants that override the factory method getMoveSet to return an instance of a ConcreteProduct (KingMoveSet, QueenMoveSet, etc.). The ChessPiece class then calls the getMoveSet method to instantiate the appropriate concrete MoveSet and then calls the getPossibleMoves method on that newly instantiated concrete MoveSet.
 
@@ -47,4 +53,6 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 [https://docs.google.com/spreadsheets/d/1vNNHV441aIaOG6byEEKgsRQPKemb-DR_-ST4-R4IHVQ/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1vNNHV441aIaOG6byEEKgsRQPKemb-DR_-ST4-R4IHVQ/edit?usp=sharing)
 
 
-## UI Wireframes
+## Link to UI Wireframes on Figma
+[https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1]
+(https://www.figma.com/file/6wWk3BuWaDZVoMP3HSlByQ/Untitled?node-id=0%3A1)
