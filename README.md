@@ -56,6 +56,7 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 
 - Ryan Tran: The main component that I own is the piece movement, which I used the factory method design pattern to implement. The factory method design pattern defines an interface for creating an object but lets subclasses decide which class to instantiate. I chose this design pattern because I wanted to delegate the responsibility of object instantiation to the subclasses. The interface IMoveSet acts as the Product participant that defines the interface of objects the factory method creates; it defines the getPossibleMoves method. The abstract MoveSet class implements IMoveSet and defines some shared methods between the concrete MoveSet classes. The concrete MoveSet classes (KingMoveSet, QueenMoveSet, etc.) act as the ConcreteProduct participants that override the getPossibleMoves method. The abstract class ChessPiece acts as the Creator participant that defines the abstract getMoveSet factory method. The concrete ChessPiece classes (King, Queen, etc.) act as the ConcreteCreator participants that override the factory method getMoveSet to return an instance of a ConcreteProduct (KingMoveSet, QueenMoveSet, etc.). The ChessPiece class then calls the getMoveSet method to instantiate the appropriate concrete MoveSet and then calls the getPossibleMoves method on that newly instantiated concrete MoveSet.
 
+![ryan-factory-method](images/ryan-factory-method.png)
 
 ## Design Notes
 
