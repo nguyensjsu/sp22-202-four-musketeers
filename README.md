@@ -11,6 +11,11 @@ Chess
 
 ## Summary of Contributions
 - Eric Arreola
+  - Translated some source code to english
+  - Refactored inheritance structure of source code to be based less on black and white color pieces and more just on piece types
+  - Added move history recording
+  - Added scrolling functionality to move history to browse older moves
+  - Fixed some issues from translating process like classes inheriting from wrong parent classes
 - John Lu
   - Translated chunk of source code to English
   - Refactored code of some chess pieces for readability
