@@ -9,6 +9,12 @@ Chess
 - Richard Ngo
 - Ryan Tran
 
+## Summary of Project and Key Features
+
+We implemented the base game of Chess with added modifications to it. Each player has a move timer that skips their turn. Players are given the option to toggle the timer or change the timer based on difficulty at the start of the game. We also fixed and implemented En Passant, Castling, and Promotion. To add further spice to the promotion feature, we added a super piece that has the moveset of a queen AND a knight (exciting, isn't it? now you can flex on your friends with style). To wrap this all up, we added a move history log that can be scrolled up or down one level at a time with buttons. 
+
+The starter code we used was in Slovakian and had various bugs, so we took one week to refactor it. This starter code in particular looked appealing because of the board swap functionality at the end of each turn. This was a wonderful learning experience for us to learn how to refactor a project into a clean object oriented structure.
+
 ## Summary of Contributions
 - Eric Arreola
   - Translated some source code to english
@@ -36,11 +42,51 @@ Chess
   - Added super piece (queen and knight moveset)
   - Added sound effects
 
-## Summary of Project and Key Features
+## UI Wireframes
 
-We implemented the base game of Chess with added modifications to it. Each player has a move timer that skips their turn. Players are given the option to toggle the timer or change the timer based on difficulty at the start of the game. We also fixed and implemented En Passant, Castling, and Promotion. To add further spice to the promotion feature, we added a super piece that has the moveset of a queen AND a knight (exciting, isn't it? now you can flex on your friends with style). To wrap this all up, we added a move history log that can be scrolled up or down one level at a time with buttons. 
 
-The starter code we used was in Slovakian and had various bugs, so we took one week to refactor it. This starter code in particular looked appealing because of the board swap functionality at the end of each turn. This was a wonderful learning experience for us to learn how to refactor a project into a clean object oriented structure.
+Starting screen:
+
+
+![startingScreen](images/startingScreen.png)
+
+
+Toggling easy difficulty:
+
+
+![easyToggle](images/easyToggle.png)
+
+
+Toggling medium difficulty:
+
+
+![medToggle](images/medToggle.png)
+
+
+Toggling hard difficulty:
+
+
+![hardToggle](images/hardToggle.png)
+
+
+Toggling timer off:
+
+
+![timerToggleOff](images/timerToggledOff.png)
+
+
+Valid move:
+
+
+![validMove](images/validMove.png)
+
+
+Game over:
+
+
+![gameOver](images/gameOver.png)
+
+
 
 ## High Level Architecture Diagram
 
@@ -72,14 +118,6 @@ The starter code we used was in Slovakian and had various bugs, so we took one w
 - Richard Ngo: The main feature I worked on was the pawn promotion selection. Once the pawn cross the threshold it would trigger the Singleton "PromotionObserver" to send a message out to the promotional buttons. Each of these buttons derived from the parent "factory" class (PromotionButton) into there individual subclasses to display.
 
 - Ryan Tran: The main component that I own is the piece movement, which I used the factory method design pattern to implement. The factory method design pattern defines an interface for creating an object but lets subclasses decide which class to instantiate. I chose this design pattern because I wanted to delegate the responsibility of object instantiation to the subclasses. The interface IMoveSet acts as the Product participant that defines the interface of objects the factory method creates; it defines the getPossibleMoves method. The abstract MoveSet class implements IMoveSet and defines some shared methods between the concrete MoveSet classes. The concrete MoveSet classes (KingMoveSet, QueenMoveSet, etc.) act as the ConcreteProduct participants that override the getPossibleMoves method. The abstract class ChessPiece acts as the Creator participant that defines the abstract getMoveSet factory method. The concrete ChessPiece classes (King, Queen, etc.) act as the ConcreteCreator participants that override the factory method getMoveSet to return an instance of a ConcreteProduct (KingMoveSet, QueenMoveSet, etc.). The ChessPiece class then calls the getMoveSet method to instantiate the appropriate concrete MoveSet and then calls the getPossibleMoves method on that newly instantiated concrete MoveSet.
-
-## Design Notes
-
-
-
-## UI Wireframes
-
-
 
 ## Link to User Story Ad Video
 [https://www.youtube.com/watch?v=zv_YKkZTb7g](https://www.youtube.com/watch?v=zv_YKkZTb7g)
